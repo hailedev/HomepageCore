@@ -14,6 +14,7 @@ using HomepageCore.Data.Entities;
 using HomepageCore.Data.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using AutoMapper;
 
 namespace HomepageCore.UI
 {
@@ -59,6 +60,9 @@ namespace HomepageCore.UI
 
             // Add framework services.
             services.AddMvc();
+
+            // Add automapper
+            services.AddAutoMapper(x => x.CreateMissingTypeMaps = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
