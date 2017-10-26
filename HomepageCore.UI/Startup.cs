@@ -26,6 +26,7 @@ using HomepageCore.Middleware;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
 using HomepageCore.Common.Configuration;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace HomepageCore.UI
 {
@@ -38,6 +39,13 @@ namespace HomepageCore.UI
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+                builder.AddUserSecrets<Startup>();
+            }
+            
             Configuration = builder.Build();
 
             // set nlog config
@@ -126,6 +134,13 @@ namespace HomepageCore.UI
             app.UseResponseCompression();
             app.UseAuthentication();
             app.UseCustomRoute(Configuration);
+
+            app.UseGoogleAuthentication(new GoogleOptions
+            {
+                ClientId = Configuration["Authentication:Google:ClientId"],
+                ClientSecret = Configuration["Authentication:Google:ClientSecret"]
+            });
+
             app.UseFileServer();
 
             app.UseMvc();
