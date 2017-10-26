@@ -55,6 +55,7 @@ namespace HomepageCore.UI
             services.AddScoped<PostRepository>();
             services.AddScoped<CategoryRepository>();
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
+            services.AddOptions();
             services.Configure<ApplicationOptions>(Configuration);
             
             services.AddIdentity<ApplicationUser, IdentityRole>(
