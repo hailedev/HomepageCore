@@ -25,6 +25,7 @@ using NLog.Extensions.Logging;
 using HomepageCore.Middleware;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
+using HomepageCore.Common.Configuration;
 
 namespace HomepageCore.UI
 {
@@ -41,7 +42,7 @@ namespace HomepageCore.UI
 
             // set nlog config
             env.ConfigureNLog("nlog.config");
-            LogManager.Configuration.Variables["connectionString"] = "Data Source=HomepageCore.db";//Configuration.GetConnectionString("DefaultConnection");
+            LogManager.Configuration.Variables["connectionString"] = Configuration.GetConnectionString("DefaultConnection");
             LogManager.Configuration.Install(new InstallationContext());
         }
 
@@ -54,7 +55,8 @@ namespace HomepageCore.UI
             services.AddScoped<PostRepository>();
             services.AddScoped<CategoryRepository>();
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
-
+            services.Configure<ApplicationOptions>(Configuration);
+            
             services.AddIdentity<ApplicationUser, IdentityRole>(
                 config =>
                 {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using HomepageCore.Common.Configuration;
 using HomepageCore.Data.Entities;
 using HomepageCore.Data.Repositories.Interfaces;
 using HomepageCore.Models;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace HomepageCore.Controllers
 {
@@ -19,14 +21,14 @@ namespace HomepageCore.Controllers
     public class PostController : Controller
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
-        private readonly IConfiguration _configuration;
+        private readonly ApplicationOptions _applicationOptions;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public PostController(IApplicationUnitOfWork applicationUnitOfWork, IConfiguration configuration, IMapper mapper, ILoggerFactory loggerFactory)
+        public PostController(IApplicationUnitOfWork applicationUnitOfWork, IOptions<ApplicationOptions> optionsAccessor, IMapper mapper, ILoggerFactory loggerFactory)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
-            _configuration = configuration;
+            _applicationOptions = optionsAccessor.Value;
             _mapper = mapper;
             _logger = loggerFactory.CreateLogger(GetType().Namespace);
         }
@@ -52,7 +54,7 @@ namespace HomepageCore.Controllers
                 }
                 else
                 {
-                    var pageSize = int.Parse(_configuration.GetSection("pageSize").Value);
+                    var pageSize = _applicationOptions.PageSize;
                     var posts = await _applicationUnitOfWork.Posts.GetAllWithCategory();
                     if (filter != null)
                     {
