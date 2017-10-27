@@ -84,6 +84,13 @@ namespace HomepageCore.UI
                     }
                 });
 
+            // Add Google auth
+            services.AddAuthentication().AddGoogle(options => 
+            {
+                options.ClientId = Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
+
             // Add compression
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
             services.AddResponseCompression(options =>
@@ -134,12 +141,6 @@ namespace HomepageCore.UI
             app.UseResponseCompression();
             app.UseAuthentication();
             app.UseCustomRoute(Configuration);
-
-            app.UseGoogleAuthentication(new GoogleOptions
-            {
-                ClientId = Configuration["Authentication:Google:ClientId"],
-                ClientSecret = Configuration["Authentication:Google:ClientSecret"]
-            });
 
             app.UseFileServer();
 
