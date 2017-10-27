@@ -23,6 +23,6 @@
     <ProjectReference Include="..\HomepageCore.Common\HomepageCore.Common.csproj" />
   </ItemGroup>
   <Target Name="PrecompileScript" BeforeTargets="BeforeBuild">
-    <Exec Command="grunt build" />
+    <Exec Command="grunt build --target=$(Configuration)" />
   </Target>
 </Project>
