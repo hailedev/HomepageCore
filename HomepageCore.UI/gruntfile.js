@@ -28,7 +28,7 @@ module.exports = function (grunt) {
                         ["babelify", {presets: ["react"]}]
                     ],
                     alias: [
-                        target === "debug" ? "../appsettings.development.json:env" : "../appsettings.production.json:env"
+                        target === "debug" ? "../appsettings.Development.json:env" : "../appsettings.Production.json:env"
                     ],
                     browserifyOptions:{
                         paths:paths,

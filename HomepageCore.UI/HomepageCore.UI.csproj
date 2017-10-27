@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>HomepageCore-96a0bd02-f108-4bd8-a41f-626f362c7f84</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="wwwroot\" />
@@ -21,4 +22,7 @@
     <ProjectReference Include="..\HomepageCore.Data\HomepageCore.Data.csproj" />
     <ProjectReference Include="..\HomepageCore.Common\HomepageCore.Common.csproj" />
   </ItemGroup>
+  <Target Name="PrecompileScript" BeforeTargets="BeforeBuild">
+    <Exec Command="grunt build" />
+  </Target>
 </Project>

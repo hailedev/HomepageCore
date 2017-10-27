@@ -268,3 +268,4 @@ __pycache__/
 # tools/
 
 HomepageCore.UI/appsettings.Production.json
+wwwroot
