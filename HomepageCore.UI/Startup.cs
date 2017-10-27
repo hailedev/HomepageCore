@@ -22,7 +22,6 @@ using NLog;
 using NLog.Config;
 using Microsoft.AspNetCore.Http;
 using NLog.Extensions.Logging;
-using HomepageCore.Middleware;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
 using HomepageCore.Common.Configuration;
@@ -140,11 +139,13 @@ namespace HomepageCore.UI
 
             app.UseResponseCompression();
             app.UseAuthentication();
-            app.UseCustomRoute(Configuration);
 
             app.UseFileServer();
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapSpaFallbackRoute("spa-fallback",new { Controller = "Home", action = "Index"});
+            });
         }
     }
 }

@@ -92,13 +92,13 @@ module.exports = function (grunt) {
             options: {
                 force: true
             },
-            build: ["../wwwroot"],
+            build: ["../wwwroot", "index.html"],
             minify: ["../wwwroot/js/app.js", "../wwwroot/css/styles.css"]
         },
         htmlbuild:{
             release:{
-                src: "index.html",
-                dest: "../wwwroot/",
+                src: "templates/index.html",
+                dest: "./",
                 options: {
                     beautify:true,
                     scripts: {
@@ -110,8 +110,8 @@ module.exports = function (grunt) {
                 }
             },
             debug:{
-                src: "index.html",
-                dest: "../wwwroot/",
+                src: "templates/index.html",
+                dest: "./",
                 options: {
                     beautify:true,
                     scripts: {
@@ -152,17 +152,17 @@ module.exports = function (grunt) {
         "string-replace":{
             dist:{
                 files: {
-                    "../wwwroot/":"../wwwroot/*"
+                    "./":"./index.html"
                 },
                 options:{
                     replacements: [
                         {
-                            pattern: /js\/(.*).js/g,
-                            replacement: "/js/$1.js"
+                            pattern: /\.\.\/wwwroot\/js\/(.*).js/g,
+                            replacement: "js/$1.js"
                         },
                         {
-                            pattern: /css\/(.*).css/g,
-                            replacement: "/css/$1.css"
+                            pattern: /\.\.\/wwwroot\/css\/(.*).css/g,
+                            replacement: "css/$1.css"
                         }
                     ]
                 }
