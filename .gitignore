@@ -269,4 +269,5 @@ __pycache__/
 
 HomepageCore.UI/appsettings.Production.json
 wwwroot
-HomepageCore.UI/View/index.html
+HomepageCore.UI/Views/Home/Index.cshtml
+HomepageCore.UI/ClientApp/index.html

@@ -7,7 +7,7 @@ namespace HomepageCore.Controllers
     {
         public IActionResult Index()
         {
-            return View("~/View/index.html");
+            return View();
         }
     }
 }

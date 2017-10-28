@@ -1,4 +1,4 @@
-[submodule "HomepageCore.UI/View/submodules/InteractiveResume"]
-	path = HomepageCore.UI/View/submodules/InteractiveResume
+[submodule "HomepageCore.UI/ClientApp/submodules/InteractiveResume"]
+	path = HomepageCore.UI/ClientApp/submodules/InteractiveResume
 	url = https://github.com/hailedev/InteractiveResume.git
 	branch = master

@@ -92,7 +92,7 @@ module.exports = function (grunt) {
             options: {
                 force: true
             },
-            build: ["../wwwroot", "index.html"],
+            build: ["../wwwroot", "../Views/Home/Index.cshtml"],
             minify: ["../wwwroot/js/app.js", "../wwwroot/css/styles.css"]
         },
         htmlbuild:{
@@ -152,7 +152,7 @@ module.exports = function (grunt) {
         "string-replace":{
             dist:{
                 files: {
-                    "./":"./index.html"
+                    "../Views/Home/Index.cshtml":"index.html"
                 },
                 options:{
                     replacements: [
@@ -200,7 +200,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-cssmin");
     grunt.loadNpmTasks("grunt-string-replace");
     grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.file.setBase("./View");
+    grunt.file.setBase("./ClientApp");
     
     var tasks = ["env", "clean:build", "browserify", "less", "requirejs", "copy"];
     if(minify || target === "release"){
