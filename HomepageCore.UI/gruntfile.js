@@ -14,7 +14,7 @@ module.exports = function (grunt) {
         "./js/api",
         "./js/common"
     ];
-
+    
     grunt.initConfig({
         env: {
             dist: {
@@ -38,6 +38,23 @@ module.exports = function (grunt) {
                 },
                 files: {
                     "../wwwroot/js/app.js": ["./js/app.jsx"]
+                }
+            },
+            prerender: {
+                options: {
+                    transform: [
+                        ["babelify", {presets: ["react"]}],
+                        ["aliasify", {aliases: {"env":target === "debug" ? "../appsettings.Development.json" : "../appsettings.Production.json"}}]
+                    ],
+                    browserifyOptions:{
+                        paths:paths,
+                        debug:false,
+                        extensions: [".jsx"],
+                        standalone: "prerender"
+                    }
+                },
+                files: {
+                    "../wwwroot/js/prerender-app.js": ["./js/prerender-app.jsx"]
                 }
             }
         },
@@ -77,6 +94,7 @@ module.exports = function (grunt) {
                     {expand: true, src: ["./images/**"], dest: "../wwwroot/", flatten: false, filter: "isFile"},
                     {expand: true, src: ["./**/*.css"], cwd: "./css", dest: "../wwwroot/css/", flatten: false},
                     {expand: true, src: ["./fonts/**"], dest: "../wwwroot/fonts/", flatten: true, filter: "isFile"},
+                    {src: ["prerender-bootstrapper.js"], dest: "../wwwroot/js/"},
                     {expand: true, cwd: "./submodules/InteractiveResume/src/", src: ["assets/**"], dest: "../wwwroot/resume/"},
                     {expand: true, cwd: "./submodules/InteractiveResume/src/", src: ["styles/**/*"], dest: "../wwwroot/resume/"},
                     {expand: true, cwd: "./submodules/InteractiveResume/src/", src: ["js/lib/jquery-1.11.2.min.js"], dest:"../wwwroot/resume/"},
@@ -98,7 +116,7 @@ module.exports = function (grunt) {
         htmlbuild:{
             release:{
                 src: "templates/index.html",
-                dest: "./",
+                dest: "../Views/Home/",
                 options: {
                     beautify:true,
                     scripts: {
@@ -111,7 +129,7 @@ module.exports = function (grunt) {
             },
             debug:{
                 src: "templates/index.html",
-                dest: "./",
+                dest: "../Views/Home/",
                 options: {
                     beautify:true,
                     scripts: {
@@ -152,16 +170,16 @@ module.exports = function (grunt) {
         "string-replace":{
             dist:{
                 files: {
-                    "../Views/Home/Index.cshtml":"index.html"
+                    "../Views/Home/index.html":"../Views/Home/index.html"
                 },
                 options:{
                     replacements: [
                         {
-                            pattern: /\.\.\/wwwroot\/js\/(.*).js/g,
+                            pattern: /\.\.\/\.\.\/wwwroot\/js\/(.*).js/g,
                             replacement: "js/$1.js"
                         },
                         {
-                            pattern: /\.\.\/wwwroot\/css\/(.*).css/g,
+                            pattern: /\.\.\/\.\.\/wwwroot\/css\/(.*).css/g,
                             replacement: "css/$1.css"
                         }
                     ]
@@ -187,6 +205,13 @@ module.exports = function (grunt) {
                     out: target === "debug" ?"../wwwroot/blizzard/js/main.js" : "../wwwroot/blizzard/js/main.min.js"
                 }
             }
+        },
+        rename:{
+            main:{
+                files:[
+                    {src: ["../Views/Home/index.html"], dest: "../Views/Home/Index.cshtml"}
+                ]
+            }
         }
     });
 
@@ -199,7 +224,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-less");
     grunt.loadNpmTasks("grunt-contrib-cssmin");
     grunt.loadNpmTasks("grunt-string-replace");
-    grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks("grunt-contrib-requirejs");
+    grunt.loadNpmTasks("grunt-contrib-rename");
     grunt.file.setBase("./ClientApp");
     
     var tasks = ["env", "clean:build", "browserify", "less", "requirejs", "copy"];
@@ -212,5 +238,6 @@ module.exports = function (grunt) {
     tasks.push("htmlbuild:submodule");
     tasks.push("htmlbuild:application");
     tasks.push("string-replace");
+    tasks.push("rename");
     grunt.registerTask("build", tasks);
 };
