@@ -270,5 +270,3 @@ __pycache__/
 HomepageCore.UI/appsettings.Production.json
 wwwroot
 HomepageCore.UI/Views/Home/Index.cshtml
-HomepageCore.UI/ClientApp/index.html
-HomepageCore.UI/ClientApp/prerender-app.js

@@ -94,7 +94,7 @@ module.exports = function (grunt) {
                     {expand: true, src: ["./images/**"], dest: "../wwwroot/", flatten: false, filter: "isFile"},
                     {expand: true, src: ["./**/*.css"], cwd: "./css", dest: "../wwwroot/css/", flatten: false},
                     {expand: true, src: ["./fonts/**"], dest: "../wwwroot/fonts/", flatten: true, filter: "isFile"},
-                    {src: ["prerender-bootstrapper.js"], dest: "../wwwroot/js/"},
+                    {expand: true, cwd: "js", src: ["prerender-bootstrapper.js"], dest: "../wwwroot/js/"},
                     {expand: true, cwd: "./submodules/InteractiveResume/src/", src: ["assets/**"], dest: "../wwwroot/resume/"},
                     {expand: true, cwd: "./submodules/InteractiveResume/src/", src: ["styles/**/*"], dest: "../wwwroot/resume/"},
                     {expand: true, cwd: "./submodules/InteractiveResume/src/", src: ["js/lib/jquery-1.11.2.min.js"], dest:"../wwwroot/resume/"},
