@@ -199,13 +199,6 @@ module.exports = function (grunt) {
                     out: target === "debug" ?"../wwwroot/resume/js/main.js" : "../wwwroot/resume/js/main.min.js"
                 }
             }
-        },
-        rename:{
-            main:{
-                files:[
-                    {src: ["../Views/Home/index.html"], dest: "../Views/Home/Index.cshtml"}
-                ]
-            }
         }
     });
 
@@ -234,6 +227,5 @@ module.exports = function (grunt) {
     tasks.push("string-replace");
     tasks.push("process");
     tasks.push("clean:template");
-    //tasks.push("rename");
     grunt.registerTask("build", tasks);
 };
