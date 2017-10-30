@@ -111,7 +111,8 @@ module.exports = function (grunt) {
                 force: true
             },
             build: ["../wwwroot", "../Views/Home/Index.cshtml"],
-            minify: ["../wwwroot/js/app.js", "../wwwroot/css/styles.css"]
+            minify: ["../wwwroot/js/app.js", "../wwwroot/css/styles.css"],
+            template: ["../Views/Home/index.html"]
         },
         htmlbuild:{
             release:{
@@ -152,19 +153,21 @@ module.exports = function (grunt) {
                         application: false
                     }
                 }
-            },
-            application:{
-                src: "./submodules/InteractiveResume/src/index.html",
-                dest: "../wwwroot/blizzard/",
+            }
+        },
+        process:{
+            "convert-to-razor":{
                 options: {
-                    beautify:true,
-                    scripts: {
-                        bundle: [target === "debug" ? "../wwwroot/blizzard/js/main.js" : "../wwwroot/blizzard/js/main.min.js"]
-                    },
-                    data: {
-                        application: true
+                    process: function(src, dest, content, fileObject){
+                        return content.replace(/<!-- razor:\s?(.|[\s\S]*?)\s?-->/g, "$1");
                     }
-                }
+                },
+                files:[
+                    {
+                        src: "../Views/Home/index.html",
+                        dest: "../Views/Home/Index.cshtml"
+                    }
+                ]
             }
         },
         "string-replace":{
@@ -195,15 +198,6 @@ module.exports = function (grunt) {
                     optimize: target === "debug" ?"none" : "uglify2",
                     out: target === "debug" ?"../wwwroot/resume/js/main.js" : "../wwwroot/resume/js/main.min.js"
                 }
-            },
-            application:{
-                options:{
-                    baseUrl:"./submodules/InteractiveResume/src/js",
-                    mainConfigFile:"./submodules/InteractiveResume/src/js/module-bootstrap.js",
-                    include: ["module-bootstrap.js","main.js"],
-                    optimize: target === "debug" ?"none" : "uglify2",
-                    out: target === "debug" ?"../wwwroot/blizzard/js/main.js" : "../wwwroot/blizzard/js/main.min.js"
-                }
             }
         },
         rename:{
@@ -226,6 +220,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-string-replace");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-rename");
+    grunt.loadNpmTasks("grunt-process");
     grunt.file.setBase("./ClientApp");
     
     var tasks = ["env", "clean:build", "browserify", "less", "requirejs", "copy"];
@@ -236,8 +231,9 @@ module.exports = function (grunt) {
     }
     tasks.push("htmlbuild:".concat(target));
     tasks.push("htmlbuild:submodule");
-    tasks.push("htmlbuild:application");
     tasks.push("string-replace");
-    tasks.push("rename");
+    tasks.push("process");
+    tasks.push("clean:template");
+    //tasks.push("rename");
     grunt.registerTask("build", tasks);
 };

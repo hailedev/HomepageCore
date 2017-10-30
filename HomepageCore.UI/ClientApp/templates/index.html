@@ -22,9 +22,13 @@
     <title></title>
 </head>
 <body>
-<!--<div id="prerender-spa" asp-prerender-module="wwwroot/js/prerender-bootstrapper"></div>-->
 <div id="root"></div>
+<!-- razor: @if(!Model) { -->
 <!-- build:script bundle -->
 <!-- /build -->
+<!-- razor: } else { 
+    <div id="prerender-spa" asp-prerender-module="wwwroot/js/prerender-bootstrapper"></div>
+    <script>console.log("Serving content from static page")</script>
+    } -->
 </body>
 </html>
