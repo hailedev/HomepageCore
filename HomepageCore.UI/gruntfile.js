@@ -50,7 +50,7 @@ module.exports = function (grunt) {
                         paths:paths,
                         debug:false,
                         extensions: [".jsx"],
-                        standalone: "prerender"
+                        standalone: "prerenderService"
                     }
                 },
                 files: {
@@ -84,7 +84,8 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    "../wwwroot/js/app.min.js": ["../wwwroot/js/app.js"]
+                    "../wwwroot/js/app.min.js": ["../wwwroot/js/app.js"],
+                    "../wwwroot/js/prerender-app.min.js": ["../wwwroot/js/prerender-app.js"]
                 }
             }
         },
@@ -111,7 +112,7 @@ module.exports = function (grunt) {
                 force: true
             },
             build: ["../wwwroot", "../Views/Home/Index.cshtml"],
-            minify: ["../wwwroot/js/app.js", "../wwwroot/css/styles.css"],
+            minify: ["../wwwroot/js/app.js", "../wwwroot/js/prerender-app.js", "../wwwroot/css/styles.css"],
             template: ["../Views/Home/index.html"]
         },
         htmlbuild:{
@@ -121,7 +122,8 @@ module.exports = function (grunt) {
                 options: {
                     beautify:true,
                     scripts: {
-                        bundle: ["../wwwroot/js/app.min.js"]
+                        bundle: ["../wwwroot/js/app.min.js"],
+                        prerender: ["../wwwroot/js/prerender-app.min.js"]
                     },
                     styles: {
                         bundle: ["../wwwroot/css/styles.min.css","../wwwroot/css/RichEditor.css"]
@@ -134,7 +136,8 @@ module.exports = function (grunt) {
                 options: {
                     beautify:true,
                     scripts: {
-                        bundle: ["../wwwroot/js/app.js"]
+                        bundle: ["../wwwroot/js/app.js"],
+                        prerender: ["../wwwroot/js/prerender-app.js"]
                     },
                     styles: {
                         bundle: ["../wwwroot/css/styles.css","../wwwroot/css/RichEditor.css"]

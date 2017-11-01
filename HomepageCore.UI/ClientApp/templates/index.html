@@ -22,12 +22,15 @@
     <title></title>
 </head>
 <body>
-<!-- razor: @if(Model) { 
+<!-- razor: @if(Model) { -->
     <div id="root" asp-prerender-module="wwwroot/js/prerender-bootstrapper"></div>
-} else {
+<!-- build:script prerender -->
+<!-- /build -->
+    <script type="text/javascript">prerenderService.renderToNode(location.pathname + location.search + location.hash)</script>
+<!-- razor: } else { -->
     <div id="root"></div>
-} -->
 <!-- build:script bundle -->
 <!-- /build -->
+<!-- razor: } -->
 </body>
 </html>
