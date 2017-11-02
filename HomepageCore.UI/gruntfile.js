@@ -215,7 +215,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-cssmin");
     grunt.loadNpmTasks("grunt-string-replace");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
-    grunt.loadNpmTasks("grunt-contrib-rename");
     grunt.loadNpmTasks("grunt-process");
     grunt.file.setBase("./ClientApp");
     
