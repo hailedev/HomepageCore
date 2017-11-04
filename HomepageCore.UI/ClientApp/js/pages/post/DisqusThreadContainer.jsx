@@ -1,5 +1,5 @@
 var React = require("react");
-var ReactDisqusThread = require("react-disqus-thread");
+var ReactDisqusThread = require("./ReactDisqusThread");
 
 var DisqusThreadContainer = React.createClass({
     shouldComponentUpdate: function(nextProps, nextState){
