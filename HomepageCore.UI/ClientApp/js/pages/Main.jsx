@@ -98,12 +98,3 @@ var Main = createReactClass({
 });
 
 module.exports = Main;
-
-/*
-
- <div ref="slideoutpanel">
- <div className="btn btn-info btn-sm" onClick={this.onOpenMenu}>
- <span className="glyphicon glyphicon-menu-hamburger"/>
- </div>
- </div>
- */

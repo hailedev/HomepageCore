@@ -182,11 +182,11 @@ module.exports = function (grunt) {
                     replacements: [
                         {
                             pattern: /\.\.\/\.\.\/wwwroot\/js\/(.*).js/g,
-                            replacement: "js/$1.js"
+                            replacement: "/js/$1.js"
                         },
                         {
                             pattern: /\.\.\/\.\.\/wwwroot\/css\/(.*).css/g,
-                            replacement: "css/$1.css"
+                            replacement: "/css/$1.css"
                         }
                     ]
                 }
