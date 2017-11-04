@@ -1,6 +1,6 @@
 var React = require("react");
 var DocumentTitle = require("react-document-title");
-var Link = require("react-router").Link;
+var Link = require("react-router-dom").Link;
 var createReactClass = require("create-react-class");
 
 var ResumePage = createReactClass({
