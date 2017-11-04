@@ -1,6 +1,7 @@
 var React = require("react");
+var createReactClass = require("create-react-class");
 
-var WaitIcon = React.createClass({
+var WaitIcon = createReactClass({
     render: function(){
         var size = this.props.size || "40px";
         return (

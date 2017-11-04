@@ -2,8 +2,9 @@ var React = require("react");
 var DocumentTitle = require("react-document-title");
 var ContactActionCreators = require("ContactActionCreators");
 var WaitIcon = require("../home/WaitIcon");
+var createReactClass = require("create-react-class");
 
-var FeedbackPage = React.createClass({
+var FeedbackPage = createReactClass({
     getInitialState: function(){
         return {errors:{name:"",email:"",dispatch:""},sentMsg:""};
     },

@@ -12,8 +12,9 @@ var ResumePage = require("./resume/ResumePage");
 var FeedbackPage = require("./feedback/FeedbackPage");
 var ProjectsPage = require("./projects/ProjectsPage");
 var AdminPage = require("./admin/AdminPage");
+var createReactClass = require("create-react-class");
 
-var Main = React.createClass({
+var Main = createReactClass({
     getInitialState: function(){
         return { };
     },

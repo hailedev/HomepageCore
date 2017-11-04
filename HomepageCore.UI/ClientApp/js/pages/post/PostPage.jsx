@@ -10,8 +10,9 @@ var TwitterIcon = require("react-share").generateShareIcon("twitter");
 var VisibilitySensor = require("react-visibility-sensor");
 var SocialIcon = require("react-social-icons").SocialIcon;
 var Progress = require("react-progress");
+var createReactClass = require("create-react-class");
 
-var PostPage = React.createClass({
+var PostPage = createReactClass({
     componentWillMount: function(){
         if(!PostStore.getState()[this.props.match.params.id]){
             PostActionCreators.getPost(this.props.match.params.id).then(function(response){

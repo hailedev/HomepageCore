@@ -1,6 +1,7 @@
 var React = require("react");
 var DocumentTitle = require("react-document-title");
-var ReactCSSTransitionGroup = require("react-addons-css-transition-group");
+var CSSTransition = require("react-transition-group").CSSTransition;
+var TransitionGroup = require("react-transition-group").TransitionGroup;
 var PostSummaryActionCreators = require("PostSummaryActionCreators");
 var PostSummaryStore = require("PostSummaryStore");
 var CategoryStore = require("CategoryStore");
@@ -9,8 +10,9 @@ var Categories = require("AppConstants").Categories;
 var Link = require("react-router-dom").Link;
 var env = require("env");
 var WaitIcon = require("./WaitIcon");
+var createReactClass = require("create-react-class");
 
-var HomeLandingPage = React.createClass({
+var HomeLandingPage = createReactClass({
     componentWillMount: function(){
         PostSummaryActionCreators.getPostSummaries().then(function(){
             this.loadDisqus();
@@ -88,11 +90,11 @@ var HomeLandingPage = React.createClass({
                         </div>
                         <div id="speech-container">
                             <div id="ticker-container">
-                                <ReactCSSTransitionGroup transitionName="messages"
-                                                         transitionEnterTimeout={300}
-                                                         transitionLeaveTimeout={300}>
-                                    <span className="ticker-item" key={this.state.currentProfile}>{this.messages[this.state.currentProfile]}</span>
-                                </ReactCSSTransitionGroup>
+                                <TransitionGroup>
+                                    <CSSTransition classNames="messages" timeout={300} key={this.state.currentProfile}>
+                                        <span className="ticker-item">{this.messages[this.state.currentProfile]}</span>
+                                    </CSSTransition>
+                                </TransitionGroup>
                             </div>
                             <img id="arrow" onClick={this.onArrowClick} src="/images/arrow.gif"/>
                         </div>

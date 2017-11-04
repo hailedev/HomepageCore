@@ -1,8 +1,9 @@
 var React = require("react");
 var DocumentTitle = require("react-document-title");
 var Link = require("react-router-dom").Link;
+var createReactClass = require("create-react-class");
 
-var AboutPage = React.createClass({
+var AboutPage = createReactClass({
     render: function(){
         return (
             <DocumentTitle title={"Hai Le | About"}>

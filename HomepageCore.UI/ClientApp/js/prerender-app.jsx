@@ -26,6 +26,6 @@ module.exports = {
     renderToNode: function(url){
         console.log("Hydrating content for " + url);
         var context = {};
-        ReactDOM.render(<StaticRouter location={url} context={context}><Route path="/" component={Main}/></StaticRouter>, document.getElementById("root"));
+        ReactDOM.hydrate(<StaticRouter location={url} context={context}><Route path="/" component={Main}/></StaticRouter>, document.getElementById("root"));
     }
 }

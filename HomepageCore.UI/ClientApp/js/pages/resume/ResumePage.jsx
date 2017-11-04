@@ -1,8 +1,9 @@
 var React = require("react");
 var DocumentTitle = require("react-document-title");
 var Link = require("react-router").Link;
+var createReactClass = require("create-react-class");
 
-var ResumePage = React.createClass({
+var ResumePage = createReactClass({
     render: function(){
         return (
             <DocumentTitle title={"Hai Le | Hire Me"}>

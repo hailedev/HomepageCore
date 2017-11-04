@@ -12,8 +12,9 @@ var Model = require("react-modal");
 var convertToRaw = require("draft-js").convertToRaw;
 var convertFromRaw = require("draft-js").convertFromRaw;
 var UserInfoApi = require("../../api/UserInfoApi");
+var createReactClass = require("create-react-class");
 
-var StyleButton = React.createClass({
+var StyleButton = createReactClass({
     render: function(){
         var className = 'RichEditor-styleButton';
         if (this.props.active) {
@@ -31,7 +32,7 @@ var StyleButton = React.createClass({
     }
 });
 
-var AdminPage = React.createClass({
+var AdminPage = createReactClass({
     componentWillMount: function(){
         UserInfoApi.getUserInfo().then(function(info){
             if(this.state.categories === null) {

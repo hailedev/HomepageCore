@@ -1,8 +1,9 @@
 var React = require("react");
 var DocumentTitle = require("react-document-title");
 var SocialIcon = require("react-social-icons").SocialIcon;
+var createReactClass = require("create-react-class");
 
-var ProjectPage = React.createClass({
+var ProjectPage = createReactClass({
     render: function(){
         return (
             <DocumentTitle title={"Hai Le | Projects"}>
