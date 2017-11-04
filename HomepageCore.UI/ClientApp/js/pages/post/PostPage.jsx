@@ -13,8 +13,8 @@ var Progress = require("react-progress");
 
 var PostPage = React.createClass({
     componentWillMount: function(){
-        if(!PostStore.getState()[this.props.params.id]){
-            PostActionCreators.getPost(this.props.params.id).then(function(response){
+        if(!PostStore.getState()[this.props.match.params.id]){
+            PostActionCreators.getPost(this.props.match.params.id).then(function(response){
                 this.setState({percent:100});
                 clearInterval(this.interval);
             }.bind(this));
@@ -117,7 +117,7 @@ PostPage.getStores = function(){
 };
 
 PostPage.calculateState = function(prevState,props){
-    return {post:PostStore.getState()[props.params.id]};
+    return {post:PostStore.getState()[props.match.params.id]};
 };
 
 var PostPageContainer = require("flux/utils").Container.create(PostPage,{withProps:true});

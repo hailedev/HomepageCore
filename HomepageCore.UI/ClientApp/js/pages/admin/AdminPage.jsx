@@ -37,8 +37,8 @@ var AdminPage = React.createClass({
             if(this.state.categories === null) {
                 CategoryActionCreators.getCategories();
             }
-            if(this.props.params.id){
-                PostActionCreators.getPost(this.props.params.id,true).then(function(response){
+            if(this.props.match.params.id){
+                PostActionCreators.getPost(this.props.match.params.id,true).then(function(response){
                     var contentState = convertFromRaw(JSON.parse(response.raw));
                     var editorState = EditorState.createWithContent(contentState);
                     this.setState({id:response.id,title:response.title,blurb:response.blurb,tags:response.tags,editorState:editorState,category:response.categoryId,loggedIn:true});

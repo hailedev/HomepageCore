@@ -1,7 +1,17 @@
 var React = require("react");
 var DocumentTitle = require("react-document-title");
-var Link = require("react-router").Link;
+var Link = require("react-router-dom").Link;
 var Menu = require("react-burger-menu").slide;
+var Switch = require("react-router-dom").Switch;
+var Route = require("react-router-dom").Route;
+
+var HomeLandingPage = require("./home/HomeLandingPage");
+var PostPage = require("./post/PostPage");
+var AboutPage = require("./about/AboutPage");
+var ResumePage = require("./resume/ResumePage");
+var FeedbackPage = require("./feedback/FeedbackPage");
+var ProjectsPage = require("./projects/ProjectsPage");
+var AdminPage = require("./admin/AdminPage");
 
 var Main = React.createClass({
     getInitialState: function(){
@@ -64,7 +74,16 @@ var Main = React.createClass({
                         </div>
                     </div>
                     <div className="container content">
-                        {this.props.children}
+                        <Switch>
+                            <Route exact path="/" component={HomeLandingPage}/>
+                            <Route path="/about" component={AboutPage}/>
+                            <Route path="/hire-me" component={ResumePage}/>
+                            <Route path="/feedback" component={FeedbackPage}/>
+                            <Route path="/projects" component={ProjectsPage}/>
+                            <Route path="/post/:id" component={PostPage}/>
+                            <Route path="/admin" component={AdminPage}/>
+                            <Route path="/admin/:id" component={AdminPage}/>
+                        </Switch>
                     </div>
                     <div className="footer">
                         <a href="https://github.com/hailedev/Homepage" target="_blank">Made with love by Hai Le</a>

@@ -26,16 +26,13 @@ window.onerror = function (message, url, lineNo, colNo, error) {
 require("whatwg-fetch");
 var React = require("react");
 var ReactDOM = require("react-dom");
-var Router = require("react-router").Router;
-var browserHistory = require("react-router").browserHistory;
+var BrowserRouter = require("react-router-dom").BrowserRouter;
+var Route = require("react-router-dom").Route;
 
 var browser = require("detect-browser");
-var Routes = require("./Routes");
+var Main = require("./pages/Main");
 
-var onUpdate = function(){
-    window.scrollTo(0, 0);
-};
-var pageContent = <Router routes={Routes} history={browserHistory} onUpdate={onUpdate}/>;
+var pageContent = <BrowserRouter><Route path="/" component={Main}/></BrowserRouter>;
 if(browser && browser.name === "ie" && !browser.version.startsWith("11")){
     pageContent = (
         <div className="container">

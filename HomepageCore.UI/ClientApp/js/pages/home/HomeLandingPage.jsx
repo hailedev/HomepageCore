@@ -6,7 +6,7 @@ var PostSummaryStore = require("PostSummaryStore");
 var CategoryStore = require("CategoryStore");
 var CategoryActionCreators = require("CategoryActionCreators");
 var Categories = require("AppConstants").Categories;
-var Link = require("react-router").Link;
+var Link = require("react-router-dom").Link;
 var env = require("env");
 var WaitIcon = require("./WaitIcon");
 
