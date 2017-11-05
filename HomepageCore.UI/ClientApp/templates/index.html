@@ -6,10 +6,12 @@
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/RichEditor.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500|Oswald" rel="stylesheet">
-    <!-- build:style bundle -->
-    <!-- /build -->
-    <!-- build:remove debug -->
+<% for (var css in htmlWebpackPlugin.files.css) { %>
+    <link href="<%= htmlWebpackPlugin.files.css[css] %>" rel="stylesheet">
+<% } %>
+<% if(htmlWebpackPlugin.options.enableGoogleAnalytics) { %>
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -18,19 +20,21 @@
         ga('create', 'UA-98372841-1', 'auto');
         ga('send', 'pageview');
     </script>
-    <!-- /build -->
+<% } %>
     <title></title>
 </head>
 <body>
 <!-- razor: @if(Model) { -->
     <div id="root" asp-prerender-module="wwwroot/js/prerender-bootstrapper"></div>
-<!-- build:script prerender -->
-<!-- /build -->
+<% if(htmlWebpackPlugin.files.chunks["prerender-app"]) { %>
+    <script src="<%= htmlWebpackPlugin.files.chunks['prerender-app'].entry %>"></script>
+<% } %>
     <script type="text/javascript">prerenderService.renderToNode(location.pathname + location.search + location.hash)</script>
 <!-- razor: } else { -->
     <div id="root"></div>
-<!-- build:script bundle -->
-<!-- /build -->
+<% if(htmlWebpackPlugin.files.chunks["app"]) { %>
+    <script src="<%= htmlWebpackPlugin.files.chunks['app'].entry %>"></script>
+<% } %>
 <!-- razor: } -->
 </body>
 </html>
