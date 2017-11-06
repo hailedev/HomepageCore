@@ -1,4 +1,6 @@
 var requirejs = require("requirejs");
+var path = require("path");
+var fs = require("fs");
 
 function RequireJsPlugin(options){
     this.options = options;
@@ -13,8 +15,10 @@ RequireJsPlugin.prototype.apply = function(compiler){
         console.log("Running requirejs");
         requirejs.optimize(options,
             function(files){
-                //compilation.assets[options.out] = { source: function() { return "test bla blah"; }, size: function() { return 1; } };
-                callback();
+                fs.stat(options.out, function(err, stat){
+                    compilation.assets[path.relative(compiler.options.output.path, options.out)] = { source: function() { return options.baseUrl; }, size: function() { return stat.size; } };
+                    callback();
+                });
             },
             function(err){
                 compilation.errors.push("RequireJS: " + err);

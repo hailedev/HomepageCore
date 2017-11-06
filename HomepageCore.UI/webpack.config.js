@@ -3,9 +3,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var CleanWebpackPlugin = require("clean-webpack-plugin");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
-var ActivateRazorPlugin = require("./plugins/ActivateRazorPlugin");
 var RequireJsPlugin = require("./plugins/RequireJsPlugin");
-var TransformBuildHtmlPlugin = require("./plugins/TransformBuildHtmlPlugin");
 
 var outputPath = path.resolve(__dirname, "./wwwroot/");
 var jsOutputPath = outputPath + "/js/";
@@ -52,26 +50,19 @@ module.exports = {
             inject: false,
             enableGoogleAnalytics: false
         }),
-        new ActivateRazorPlugin(),
         new RequireJsPlugin({
             baseUrl:"./ClientApp/submodules/InteractiveResume/src/js",
             mainConfigFile:"./ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
             include: ["module-bootstrap.js","main.js"],
             optimize: "none",
-            out: "./wwwroot/resume/js/main.js"
+            out: resumeOutputPath + "js/main.js"
         }),
-        new TransformBuildHtmlPlugin({
-            src: "./submodules/InteractiveResume/src/index.html",
-            dest: "../wwwroot/resume/",
-            options: {
-                beautify:true,
-                scripts: {
-                    bundle: ["../wwwroot/resume/js/main.js"]
-                },
-                data: {
-                    application: false
-                }
-            }
+        new HtmlWebpackPlugin({ 
+            template: "./templates/resume-index.html",
+            filename: path.join(__dirname, "./wwwroot/resume/index.html"),
+            inject: false,
+            application: false,
+            scriptName: "js/main.js"
         })
     ],
     resolve: {

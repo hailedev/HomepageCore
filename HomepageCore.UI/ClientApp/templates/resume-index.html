@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <link rel="shortcut icon" href="assets/icons/favicon.gif">
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,500|Open+Sans:400,500,700" rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="js/lib/require.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <link rel="stylesheet" type="text/css" href="styles/game.css">
+    <link rel="stylesheet" type="text/css" href="styles/simple-modal.css">
+    <title>Hai Le | Interactive Resume</title>
+</head>
+<body>
+    <div id="game-container">
+        <div id="enter-message">Press Space to Enter</div>
+        <div id="main-screen" class="game-screen">
+            <canvas id="game-canvas" width="900" height="650" style="z-index: 1"></canvas>
+            <canvas id="game-hud" width="900" height="650" style="z-index: 2"></canvas>
+            <canvas id="overlay-canvas" width="900" height="650" style="z-index: 3"></canvas>
+            <div id="message-overlay" style="z-index: 4">
+                <div class="message-overlay-portrait">
+                    <div class="message-overlay-portrait" id="message-overlay-portrait-overlay" style="z-index:11">
+                    </div>
+                    <img src="assets/profiles/profile1.png" style="z-index:10"/>
+                </div>
+                <div id="message-overlay-text-container">
+                    <div>
+                        <div id="message-overlay-text"></div>
+                        <div id="spinner-container">
+                            <div class="spinner-arrow" id="arrow-up">
+                                <img src="assets/page/arrow-up.png"/>
+                            </div>
+                            <div class="spinner-arrow" id="arrow-down">
+                                <img src="assets/page/arrow-down.png"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="message-overlay-health">
+                        <div id="message-overlay-current-health"></div>
+                    </div>
+                </div>
+                <div id="message-overlay-gear">
+                    <div class="slot" id="head">
+                        <img src="assets/icons/brutal-helm.png"/>
+                    </div>
+                    <div class="slot" id="mainHand">
+                        <img src="assets/icons/dripping-sword.png"/>
+                    </div>
+                    <div class="slot" id="offHand">
+                        <img src="assets/icons/checked-shield.png"/>
+                    </div>
+                </div>
+            </div>
+            <div id="message-speech" style="z-index: 5">
+                <div id="speech-container"></div>
+                <div id="controls-container">
+                    <img id="maximize" src="assets/page/maximize-icon.png" />
+                    <div id="navigation-container">
+                        <img id="bubble-previous" class="speech-arrow" src="assets/page/arrow-left.png" />
+                        <img id="bubble-next" class="speech-arrow" src="assets/page/arrow-right.png" />
+                    </div>
+                </div>
+            </div>
+            <div id="message-dialog" style="z-index: 6"></div>
+            <div id="response-dialog" style="z-index: 6"></div>
+            <div id="instructions">Use the arrow keys to move about, collect all the orbs and gear up!</div>
+        </div>
+        <div id="start-screen" class="game-screen">
+            <img src="assets/splash.png"/>
+            <img id="begin-label" src="assets/begin.png"/>
+            <div id="loading-screen">
+                <div id="progress-background"></div>
+                <div id="progress-meter"></div>
+                <img id="progress-foreground" src="assets/loading.png"/>
+                <div id="progress-message"></div>
+            </div>
+        </div>
+    </div>
+    <div class="connect">
+        <div class="title">CONNECT</div>
+        <ul>
+            <li>
+                <a href="http://haile.info" target="_blank">
+                    <div style="width: 32px; height: 32px;">
+                        <svg fill="white" width="32" height="32" style="position:absolute;padding-top:2px;padding-left:3px">
+                            <g>
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                            </g>
+                        </svg>
+                        <svg viewBox="0 0 64 64" fill="white" width="32" height="32">
+                            <g>
+                                <circle cx="32" cy="32" r="31" fill="#00aced" style="fill: black;"></circle>
+                            </g>
+                        </svg>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="https://twitter.com/misfitdeveloper" target="_blank">
+                    <div style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 64 64" fill="white" width="32" height="32">
+                            <g>
+                                <circle cx="32" cy="32" r="31" fill="#00aced" style="fill: black;"></circle>
+                            </g>
+                            <g>
+                                <path d="M48,22.1c-1.2,0.5-2.4,0.9-3.8,1c1.4-0.8,2.4-2.1,2.9-3.6c-1.3,0.8-2.7,1.3-4.2,1.6 C41.7,19.8,40,19,38.2,19c-3.6,0-6.6,2.9-6.6,6.6c0,0.5,0.1,1,0.2,1.5c-5.5-0.3-10.3-2.9-13.5-6.9c-0.6,1-0.9,2.1-0.9,3.3 c0,2.3,1.2,4.3,2.9,5.5c-1.1,0-2.1-0.3-3-0.8c0,0,0,0.1,0,0.1c0,3.2,2.3,5.8,5.3,6.4c-0.6,0.1-1.1,0.2-1.7,0.2c-0.4,0-0.8,0-1.2-0.1 c0.8,2.6,3.3,4.5,6.1,4.6c-2.2,1.8-5.1,2.8-8.2,2.8c-0.5,0-1.1,0-1.6-0.1c2.9,1.9,6.4,2.9,10.1,2.9c12.1,0,18.7-10,18.7-18.7 c0-0.3,0-0.6,0-0.8C46,24.5,47.1,23.4,48,22.1z"></path>
+                            </g>
+                        </svg>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.facebook.com/hai.t.le" target="_blank">
+                    <div style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 64 64" fill="white" width="32" height="32">
+                            <g>
+                                <circle cx="32" cy="32" r="31" fill="#3b5998" style="fill: black;"></circle>
+                            </g>
+                            <g>
+                                <path d="M34.1,47V33.3h4.6l0.7-5.3h-5.3v-3.4c0-1.5,0.4-2.6,2.6-2.6l2.8,0v-4.8c-0.5-0.1-2.2-0.2-4.1-0.2 c-4.1,0-6.9,2.5-6.9,7V28H24v5.3h4.6V47H34.1z"></path>
+                            </g>
+                        </svg>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="http://www.linkedin.com/pub/hai-le/46/50/259" target="_blank">
+                    <div style="width: 32px; height: 32px;">
+                        <svg viewBox="0 0 64 64" fill="white" width="32" height="32">
+                            <g>
+                                <circle cx="32" cy="32" r="31" fill="#007fb1" style="fill: black;"></circle>
+                            </g>
+                            <g>
+                                <path d="M20.4,44h5.4V26.6h-5.4V44z M23.1,18c-1.7,0-3.1,1.4-3.1,3.1c0,1.7,1.4,3.1,3.1,3.1 c1.7,0,3.1-1.4,3.1-3.1C26.2,19.4,24.8,18,23.1,18z M39.5,26.2c-2.6,0-4.4,1.4-5.1,2.8h-0.1v-2.4h-5.2V44h5.4v-8.6 c0-2.3,0.4-4.5,3.2-4.5c2.8,0,2.8,2.6,2.8,4.6V44H46v-9.5C46,29.8,45,26.2,39.5,26.2z"></path>
+                            </g>
+                        </svg>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="footer">
+        <a href="https://github.com/hailedev/InteractiveResume" target="_blank">Made with love by Hai Le</a>
+        <div style="margin-top:10px"><img style="width:150px" src="assets/page/monster.png"/></div>
+        <div style="opacity:0.8;color:white">Beware the copyright monster!</div>
+    </div>
+    <img src="assets/widgets/x.png" style="display:none"/>
+    <!--[if lt IE 11]>
+    <div>
+        <div style="width:50%;margin: 0 auto;text-align:center;">
+            <img src="assets/flip.png">
+            <div style="font-size:25px;margin:10px 0 0 0;">
+                Incomptible Browser, Internet Explorer 9 or greater is required to view this webpage
+            </div>
+        </div>
+    </div>
+    <script src="js/lib/jquery-1.11.2.min.js"></script>
+    <script language="javascript">
+        $("body").css("visibility", "visible");
+    </script>
+    <![endif]-->
+    <!--[if gt IE 10]>
+    <!-->
+    <script type="text/javascript">
+        var application = <%= htmlWebpackPlugin.options.application %>;
+    </script>
+    <script src="<%= htmlWebpackPlugin.options.scriptName %>"></script>
+    <!-->
+    <![endif]-->
+</body>
+</html>
