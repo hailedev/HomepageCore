@@ -3,7 +3,6 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var CleanWebpackPlugin = require("clean-webpack-plugin");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
-var RequireJsPlugin = require("./plugins/RequireJsPlugin");
 
 var outputPath = path.resolve(__dirname, "./wwwroot/");
 var jsOutputPath = outputPath + "/js/";
@@ -49,34 +48,6 @@ module.exports = {
             filename: path.join(__dirname, "./Views/Home/Index.cshtml"),
             inject: false,
             enableGoogleAnalytics: false
-        }),
-        new RequireJsPlugin({
-            baseUrl:"./ClientApp/submodules/InteractiveResume/src/js",
-            mainConfigFile:"./ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
-            include: ["module-bootstrap.js","main.js"],
-            optimize: "none",
-            out: resumeOutputPath + "js/main.js"
-        }),
-        new HtmlWebpackPlugin({ 
-            template: "./templates/resume-index.html",
-            filename: path.join(__dirname, "./wwwroot/resume/index.html"),
-            inject: false,
-            application: false,
-            scriptName: "js/main.js"
-        }),
-        new RequireJsPlugin({
-            baseUrl:"./ClientApp/submodules/InteractiveResume/src/js",
-            mainConfigFile:"./ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
-            include: ["module-bootstrap.js","main.js"],
-            optimize: "none",
-            out: outputPath + "/blizzard/js/main.js"
-        }),
-        new HtmlWebpackPlugin({ 
-            template: "./templates/resume-index.html",
-            filename: path.join(__dirname, "./wwwroot/blizzard/index.html"),
-            inject: false,
-            application: true,
-            scriptName: "js/main.js"
         })
     ],
     resolve: {

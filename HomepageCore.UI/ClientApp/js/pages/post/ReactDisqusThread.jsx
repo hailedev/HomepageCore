@@ -7,10 +7,12 @@ var DISQUS_CONFIG = [
   ];
 var __disqusAdded = false;
 
-function copyProps(context, props, prefix = '') {
-    Object.keys(props).forEach((prop) => {
-        context[prefix + prop] = props[prop];
-    });
+function copyProps(context, props, prefix) {
+    for (var prop in props) {
+        if (object.hasOwnProperty(prop)) {
+            context[prefix + prop] = props[prop];
+        }
+    }
 
     if (typeof props.onNewComment === 'function') {
         context[prefix + 'config'] = function config() {
@@ -132,11 +134,12 @@ var ReactDisqusThread = createReactClass({
         var props = {};
 
         // Extract Disqus props that were supplied to this component
-        DISQUS_CONFIG.forEach((prop) => {
+        for(var i=0; i<DISQUS_CONFIG.length; i++){
+            var prop = DISQUS_CONFIG[i];
             if (!!this.props[prop]) {
                 props[prop] = this.props[prop];
             }
-        });
+        }
 
         // Always set URL
         if (!props.url || !props.url.length) {
@@ -148,7 +151,7 @@ var ReactDisqusThread = createReactClass({
             DISQUS.reset({
                 reload: true,
                 config: function config() {
-                    copyProps(this.page, props);
+                    copyProps(this.page, props, '');
 
                     // Disqus needs hashbang URL, see https://help.disqus.com/customer/portal/articles/472107
                     this.page.url = this.page.url.replace(/#/, '') + '#!newthread';

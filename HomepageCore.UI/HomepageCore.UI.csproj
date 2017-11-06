@@ -23,6 +23,7 @@
     <ProjectReference Include="..\HomepageCore.Common\HomepageCore.Common.csproj" />
   </ItemGroup>
   <Target Name="PrecompileScript" BeforeTargets="BeforeBuild">
-    <Exec Command="grunt build --target=$(Configuration)" />
+    <Exec Condition="'$(Configuration)'=='Debug'" Command="webpack --config webpack.Development.js" />
+    <Exec Condition="'$(Configuration)'=='Release'" Command="webpack --config webpack.Production.js -p" />
   </Target>
 </Project>
