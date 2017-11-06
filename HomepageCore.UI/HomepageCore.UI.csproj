@@ -24,6 +24,6 @@
   </ItemGroup>
   <Target Name="PrecompileScript" BeforeTargets="BeforeBuild">
     <Exec Condition="'$(Configuration)'=='Debug'" Command="webpack --config webpack.Development.js" />
-    <Exec Condition="'$(Configuration)'=='Release'" Command="webpack --config webpack.Production.js -p" />
+    <Exec Condition="'$(Configuration)'=='Release'" Command="webpack --config webpack.Production.js" />
   </Target>
 </Project>

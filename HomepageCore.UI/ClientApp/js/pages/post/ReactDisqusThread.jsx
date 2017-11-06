@@ -9,7 +9,7 @@ var __disqusAdded = false;
 
 function copyProps(context, props, prefix) {
     for (var prop in props) {
-        if (object.hasOwnProperty(prop)) {
+        if (props.hasOwnProperty(prop)) {
             context[prefix + prop] = props[prop];
         }
     }
