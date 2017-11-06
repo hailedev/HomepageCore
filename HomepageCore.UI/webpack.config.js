@@ -63,6 +63,20 @@ module.exports = {
             inject: false,
             application: false,
             scriptName: "js/main.js"
+        }),
+        new RequireJsPlugin({
+            baseUrl:"./ClientApp/submodules/InteractiveResume/src/js",
+            mainConfigFile:"./ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
+            include: ["module-bootstrap.js","main.js"],
+            optimize: "none",
+            out: outputPath + "/blizzard/js/main.js"
+        }),
+        new HtmlWebpackPlugin({ 
+            template: "./templates/resume-index.html",
+            filename: path.join(__dirname, "./wwwroot/blizzard/index.html"),
+            inject: false,
+            application: true,
+            scriptName: "js/main.js"
         })
     ],
     resolve: {
