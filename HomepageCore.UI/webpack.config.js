@@ -3,6 +3,9 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var CleanWebpackPlugin = require("clean-webpack-plugin");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
+var ActivateRazorPlugin = require("./plugins/ActivateRazorPlugin");
+var RequireJsPlugin = require("./plugins/RequireJsPlugin");
+var TransformBuildHtmlPlugin = require("./plugins/TransformBuildHtmlPlugin");
 
 var outputPath = path.resolve(__dirname, "./wwwroot/");
 var jsOutputPath = outputPath + "/js/";
@@ -10,17 +13,6 @@ var cssOutputPath = outputPath + "/css/";
 var imagesOutputPath = outputPath + "/images/";
 var fontsOutputPath = outputPath + "/fonts/";
 var resumeOutputPath = outputPath + "/resume/";
-
-function ActivateRazorPlugin(options){};
-ActivateRazorPlugin.prototype.apply = function(compiler){
-    compiler.plugin("compilation", function(compilation) {
-        compilation.plugin("html-webpack-plugin-after-html-processing", function(htmlPluginData, callback) {
-            console.log("running");
-            htmlPluginData.html = htmlPluginData.html.replace(/<!-- razor:\s?(.|[\s\S]*?)\s?-->/g, "$1");
-            callback(null, htmlPluginData);
-        });
-    });
-};
 
 module.exports = {
     context: path.join(__dirname, "./ClientApp"),
@@ -34,7 +26,7 @@ module.exports = {
         filename: "js/[name].js"
     },
     plugins: [
-        new CleanWebpackPlugin([outputPath + "/**/*"]),
+        new CleanWebpackPlugin([outputPath + "/**/*", path.join(__dirname, "././Views/Home/*")]),
         new ExtractTextPlugin("css/styles.css"),
         new CopyWebpackPlugin([
             { from: "./js/prerender-bootstrapper.js", to: jsOutputPath },
@@ -56,10 +48,31 @@ module.exports = {
         ]),
         new HtmlWebpackPlugin({ 
             template: "./templates/index.html",
+            filename: path.join(__dirname, "./Views/Home/Index.cshtml"),
             inject: false,
             enableGoogleAnalytics: false
         }),
-        new ActivateRazorPlugin()
+        new ActivateRazorPlugin(),
+        new RequireJsPlugin({
+            baseUrl:"./ClientApp/submodules/InteractiveResume/src/js",
+            mainConfigFile:"./ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
+            include: ["module-bootstrap.js","main.js"],
+            optimize: "none",
+            out: "./wwwroot/resume/js/main.js"
+        }),
+        new TransformBuildHtmlPlugin({
+            src: "./submodules/InteractiveResume/src/index.html",
+            dest: "../wwwroot/resume/",
+            options: {
+                beautify:true,
+                scripts: {
+                    bundle: ["../wwwroot/resume/js/main.js"]
+                },
+                data: {
+                    application: false
+                }
+            }
+        })
     ],
     resolve: {
         modules: [
