@@ -29,7 +29,7 @@
 <% if(htmlWebpackPlugin.files.chunks["prerender-app"]) { %>
     <script src="<%= htmlWebpackPlugin.files.chunks['prerender-app'].entry %>"></script>
 <% } %>
-    <script type="text/javascript">prerenderService.renderToNode(location.pathname + location.search + location.hash)</script>
+    <script type="text/javascript">window['prerender-app'].renderToNode(location.pathname + location.search + location.hash)</script>
 } else {
     <div id="root"></div>
 <% if(htmlWebpackPlugin.files.chunks["app"]) { %>

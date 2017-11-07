@@ -20,7 +20,9 @@ module.exports = {
     output: {
         path: outputPath,
         publicPath: "/",
-        filename: "js/[name].js"
+        filename: "js/[name].js",
+        library: "[name]",
+		libraryTarget: "umd"
     },
     plugins: [
         new CleanWebpackPlugin([outputPath + "/**/*", path.join(__dirname, "././Views/Home/*")]),
