@@ -15,10 +15,14 @@ RequireJsPlugin.prototype.apply = function(compiler){
         console.log("Running requirejs");
         requirejs.optimize(options,
             function(files){
-                fs.stat(options.out, function(err, stat){
-                    compilation.assets[path.relative(compiler.options.output.path, options.out)] = { source: function() { return options.baseUrl; }, size: function() { return stat.size; } };
+                fs.readFile(options.out, function(err, data){
+                    compilation.assets[path.relative(compiler.options.output.path, options.out)] = { source: function() { return new Buffer(data); }, size: function() { return Buffer.byteLength(data); } };
                     callback();
                 });
+                /*fs.stat(options.out, function(err, stat){
+                    compilation.assets[path.relative(compiler.options.output.path, options.out)] = { source: function() { return options.baseUrl; }, size: function() { return stat.size; } };
+                    callback();
+                });*/
             },
             function(err){
                 compilation.errors.push("RequireJS: " + err);
