@@ -270,3 +270,4 @@ __pycache__/
 HomepageCore.UI/appsettings.Production.json
 wwwroot
 HomepageCore.UI/Views/Home/Index.cshtml
+Target/
