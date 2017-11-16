@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NSwag.Annotations;
 
 namespace HomepageCore.Controllers
 {
@@ -35,6 +38,8 @@ namespace HomepageCore.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id?}")]
+        [Description("Returns all posts or a single post for a given guid")]
+        [SwaggerResponse(typeof(IEnumerable<EditablePostModel>), Description = "The posts matching the query")]
         public async Task<IActionResult> Get(Guid? id = null, bool summary = false, Guid? filter = null, int page = 1, bool editable = false)
         {
             try
@@ -74,6 +79,8 @@ namespace HomepageCore.Controllers
         }
 
         [HttpPost]
+        [SwaggerResponse(typeof(EditablePostModel), Description = "New or updated post with guid populated")]
+        [Description("Creates or updates a new blog post")]
         public async Task<IActionResult> Post([FromBody]EditablePostModel model)
         {
             try

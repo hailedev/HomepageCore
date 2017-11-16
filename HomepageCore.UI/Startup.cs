@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
 using HomepageCore.Common.Configuration;
 using Microsoft.AspNetCore.Authentication.Google;
+using NSwag.AspNetCore;
 
 namespace HomepageCore.UI
 {
@@ -141,6 +142,8 @@ namespace HomepageCore.UI
             app.UseAuthentication();
 
             app.UseFileServer();
+
+            app.UseSwaggerUi(typeof(Startup).Assembly, new SwaggerUiSettings());
 
             app.UseMvc(routes =>
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using HomepageCore.Models;
 using HomepageCore.Services.Interfaces;
@@ -21,6 +22,7 @@ namespace HomepageCore.Controllers
         }
 
         [HttpPost]
+        [Description("Sends an email to the administrator email address")]
         public async Task<IActionResult> Post([FromBody] ContactModel model)
         {
             try

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using AutoMapper;
 using HomepageCore.Data.Repositories.Interfaces;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NSwag.Annotations;
 
 namespace HomepageCore.Controllers
 {
@@ -26,6 +28,8 @@ namespace HomepageCore.Controllers
         }
 
         [HttpGet("{id?}")]
+        [SwaggerResponse(typeof(CategoryModel), Description = "All post categories or the category matching the given guid")]
+        [Description("Returns all the available blog post categories")]
         public IActionResult Get(Guid? id = null)
         {
             try

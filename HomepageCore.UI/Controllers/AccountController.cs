@@ -18,6 +18,7 @@ namespace HomepageCore.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
+    [ApiExplorerSettings(IgnoreApi=true)]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -84,11 +85,11 @@ namespace HomepageCore.Controllers
 
         [HttpGet]
         [Route("userinfo")]
-        public async Task<IActionResult> UserInfo(string email = null)
+        public async Task<IActionResult> UserInfo()
         {
             try
             {
-                var user = email == null ? await _userManager.GetUserAsync(User) : await _userManager.FindByEmailAsync(email);
+                var user = await _userManager.GetUserAsync(User);
 
                 if (user != null)
                 {
