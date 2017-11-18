@@ -10,12 +10,17 @@ COPY ./HomepageCore.UI/HomepageCore.UI.csproj ./HomepageCore.UI/
 COPY ./HomepageCore.sln ./
 RUN dotnet restore
 
+# Install webpack
+RUN npm install webpack -g
+
+# Restore npm packages
+COPY ./HomepageCore.UI/package*.json ./HomepageCore.UI/
+RUN npm --prefix ./HomepageCore.UI install
+
 # Copy everything else and build
 COPY . ./
 
 # Install node packages and build the app
-RUN npm install webpack -g
-RUN npm --prefix ./HomepageCore.UI install
 RUN dotnet publish ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration} -o ../out
 
 # Build runtime image
