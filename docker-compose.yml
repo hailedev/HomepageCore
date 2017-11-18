@@ -4,6 +4,5 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    image: hailedev/homepagecore:latest
     ports:
      - "8080:80"
