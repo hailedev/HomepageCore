@@ -2,8 +2,11 @@ FROM microsoft/aspnetcore-build:2.0 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-#COPY **/*.csproj ./
-#RUN dotnet restore
+COPY ./HomepageCore.Common/HomepageCore.Common.csproj ./HomepageCore.Common/
+COPY ./HomepageCore.Data/HomepageCore.Data.csproj ./HomepageCore.Data/
+COPY ./HomepageCore.UI/HomepageCore.UI.csproj ./HomepageCore.UI/
+COPY ./HomepageCore.sln ./
+RUN dotnet restore
 
 # Copy everything else and build
 COPY . ./
