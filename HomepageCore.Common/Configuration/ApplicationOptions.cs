@@ -1,8 +1,10 @@
+using System.Collections.Generic;
+
 namespace HomepageCore.Common.Configuration
 {
     public class ApplicationOptions
     {
-        public string DefaultConnection { get; set; }
+        public Dictionary<string, string> ConnectionStrings { get; set; }
         public int PageSize { get; set; }
     }
 }

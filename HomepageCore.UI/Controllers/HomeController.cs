@@ -1,12 +1,20 @@
 using System;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace HomepageCore.Controllers
 {
     [ApiExplorerSettings(IgnoreApi=true)]
     public class HomeController : Controller
     {
+        private readonly ILogger _logger;
+
+        public HomeController(ILoggerFactory loggerFactory)
+        {
+            _logger = loggerFactory.CreateLogger(GetType().Namespace);
+        }
+        
         public IActionResult Index(string userAgent = null)
         {
             if (string.IsNullOrEmpty(userAgent)) 

@@ -20,7 +20,7 @@ namespace HomepageCore.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(_applicationOptions.DefaultConnection);
+            optionsBuilder.UseSqlite(_applicationOptions.ConnectionStrings["DefaultConnection"]);
         }
     }
 }
