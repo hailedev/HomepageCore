@@ -33,6 +33,7 @@ var browser = require("detect-browser");
 var Main = require("./pages/Main");
 
 var pageContent = <BrowserRouter><Route path="/" component={Main}/></BrowserRouter>;
+console.log("update test")
 if(browser && browser.name === "ie" && !browser.version.startsWith("11")){
     pageContent = (
         <div className="container">
