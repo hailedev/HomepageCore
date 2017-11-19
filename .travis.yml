@@ -7,11 +7,15 @@ branches:
   only:
     - master
 
-install:
+before_install:
+  - openssl aes-256-cbc -K $encrypted_62b461b4c6ca_key -iv $encrypted_62b461b4c6ca_iv -in ./HomepageCore.UI/appsettings.Production.json.enc -out ./HomepageCore.UI/appsettings.Production.json -d
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - sudo apt-get install docker-ce=17.09.0~ce-0~ubuntu
+  - sudo docker --version
 
 script:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker build -t hailedev/homepagecore:latest .
-  - docker push hailedev/homepagecore:latest;
+  - docker push hailedev/homepagecore:latest

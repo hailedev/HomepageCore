@@ -1,7 +1,7 @@
 FROM microsoft/aspnetcore-build:2.0 AS build-env
 ARG configuration=Release
 
-WORKDIR /app
+WORKDIR /build
 
 # Copy csproj and restore as distinct layers
 COPY ./HomepageCore.Common/HomepageCore.Common.csproj ./HomepageCore.Common/
@@ -21,10 +21,11 @@ RUN npm --prefix ./HomepageCore.UI install
 COPY . ./
 
 # Install node packages and build the app
-RUN dotnet publish ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration} -o ../out
+RUN dotnet build ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration}
+RUN dotnet publish ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration} -o /target
 
 # Build runtime image
 FROM microsoft/aspnetcore:2.0
 WORKDIR /var/www
-COPY --from=build-env /app/out .
+COPY --from=build-env /target .
 ENTRYPOINT [ "dotnet", "HomepageCore.UI.dll" ]
