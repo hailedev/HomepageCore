@@ -14,3 +14,4 @@ install:
 script:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker build -t hailedev/homepagecore:latest .
+  - docker push hailedev/homepagecore:latest;
