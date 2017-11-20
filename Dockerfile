@@ -7,6 +7,7 @@ WORKDIR /build
 COPY ./HomepageCore.Common/HomepageCore.Common.csproj ./HomepageCore.Common/
 COPY ./HomepageCore.Data/HomepageCore.Data.csproj ./HomepageCore.Data/
 COPY ./HomepageCore.UI/HomepageCore.UI.csproj ./HomepageCore.UI/
+COPY ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj ./test/HomepageCore.UI.Test/
 COPY ./HomepageCore.sln ./
 RUN dotnet restore
 
@@ -21,7 +22,8 @@ RUN npm --prefix ./HomepageCore.UI install
 COPY . ./
 
 # Install node packages and build the app
-RUN dotnet build ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration}
+RUN dotnet build -c ${configuration}
+RUN dotnet test ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj
 RUN dotnet publish ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration} -o /target
 
 # Build runtime image
