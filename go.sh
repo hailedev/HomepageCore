@@ -4,8 +4,13 @@ menu()
 {
     echo "dev       Build and run the dev container on port 8080"
     echo "prod      Build and run the prod container on port 80"
-    echo "build     Builds the image in debug configuration without running"
-    echo "run       Runs the image in interactive mode removing containers on close"
+    echo "test      Run the unit tests"
+    echo ""
+}
+buildMenu()
+{
+    echo "debug     Builds client and services in debug mode"
+    echo "release   Builds client and services in production mode"
     echo ""
 }
 dbMenu()
@@ -14,6 +19,12 @@ dbMenu()
     echo "update        Update the database to the last migration added"
     echo ""     
 }
+imageMenu()
+{
+    echo "build     Builds the image in debug configuration without running"
+    echo "run       Runs the image in interactive mode removing containers on close"
+    echo ""
+}
 
 if [ "$1" = "dev" ] 
 then
@@ -21,7 +32,23 @@ then
 elif [ "$1" = "prod" ]
 then
     docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-elif [ "$1" = "db" ]
+elif [ "$1" = "test" ]
+then
+    dotnet test ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj
+elif [ "$1" = "build" ] # build options
+then
+    if [ "$2" = "debug" ]
+    then
+        webpack --config ./HomepageCore.UI/webpack.Development.js
+        dotnet build -c Debug
+    elif [ "$2" = "release" ]
+    then
+        webpack --config ./HomepageCore.UI/webpack.Production.js
+        dotnet build -c Release
+    else
+        buildMenu
+    fi
+elif [ "$1" = "db" ] # db options
 then
     if [ "$2" = "add" -a "$#" = 3 ]
     then
@@ -32,12 +59,17 @@ then
     else
         dbMenu
     fi
-elif [ "$1" = "build" ]
+elif [ "$1" = "image" ] # image options
 then
-    docker build --build-arg configuration=Debug -t hailedev/homepagecore:dev .
-elif [ "$1" = "run" ]
-then
-    docker run --rm -it -p 8080:80 hailedev/homepagecore:dev
+    if [ "$2" = "build"]
+    then
+        docker build --build-arg configuration=Debug -t hailedev/homepagecore:dev .
+    elif [ "$1" = "run" ]
+    then
+        docker run --rm -it -p 8080:80 hailedev/homepagecore:dev
+    else
+        imageMenu
+    fi
 else
     menu
 fi
