@@ -26,45 +26,45 @@ imageMenu()
     echo ""
 }
 
-if [ "$1" = "dev" ] 
+if [ "${1,,}" = "dev" ] 
 then
     docker-compose up -d
-elif [ "$1" = "prod" ]
+elif [ "${1,,}" = "prod" ]
 then
     docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-elif [ "$1" = "test" ]
+elif [ "${1,,}" = "test" ]
 then
     dotnet test ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj
-elif [ "$1" = "build" ] # build options
+elif [ "${1,,}" = "build" ] # build options
 then
-    if [ "$2" = "debug" ]
+    if [ "${2,,}" = "debug" ]
     then
         webpack --config ./HomepageCore.UI/webpack.Development.js
         dotnet build -c Debug
-    elif [ "$2" = "release" ]
+    elif [ "${2,,}" = "release" ]
     then
         webpack --config ./HomepageCore.UI/webpack.Production.js
         dotnet build -c Release
     else
         buildMenu
     fi
-elif [ "$1" = "db" ] # db options
+elif [ "${1,,}" = "db" ] # db options
 then
-    if [ "$2" = "add" -a "$#" = 3 ]
+    if [ "${2,,}" = "add" -a "$#" = 3 ]
     then
         dotnet ef migrations add $3 -p HomepageCore.Data/HomepageCore.Data.csproj -s HomepageCore.UI/HomepageCore.UI.csproj
-    elif [ "$2" = "update" ]
+    elif [ "${2,,}" = "update" ]
     then
         dotnet ef database update -p HomepageCore.Data/HomepageCore.Data.csproj -s HomepageCore.UI/HomepageCore.UI.csproj
     else
         dbMenu
     fi
-elif [ "$1" = "image" ] # image options
+elif [ "${1,,}" = "image" ] # image options
 then
-    if [ "$2" = "build"]
+    if [ "${2,,}" = "build"]
     then
         docker build --build-arg configuration=Debug -t hailedev/homepagecore:dev .
-    elif [ "$1" = "run" ]
+    elif [ "${1,,}" = "run" ]
     then
         docker run --rm -it -p 8080:80 hailedev/homepagecore:dev
     else
