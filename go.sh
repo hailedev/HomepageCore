@@ -65,10 +65,10 @@ then
     then
         if [ "${3,,}" = "dev" ]
         then
-            docker build --build-arg configuration=Debug -t hailedev/homepagecore:dev .
+            docker build --build-arg configuration=Debug -t ${CONTAINER_REGISTRY}/homepagecore:dev .
         elif [ "${3,,}" = "prod" ]
         then
-            docker build --build-arg configuration=Release -t hailedev/homepagecore:latest .
+            docker build --build-arg configuration=Release -t ${CONTAINER_REGISTRY}/homepagecore:latest .
         else
             imageMenu
         fi
@@ -76,10 +76,10 @@ then
     then
         if [ "${3,,}" = "dev" ]
         then
-            docker run --rm -it -p 8080:80 hailedev/homepagecore:dev -d
+            docker run --rm -d -p 8080:80 ${CONTAINER_REGISTRY}/homepagecore:dev
         elif [ "${3,,}" = "prod" ]
         then
-            docker run --rm -it -p 8080:80 hailedev/homepagecore:latest -d
+            docker run --rm -d -p 8080:80 ${CONTAINER_REGISTRY}/homepagecore:latest
         else
             imageMenu
         fi

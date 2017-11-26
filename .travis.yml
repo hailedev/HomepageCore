@@ -13,10 +13,10 @@ before_install:
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
   - sudo apt-get install docker-ce=17.09.0~ce-0~ubuntu
-  - sudo docker --version
-  - sudo pip install awscli
+  #- sudo docker --version
+  #- sudo pip install awscli
 
 script:
-  - eval $(aws ecr get-login --no-include-email --region us-east-2) # docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" #eval $(aws ecr get-login --no-include-email --region us-east-2)
   - docker build -t $CONTAINER_REGISTRY/homepagecore:latest .
   - docker push $CONTAINER_REGISTRY/homepagecore:latest
