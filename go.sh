@@ -76,10 +76,10 @@ then
     then
         if [ "${3,,}" = "dev" ]
         then
-            docker run --rm -it -p 8080:80 hailedev/homepagecore:dev
+            docker run --rm -it -p 8080:80 hailedev/homepagecore:dev -d
         elif [ "${3,,}" = "prod" ]
         then
-            docker run --rm -it -p 8080:80 hailedev/homepagecore:latest
+            docker run --rm -it -p 8080:80 hailedev/homepagecore:latest -d
         else
             imageMenu
         fi
