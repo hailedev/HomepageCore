@@ -31,3 +31,6 @@ FROM microsoft/aspnetcore:2.0
 WORKDIR /var/www
 COPY --from=build-env /target .
 ENTRYPOINT [ "dotnet", "HomepageCore.UI.dll" ]
+
+# Enable health check
+HEALTHCHECK --interval=5m --timeout=3s CMD curl -f http://localhost/ || exit 1

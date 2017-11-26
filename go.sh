@@ -21,8 +21,8 @@ dbMenu()
 }
 imageMenu()
 {
-    echo "build     Builds the image in debug configuration without running"
-    echo "run       Runs the image in interactive mode removing containers on close"
+    echo "build <dev|prod>    Builds the image in debug configuration without running"
+    echo "run <dev|prod>      Runs the image in interactive mode removing containers on close"
     echo ""
 }
 
@@ -61,12 +61,28 @@ then
     fi
 elif [ "${1,,}" = "image" ] # image options
 then
-    if [ "${2,,}" = "build"]
+    if [ "${2,,}" = "build" -a "$#" = 3 ]
     then
-        docker build --build-arg configuration=Debug -t hailedev/homepagecore:dev .
-    elif [ "${1,,}" = "run" ]
+        if [ "${3,,}" = "dev" ]
+        then
+            docker build --build-arg configuration=Debug -t hailedev/homepagecore:dev .
+        elif [ "${3,,}" = "prod" ]
+        then
+            docker build --build-arg configuration=Release -t hailedev/homepagecore:latest .
+        else
+            imageMenu
+        fi
+    elif [ "${2,,}" = "run" -a "$#" = 3 ]
     then
-        docker run --rm -it -p 8080:80 hailedev/homepagecore:dev
+        if [ "${3,,}" = "dev" ]
+        then
+            docker run --rm -it -p 8080:80 hailedev/homepagecore:dev
+        elif [ "${3,,}" = "prod" ]
+        then
+            docker run --rm -it -p 8080:80 hailedev/homepagecore:latest
+        else
+            imageMenu
+        fi
     else
         imageMenu
     fi
