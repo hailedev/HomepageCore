@@ -86,6 +86,12 @@ then
     else
         imageMenu
     fi
+elif [ "${1,,}" = "document" ]
+then
+    if [ "${2,,}" = "create" ]
+    then
+        aws ssm create-document --name "DeployStack" --document-type "Command" --content file://deploy/DeployStack.json 
+    fi
 else
     menu
 fi

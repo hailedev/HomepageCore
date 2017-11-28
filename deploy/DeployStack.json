@@ -11,9 +11,20 @@
         {
             "action":"aws:runShellScript",
             "name":"FetchStackFile",
-            "runCommand": [
-                "wget -O services.yml {{ stackfile }}"
-            ]
+            "inputs":{
+                "runCommand": [
+                    "wget -O /tmp/services.yml {{ stackfile }}"
+                ]
+            }
+        },
+        {
+            "action":"aws:runShellScript",
+            "name":"DeployStacks",
+            "inputs":{
+                "runCommand": [
+                    "docker stack deploy -c /tmp/services.yml"
+                ]
+            }
         }
     ]
 }

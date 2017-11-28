@@ -5,7 +5,7 @@ services:
     deploy:
       replicas: 1
     ports: 
-      - "8080:80"
+      - "80:80"
 
   viz:
     image: dockersamples/visualizer:latest
