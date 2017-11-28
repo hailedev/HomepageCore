@@ -1,0 +1,19 @@
+{
+    "schemaVersion": "2.2",
+    "description": "Deploy a docker stack to a cluster",
+    "parameters": {
+      "stackfile":{
+        "type":"String",
+        "description":"(Required) The location of the stack file to run"
+      }
+    },
+    "mainSteps" : [
+        {
+            "action":"aws:runShellScript",
+            "name":"FetchStackFile",
+            "runCommand": [
+                "wget -O services.yml {{ stackfile }}"
+            ]
+        }
+    ]
+}
