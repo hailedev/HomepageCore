@@ -19,6 +19,15 @@
         },
         {
             "action":"aws:runShellScript",
+            "name":"PullImage",
+            "inputs":{
+                "runCommand": [
+                    "docker pull hailedev/homepagecore"
+                ]
+            }
+        },
+        {
+            "action":"aws:runShellScript",
             "name":"DeployStacks",
             "inputs":{
                 "runCommand": [
