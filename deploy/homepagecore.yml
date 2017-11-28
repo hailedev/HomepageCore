@@ -1,7 +1,7 @@
 version: "3"
 services:
   web:
-    image: ${CONTAINER_REGISTRY}/homepagecore:latest
+    image: homepagecore/homepagecore:latest
     deploy:
       replicas: 1
     ports: 

@@ -22,7 +22,7 @@
             "name":"DeployStacks",
             "inputs":{
                 "runCommand": [
-                    "docker stack deploy -c /tmp/services.yml"
+                    "docker stack deploy -c /tmp/services.yml homepagecore"
                 ]
             }
         }
