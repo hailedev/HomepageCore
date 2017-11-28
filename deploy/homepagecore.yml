@@ -7,13 +7,13 @@ services:
     ports: 
       - "80:80"
 
-  viz:
-    image: dockersamples/visualizer:latest
-    volumes: 
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints:
-          - node.role==manager
-    ports:
-      - "8090:8080"
+#  viz:
+#    image: dockersamples/visualizer:latest
+#    volumes: 
+#      - "/var/run/docker.sock:/var/run/docker.sock"
+#    deploy:
+#      placement:
+#        constraints:
+#          - node.role==manager
+#    ports:
+#      - "8090:8080"
