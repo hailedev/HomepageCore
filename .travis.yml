@@ -21,5 +21,9 @@ script:
   - docker build -t $CONTAINER_REGISTRY/homepagecore:latest .
   - docker push $CONTAINER_REGISTRY/homepagecore:latest
 
-after_success:
-  - ./go.sh deploy
+deploy:
+  provider: script
+  script: go.sh deploy
+  skip_cleanup: true
+  on:
+    branch: master
