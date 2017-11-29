@@ -29,7 +29,7 @@ var HomeLandingPage = createReactClass({
             <img key={6} src="/images/avatar.png"/>
         ];
         this.messages = [
-            "Hey there!!  My name's Hai, welcome to my blog",
+            "Hey there!  My name's Hai, welcome to my blog",
             "I'm a .Net and web developer from Melbourne, Australia",
             "I love all things computer science and tech related",
             "I also like travelling and going on wild adventures",
