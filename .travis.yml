@@ -21,6 +21,5 @@ script:
   - docker build -t $CONTAINER_REGISTRY/homepagecore:latest .
   - docker push $CONTAINER_REGISTRY/homepagecore:latest
 
-deploy:
-  #- eval $(aws ecr get-login --no-include-email --region us-east-2)
-  #- ./go.sh deploy
+after_success:
+  - ./go.sh deploy
