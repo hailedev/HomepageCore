@@ -4,7 +4,10 @@ menu()
 {
     echo "dev                       Build and run the dev container on port 8080"
     echo "prod                      Build and run the prod container on port 80"
+    echo "build                     The build sub menu"
     echo "test                      Run the unit tests"
+    echo "db                        DB initialize commands"
+    echo "image                     Options for building and running images"
     echo "deploy                    Deploy to production server"
     echo "deploy createdocument     Create the SSM document to deploy the stack"
     echo "deploy deletedocument     Remove the SSM document"
