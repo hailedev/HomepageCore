@@ -23,7 +23,7 @@ script:
 
 deploy:
   provider: script
-  script: go.sh deploy
+  script: ./go.sh deploy
   skip_cleanup: true
   on:
     branch: master
