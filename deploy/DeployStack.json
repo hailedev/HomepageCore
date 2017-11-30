@@ -5,6 +5,10 @@
       "stackfile":{
         "type":"String",
         "description":"(Required) The location of the stack file to run"
+      },
+      "image":{
+        "type":"String",
+        "description":"(Required) The image to deploy"
       }
     },
     "mainSteps" : [
@@ -22,7 +26,7 @@
             "name":"PullImage",
             "inputs":{
                 "runCommand": [
-                    "docker pull hailedev/homepagecore"
+                    "docker pull {{ image }}"
                 ]
             }
         },
@@ -31,7 +35,7 @@
             "name":"DeployStacks",
             "inputs":{
                 "runCommand": [
-                    "docker stack deploy -c /tmp/services.yml homepagecore"
+                    "docker stack deploy -c /tmp/services.yml homepagecore --with-registry-auth"
                 ]
             }
         }
