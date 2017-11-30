@@ -1,4 +1,4 @@
-var Promise = require("es6-promise").Promise;
+//var Promise = require("es6-promise").Promise;
 var ApiDispatcher = require("./ApiDispatcher");
 
 var PostApi = function(){};

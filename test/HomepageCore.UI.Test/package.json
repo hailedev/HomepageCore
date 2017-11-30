@@ -1,0 +1,13 @@
+{
+    "scripts": {
+        "test": "jest"
+    },
+    "jest": {
+        "modulePaths": [
+            "<rootDir>../../HomepageCore.UI/ClientApp/js"
+        ]
+    },
+    "devDependencies": {
+        "jest": "^21.2.1"
+    }
+}
