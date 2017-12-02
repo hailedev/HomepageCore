@@ -41,6 +41,7 @@ then
 elif [ "${1,,}" = "test" ]
 then
     dotnet test ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj
+    npm test --prefix ./test/HomepageCore.UI.Test/
 elif [ "${1,,}" = "build" ] # build options
 then
     if [ "${2,,}" = "debug" ]

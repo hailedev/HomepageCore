@@ -1,5 +1,4 @@
 var ContactApi = require("../api/ContactApi");
-var Promise = require("es6-promise").Promise;
 
 var ContactActionCreators = function(){ };
 ContactActionCreators.prototype.lodgeFeedback = function(model){

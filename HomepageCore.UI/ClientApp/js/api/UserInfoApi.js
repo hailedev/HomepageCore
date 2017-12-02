@@ -1,4 +1,3 @@
-var Promise = require("es6-promise").Promise;
 var ApiDispatcher = require("./ApiDispatcher");
 
 var UserInfoApi = function(){};

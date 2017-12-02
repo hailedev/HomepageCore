@@ -1,15 +1,14 @@
 var DefaultDispatcher = require("DefaultDispatcher");
-var PostApi = require("../api/PostApi");
+var CategoryApi = require("../api/CategoryApi");
 var Actions = require("AppConstants").Actions;
-var Promise = require("es6-promise").Promise;
 
-var PostActionCreators = function(){ };
-PostActionCreators.prototype.getPostSummaries = function(range, update){
+var CategoryActionCreators = function(){ };
+CategoryActionCreators.prototype.getCategories = function(id){
     return new Promise(function(resolve, reject){
-        PostApi.getPostSummaries(range)
+        CategoryApi.getCategories()
             .then(function(response){
                 DefaultDispatcher.dispatch({
-                    type: update ? Actions.FETCH_POSTADDITIONALSUMMARIES : Actions.FETCH_POSTSUMMARIES,
+                    type: Actions.FETCH_CATEGORIES,
                     payload: { response: response }
                 });
                 resolve(response);
@@ -20,4 +19,4 @@ PostActionCreators.prototype.getPostSummaries = function(range, update){
     });
 };
 
-module.exports = new PostActionCreators();
+module.exports = new CategoryActionCreators();

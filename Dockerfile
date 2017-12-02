@@ -23,7 +23,7 @@ COPY . ./
 
 # Install node packages and build the app
 RUN ./go.sh build ${configuration}
-RUN dotnet test ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj
+RUN ./go.sh test
 RUN dotnet publish ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration} -o /target
 
 # Build runtime image

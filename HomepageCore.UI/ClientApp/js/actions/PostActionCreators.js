@@ -1,7 +1,6 @@
 var DefaultDispatcher = require("DefaultDispatcher");
 var PostApi = require("../api/PostApi");
 var Actions = require("AppConstants").Actions;
-var Promise = require("es6-promise").Promise;
 
 var PostActionCreators = function(){ };
 PostActionCreators.prototype.getPost = function(id,editable){
