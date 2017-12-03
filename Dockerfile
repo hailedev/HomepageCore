@@ -17,6 +17,8 @@ RUN npm install webpack -g
 # Restore npm packages
 COPY ./HomepageCore.UI/package*.json ./HomepageCore.UI/
 RUN npm --prefix ./HomepageCore.UI install
+COPY ./test/HomepageCore.UI.Test/package*.json ./test/HomepageCore.UI.Test/
+RUN npm --prefix ./test/HomepageCore.UI.Test install
 
 # Copy everything else and build
 COPY . ./

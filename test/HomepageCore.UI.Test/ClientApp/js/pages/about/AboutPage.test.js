@@ -1,10 +1,12 @@
 var AboutPage = require("pages/about/AboutPage");
 var React = require("react");
-var shallow = require("enzyme").shallow;
+var mount = require("enzyme").mount;
+var StaticRouter = require("react-router-dom").StaticRouter;
+var Route = require("react-router-dom").Route;
 
 describe("<AboutPage />", function(){
     it("should render the main contaner", function(){
-        var wrapper = shallow(<AboutPage />);
+        var wrapper = mount(<StaticRouter location={"/"} context={{}}><Route path="/" component={AboutPage}/></StaticRouter>);
         expect(wrapper.find(".about").length).toBe(1);
     });
 });
