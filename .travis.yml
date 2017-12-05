@@ -7,9 +7,6 @@ branches:
   only:
     - master
 
-git:
-  submodules: false
-  
 before_install:
   - openssl aes-256-cbc -K $encrypted_62b461b4c6ca_key -iv $encrypted_62b461b4c6ca_iv -in ./HomepageCore.UI/appsettings.Production.json.enc -out ./HomepageCore.UI/appsettings.Production.json -d
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -18,7 +15,6 @@ before_install:
   - sudo apt-get install docker-ce=17.09.0~ce-0~ubuntu
   - sudo docker --version
   - sudo pip install awscli
-  - git submodule update --recursive --remote
 
 script:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"

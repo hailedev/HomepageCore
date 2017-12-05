@@ -19,8 +19,8 @@ module.exports = merge(common, {
             sourceMap: true
         }),
         new RequireJsPlugin({
-            baseUrl:"./ClientApp/submodules/InteractiveResume/src/js",
-            mainConfigFile:"./ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
+            baseUrl:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js",
+            mainConfigFile:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
             include: ["module-bootstrap.js","main.js"],
             optimize: "uglify2",
             out: resumeOutputPath + "js/main.min.js"
@@ -33,8 +33,8 @@ module.exports = merge(common, {
             scriptName: "js/main.min.js"
         }),
         new RequireJsPlugin({
-            baseUrl:"./ClientApp/submodules/InteractiveResume/src/js",
-            mainConfigFile:"./ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
+            baseUrl:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js",
+            mainConfigFile:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
             include: ["module-bootstrap.js","main.js"],
             optimize: "uglify2",
             out: outputPath + "/blizzard/js/main.min.js"
