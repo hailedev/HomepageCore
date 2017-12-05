@@ -11,9 +11,6 @@ COPY ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj ./test/HomepageCore
 COPY ./HomepageCore.sln ./
 RUN dotnet restore
 
-# Restore submodules
-RUN git submodule update --recursive --remote
-
 # Install webpack
 RUN npm install webpack -g
 
