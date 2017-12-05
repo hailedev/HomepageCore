@@ -33,6 +33,7 @@ var StyleButton = createReactClass({
 });
 
 var AdminPage = createReactClass({
+    customRefs:{ },
     componentWillMount: function(){
         UserInfoApi.getUserInfo().then(function(info){
             if(this.state.categories === null) {
@@ -166,7 +167,7 @@ var AdminPage = createReactClass({
                                     handleKeyCommand={this.handleKeyCommand}
                                     onChange={this.onChange}
                                     onTab={this.onTab}
-                                    ref="editor"
+                                    ref={function(input){ this.customRefs.editor = input }.bind(this)}
                                     spellCheck={true}/>
                         </div>
                     </div>
@@ -183,12 +184,12 @@ var AdminPage = createReactClass({
                     <div>
                         <div>URL</div>
                         <input onChange={this.onURLChange}
-                               ref="url"
+                               ref={function(input){ this.customRefs.url}.bind(this)}
                                type="text"
                                value={this.state.urlValue}/>
                         <div>Caption</div>
                         <input onChange={this.onCaptionChange}
-                               ref="caption"
+                               ref={function(input){ this.customRefs.caption}.bind(this)}
                                type="text"
                                value={this.state.caption}/>
                         <div className="button" onClick={this.confirmMedia}>Confirm</div>
@@ -224,7 +225,7 @@ var AdminPage = createReactClass({
         this.setState({editorState:editorState});
     },
     focus: function(){
-        this.refs.editor.focus();
+        this.customRefs.editor.focus();
     },
     onSubmit: function(){
         var options = {

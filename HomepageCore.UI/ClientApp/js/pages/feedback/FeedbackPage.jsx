@@ -5,6 +5,7 @@ var WaitIcon = require("../home/WaitIcon");
 var createReactClass = require("create-react-class");
 
 var FeedbackPage = createReactClass({
+    customRefs:{ },
     getInitialState: function(){
         return {errors:{name:"",email:"",dispatch:""},sentMsg:""};
     },
@@ -19,21 +20,21 @@ var FeedbackPage = createReactClass({
                     <div className="row">
                         <div className="col-md-offset-2 col-md-1 label">Name</div>
                         <div className="col-md-7">
-                            <input type="text" ref="name"/>
+                            <input type="text" ref={function(input){this.customRefs.name = input}.bind(this)}/>
                             { this.state.errors.name ? <div className="error">{this.state.errors.name}</div> : null }
                         </div>
                     </div>
                     <div className="row" style={{marginTop:"20px"}}>
                         <div className="col-md-offset-2 col-md-1 label">Email</div>
                         <div className="col-md-7">
-                            <input type="email" ref="email"/>
+                            <input type="email" ref={function(input){this.customRefs.email = input}.bind(this)}/>
                             { this.state.errors.email ? <div className="error">{this.state.errors.email}</div> : null }
                         </div>
                     </div>
                     <div className="row" style={{marginTop:"20px"}}>
                         <div className="col-md-offset-2 col-md-1 label">Message</div>
                         <div className="col-md-7">
-                            <textarea rows="8" ref="message"/>
+                            <textarea rows="8" ref={function(input){this.customRefs.message = input}.bind(this)}/>
                             { this.state.errors.dispatch ? <div className="error">{this.state.errors.dispatch}</div> : null }
                             { this.state.sentMsg ? <div>{this.state.sentMsg}</div> : null }
                         </div>
@@ -54,24 +55,24 @@ var FeedbackPage = createReactClass({
     onSubmit: function() {
         var errors = {name:"",email:"",dispatch:""};
         this.setState({errors:errors,sentMsg:"",sending:true});
-        if(!this.refs.name.value){
+        if(!this.customRefs.name.value){
             errors.name = "Please enter your name";
-            this.refs.name.focus();
+            this.customRefs.name.focus();
         }
-        if(!this.isEmail(this.refs.email.value)){
+        if(!this.isEmail(this.customRefs.email.value)){
             errors.email = "The email is invalid";
-            this.refs.email.focus();
+            this.customRefs.email.focus();
         }
         if(errors.name || errors.email){
             this.setState({errors:errors,sending:false});
             return;
         }
-        var model = {name:this.refs.name.value,email:this.refs.email.value,message:this.refs.message.value};
+        var model = {name:this.customRefs.name.value,email:this.customRefs.email.value,message:this.customRefs.message.value};
         ContactActionCreators.lodgeFeedback(model)
             .then(function(response) {
-                this.refs.name.value = "";
-                this.refs.email.value = "";
-                this.refs.message.value = "";
+                this.customRefs.name.value = "";
+                this.customRefs.email.value = "";
+                this.customRefs.message.value = "";
                 this.setState({sentMsg:"Thanks for getting in touch, I'll get back to you as soon as I can",sending:false});
             }.bind(this))
             .catch(function(ex) {

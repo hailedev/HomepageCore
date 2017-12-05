@@ -48,7 +48,9 @@
     "react-visibility-sensor": "^3.6.2",
     "whatwg-fetch": "^2.0.2"
   },
-  "babel":{
-    "presets":["react"]
+  "babel": {
+    "presets": [
+      "react"
+    ]
   }
 }
