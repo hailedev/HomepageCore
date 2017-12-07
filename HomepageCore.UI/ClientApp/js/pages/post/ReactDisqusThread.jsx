@@ -101,7 +101,7 @@ var ReactDisqusThread = createReactClass({
     },
     render: function(){
         return (
-            <div {...this.props}>
+            <div>
                 <div id="disqus_thread"/>
                 <noscript>
                     <span>
