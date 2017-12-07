@@ -23,6 +23,15 @@ describe("<PostPage />", function(){
         });
 
         // setup post action creator
+        var post = {
+            id:"1",
+            title:"test1",
+            blurb:"the quick brown fox",
+            content:"the quick brown fox jumps over the lazy dog",
+            categoryId:"cat1",
+            day: 1,
+            month: "Jan"
+        };
         mockPostActionCreators.getPost.mockImplementation(function(){
             return new Promise(function(resolve, reject){
                 mockDefaultDispatcher.isDispatching.mockImplementation(function(){
@@ -32,15 +41,7 @@ describe("<PostPage />", function(){
                     cb({
                         type: Actions.FETCH_POST,
                         payload: { 
-                            response: {
-                                id:"1",
-                                title:"test1",
-                                blurb:"the quick brown fox",
-                                content:"the quick brown fox jumps over the lazy dog",
-                                categoryId:"cat1",
-                                day: 1,
-                                month: "Jan"
-                            }
+                            response: post
                         }
                     });
                 });
@@ -56,5 +57,14 @@ describe("<PostPage />", function(){
 
         // renders the main container
         expect(wrapper.find(".post").length).toBe(1);
+
+        // sets post content
+        expect(wrapper.find(".post-content").html()).toContain(post.content);
+
+        // sets post title
+        expect(wrapper.find(".title").html()).toContain(post.title);
+
+        // sets the data
+        expect(wrapper.find(".date-content").html()).toBe('<div class="date-content">'+post.day+'<span class="month">'+post.month+'</span></div>');
     });
 });
