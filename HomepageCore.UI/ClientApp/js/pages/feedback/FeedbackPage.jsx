@@ -20,21 +20,21 @@ var FeedbackPage = createReactClass({
                     <div className="row">
                         <div className="col-md-offset-2 col-md-1 label">Name</div>
                         <div className="col-md-7">
-                            <input type="text" ref={function(input){this.customRefs.name = input}.bind(this)}/>
+                            <input type="text" id="name" ref={function(input){this.customRefs.name = input}.bind(this)}/>
                             { this.state.errors.name ? <div className="error">{this.state.errors.name}</div> : null }
                         </div>
                     </div>
                     <div className="row" style={{marginTop:"20px"}}>
                         <div className="col-md-offset-2 col-md-1 label">Email</div>
                         <div className="col-md-7">
-                            <input type="email" ref={function(input){this.customRefs.email = input}.bind(this)}/>
+                            <input type="email" id="email" ref={function(input){this.customRefs.email = input}.bind(this)}/>
                             { this.state.errors.email ? <div className="error">{this.state.errors.email}</div> : null }
                         </div>
                     </div>
                     <div className="row" style={{marginTop:"20px"}}>
                         <div className="col-md-offset-2 col-md-1 label">Message</div>
                         <div className="col-md-7">
-                            <textarea rows="8" ref={function(input){this.customRefs.message = input}.bind(this)}/>
+                            <textarea rows="8" id="message" ref={function(input){this.customRefs.message = input}.bind(this)}/>
                             { this.state.errors.dispatch ? <div className="error">{this.state.errors.dispatch}</div> : null }
                             { this.state.sentMsg ? <div>{this.state.sentMsg}</div> : null }
                         </div>
