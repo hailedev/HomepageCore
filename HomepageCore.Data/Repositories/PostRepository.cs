@@ -4,11 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using HomepageCore.Data.Entities;
+using HomepageCore.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace HomepageCore.Data.Repositories
 {
-    public class PostRepository : Repository<Post>
+    public class PostRepository : Repository<Post>, IPostRepository
     {
         public PostRepository(ApplicationDbContext dbContext) : base(dbContext)
         {

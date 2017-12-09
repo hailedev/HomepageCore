@@ -2,8 +2,8 @@ namespace HomepageCore.Data.Repositories.Interfaces
 {
     public interface IApplicationUnitOfWork
     {
-        PostRepository Posts { get; set; }
-        CategoryRepository Categories { get; set; }
+        IPostRepository Posts { get; set; }
+        ICategoryRepository Categories { get; set; }
         void Commit();
     }
 }

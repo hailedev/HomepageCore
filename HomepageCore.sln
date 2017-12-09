@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomepageCore.Data", "Homepa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomepageCore.UI", "HomepageCore.UI\HomepageCore.UI.csproj", "{05F96DC0-E172-4CDF-AF74-24825DAFE78C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C1DAEEB9-6DD0-44EA-B09B-02085522D199}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomepageCore.UI.Test", "test\HomepageCore.UI.Test\HomepageCore.UI.Test.csproj", "{4C76F159-3D35-4C18-BF0D-9C785DE550F0}"
 EndProject
 Global
@@ -60,8 +58,5 @@ Global
 		{4C76F159-3D35-4C18-BF0D-9C785DE550F0}.Release|x64.Build.0 = Release|x64
 		{4C76F159-3D35-4C18-BF0D-9C785DE550F0}.Release|x86.ActiveCfg = Release|x86
 		{4C76F159-3D35-4C18-BF0D-9C785DE550F0}.Release|x86.Build.0 = Release|x86
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{4C76F159-3D35-4C18-BF0D-9C785DE550F0} = {C1DAEEB9-6DD0-44EA-B09B-02085522D199}
 	EndGlobalSection
 EndGlobal

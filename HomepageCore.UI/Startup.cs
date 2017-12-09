@@ -60,8 +60,8 @@ namespace HomepageCore.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>();
-            services.AddScoped<PostRepository>();
-            services.AddScoped<CategoryRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
             services.AddOptions();
             services.Configure<ApplicationOptions>(Configuration);

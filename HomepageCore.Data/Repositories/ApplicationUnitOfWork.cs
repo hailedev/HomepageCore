@@ -5,15 +5,15 @@ namespace HomepageCore.Data.Repositories
     public class ApplicationUnitOfWork : IApplicationUnitOfWork
     {
         private readonly ApplicationDbContext _dbContext;
-        public ApplicationUnitOfWork(ApplicationDbContext dbContext, PostRepository postRepository, CategoryRepository categoryRepository)
+        public ApplicationUnitOfWork(ApplicationDbContext dbContext, IPostRepository postRepository, ICategoryRepository categoryRepository)
         {
             _dbContext = dbContext;
             Posts = postRepository;
             Categories = categoryRepository;
         }
 
-        public PostRepository Posts { get; set; }
-        public CategoryRepository Categories { get; set; }
+        public IPostRepository Posts { get; set; }
+        public ICategoryRepository Categories { get; set; }
 
         public void Commit()
         {
