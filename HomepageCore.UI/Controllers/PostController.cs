@@ -89,13 +89,12 @@ namespace HomepageCore.Controllers
                 if (model.Id != Guid.Empty)
                 {
                     var posts = await _applicationUnitOfWork.Posts.GetWithCategory(x => x.Id == model.Id);
-                    var enumerable = posts as Post[] ?? posts.ToArray();
-                    if (!enumerable.Any())
+                    if(posts == null || posts.Count() == 0)
                     {
                         return NotFound();
                     }
 
-                    post = enumerable.First();
+                    post = posts.First();
                 }
                 var blurb = model.Blurb;
                 if (string.IsNullOrEmpty(blurb))
@@ -112,7 +111,7 @@ namespace HomepageCore.Controllers
                 post.Raw = model.Raw;
                 post.Tags = "";
 
-                if (!string.IsNullOrEmpty(model.Tags.Trim()))
+                if (model.Tags != null && !string.IsNullOrEmpty(model.Tags.Trim()))
                 {
                     var tags = model.Tags.Split(',').Select(x => x.Trim());
                     post.Tags = string.Join(",", tags);
