@@ -2,8 +2,8 @@ version: "3"
 services:
   web:
     image: hailedev/homepagecore:latest
-    volumes:
-      - "db-data:/data/db"
+#    volumes:
+#      - "db-data:/data/db"
     deploy:
       replicas: 1
     ports: 
@@ -20,8 +20,8 @@ services:
     ports:
       - "8090:8080"
 
-volumes:
-  db-data:
-    driver: blocker
-    driver_opts:
-      volume_id: ${AWS_VOLUME_ID}
+#volumes:
+#  db-data:
+#    driver: blocker
+#    driver_opts:
+#      volume_id: ${AWS_VOLUME_ID}
