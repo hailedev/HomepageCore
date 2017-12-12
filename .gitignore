@@ -271,3 +271,4 @@ HomepageCore.UI/appsettings.Production.json
 wwwroot
 HomepageCore.UI/Views/Home/Index.cshtml
 Target/
+HomepageCore.UI/HomepageCore.db
