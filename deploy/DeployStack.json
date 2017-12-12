@@ -32,6 +32,15 @@
         },
         {
             "action":"aws:runShellScript",
+            "name":"PullVisualizerImage",
+            "inputs":{
+                "runCommand": [
+                    "docker pull dockersamples/visualizer:latest"
+                ]
+            }
+        },
+        {
+            "action":"aws:runShellScript",
             "name":"DeployStacks",
             "inputs":{
                 "runCommand": [

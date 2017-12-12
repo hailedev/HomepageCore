@@ -21,5 +21,5 @@ services:
       - "8090:8080"
 
 volumes:
-  data_vol:
+  db-data:
     driver: "cloudstor:aws"
