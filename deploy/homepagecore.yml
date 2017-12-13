@@ -4,7 +4,7 @@ services:
     image: hailedev/homepagecore:latest
     volumes:
       - "db-data:/data/db"
-      - "db-data/blog:/var/www/wwwroot/images/blog"
+      - "images:/var/www/wwwroot/images/blog"
     deploy:
       replicas: 1
     ports: 
@@ -23,4 +23,6 @@ services:
 
 volumes:
   db-data:
+    driver: "cloudstor:aws"
+  images:
     driver: "cloudstor:aws"
