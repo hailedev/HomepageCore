@@ -272,3 +272,4 @@ wwwroot
 HomepageCore.UI/Views/Home/Index.cshtml
 Target/
 HomepageCore.UI/HomepageCore.db
+HomepageCore.UI/ClientApp/images/blog/

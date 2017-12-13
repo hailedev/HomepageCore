@@ -30,7 +30,7 @@ module.exports = {
         new CopyWebpackPlugin([
             { from: "./js/prerender-bootstrapper.js", to: jsOutputPath },
             { from: "./*.css", to: cssOutputPath, context: "./css" },
-            { from: "./**", to: imagesOutputPath, context: "./images" },
+            { from: "./*.*", to: imagesOutputPath, context: "./images" },
             { from: "./**", to: fontsOutputPath, context: "./fonts" },
         ]),
         new CopyWebpackPlugin([

@@ -4,6 +4,7 @@ services:
     image: hailedev/homepagecore:latest
     volumes:
       - "db-data:/data/db"
+      - "db-data/blog:/var/www/wwwroot/images/blog"
     deploy:
       replicas: 1
     ports: 
