@@ -24,17 +24,14 @@ namespace HomepageCore.Controllers
 
         [HttpPost]
         [Description("Sends an email to the administrator email address")]
-        public async Task<IActionResult> Post([FromBody] ContactModel model)
+        public IActionResult Post([FromBody] ContactModel model)
         {
             try
             {
-                var message = $"{model.Name} wrote:{Environment.NewLine}{model.Message}";
-                if (await _emailSender.SendEmailAsync(model.Email, "Message From haile.info", message, model.Name))
-                {
-                    return Json(new { success = true });
-                }
+                var message =  $"<p>Name: {model.Name}</p><p>Email: {model.Email}<p>Message: {model.Message}</p>";
+                _emailSender.SendEmailAsync(model.Email, "Message From haile.info", message, model.Name);
 
-                return BadRequest();
+                return Json(new { success = true });
             }
             catch (Exception e)
             {

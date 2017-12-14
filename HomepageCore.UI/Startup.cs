@@ -27,6 +27,8 @@ using System.IO.Compression;
 using HomepageCore.Common.Configuration;
 using Microsoft.AspNetCore.Authentication.Google;
 using NSwag.AspNetCore;
+using HomepageCore.Services.Interfaces;
+using HomepageCore.Services;
 
 namespace HomepageCore.UI
 {
@@ -63,6 +65,7 @@ namespace HomepageCore.UI
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddOptions();
             services.Configure<ApplicationOptions>(Configuration);
             
