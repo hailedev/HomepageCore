@@ -29,7 +29,7 @@ namespace HomepageCore.Controllers
             try
             {
                 var message = $"{model.Name} wrote:{Environment.NewLine}{model.Message}";
-                if (await _emailSender.SendEmailAsync(model.Email, "Message From Homepage", message, model.Name))
+                if (await _emailSender.SendEmailAsync(model.Email, "Message From haile.info", message, model.Name))
                 {
                     return Json(new { success = true });
                 }
