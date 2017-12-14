@@ -23,7 +23,7 @@ namespace HomepageCore.UI.Test.Controllers
         private Mock<ILoggerFactory> _loggerMock;
 
         [Fact]
-        public async Task Post_Message_Succeeds()
+        public void Post_Message_Succeeds()
         {
             // setup
             _loggerMock = new Mock<ILoggerFactory>();
@@ -38,7 +38,7 @@ namespace HomepageCore.UI.Test.Controllers
             };
             
             // action
-            var result = await _sut.Post(model) as JsonResult;
+            var result = _sut.Post(model) as JsonResult;
             var jsonResult = (dynamic)result.Value;
 
             // assert
@@ -46,29 +46,7 @@ namespace HomepageCore.UI.Test.Controllers
         }
 
         [Fact]
-        public async Task Post_FailSendsReturnsBadRequest_Succeeds()
-        {
-            // setup
-            _loggerMock = new Mock<ILoggerFactory>();
-            _emailSenderMock = new Mock<IEmailSender>();
-            _emailSenderMock
-                .Setup(x => x.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(false));
-            _sut = new ContactController(_emailSenderMock.Object, _loggerMock.Object);
-            var model = new ContactModel {
-                Email = "test@test.com",
-                Name = "vegeta",
-                Message = "blah blah"
-            };
-            
-            // action
-            var result = await _sut.Post(model) as BadRequestResult;
-
-            // assert
-            Assert.Equal(400, result.StatusCode);
-        }
-
-        [Fact]
-        public async Task Post_ExceptionReturnsInternalError_Succeeds()
+        public void Post_ExceptionReturnsInternalError_Succeeds()
         {
             // setup
             _loggerMock = new Mock<ILoggerFactory>();
@@ -88,7 +66,7 @@ namespace HomepageCore.UI.Test.Controllers
             };
             
             // action
-            var result = await _sut.Post(model) as ObjectResult;
+            var result = _sut.Post(model) as ObjectResult;
 
             // assert
             Assert.Equal(500, result.StatusCode);
