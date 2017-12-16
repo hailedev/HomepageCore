@@ -32,9 +32,9 @@ var Main = createReactClass({
                             </ul>
                             <div style={{width:"100%",borderTop:"2px solid #0097A7"}}></div>
                             <ul className="side-social">
-                                <li><a href="https://twitter.com/misfitdeveloper" target="_blank"><img src="/images/twitter.svg"/><span>Twitter</span></a></li>
-                                <li><a href="https://www.facebook.com/hai.t.le" target="_blank"><img src="/images/facebook.svg"/><span>Facebook</span></a></li>
                                 <li><a href="https://github.com/hailedev/" target="_blank"><img src="/images/github.svg"/><span>Github</span></a></li>
+                                <li><a href="https://www.facebook.com/hai.t.le" target="_blank"><img src="/images/facebook.svg"/><span>Facebook</span></a></li>
+                                <li><a href="https://twitter.com/misfitdeveloper" target="_blank"><img src="/images/twitter.svg"/><span>Twitter</span></a></li>
                                 <li><a href="http://www.linkedin.com/pub/hai-le/46/50/259" target="_blank"><img src="/images/linkedin.svg"/><span>LinkedIn</span></a></li>
                             </ul>
                         </Menu>
@@ -66,9 +66,9 @@ var Main = createReactClass({
                             <div className="navigation-section social-links">
                                 <ul>
                                     <li className="social-links-title">FIND ME ON: </li>
-                                    <li className="social-links-logo"><a href="https://twitter.com/misfitdeveloper" target="_blank"><img className="social-logo" src="/images/twitter.gif"/></a></li>
-                                    <li className="social-links-logo"><a href="https://www.facebook.com/hai.t.le" target="_blank"><img className="social-logo" src="/images/facebook.gif"/></a></li>
                                     <li className="social-links-logo"><a href="https://github.com/hailedev/" target="_blank"><img className="social-logo" src="/images/github.gif"/></a></li>
+                                    <li className="social-links-logo"><a href="https://codepen.io/hailedev/" target="_blank"><img className="social-logo" src="/images/codepen.gif"/></a></li>
+                                    <li className="social-links-logo"><a href="https://twitter.com/misfitdeveloper" target="_blank"><img className="social-logo" src="/images/twitter.gif"/></a></li>
                                     <li className="social-links-logo"><a href="http://www.linkedin.com/pub/hai-le/46/50/259" target="_blank"><img className="social-logo" src="/images/linkedin.gif"/></a></li>
                                 </ul>
                             </div>
