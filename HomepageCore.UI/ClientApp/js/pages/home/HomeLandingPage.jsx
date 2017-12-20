@@ -96,7 +96,7 @@ var HomeLandingPage = createReactClass({
                                     </CSSTransition>
                                 </TransitionGroup>
                             </div>
-                            <img id="arrow" onClick={this.onArrowClick} src="/images/arrow.gif"/>
+                            <div id="arrow" onClick={this.onArrowClick}></div>
                         </div>
                     </div>
                     <div id="summaries" className="row">

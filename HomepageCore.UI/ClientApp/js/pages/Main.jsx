@@ -15,10 +15,30 @@ var AdminPage = require("./admin/AdminPage");
 var createReactClass = require("create-react-class");
 
 var Main = createReactClass({
+    componentDidMount: function(){
+        window.addEventListener('load', function(){
+            this.setState({loaded: true});
+        }.bind(this));
+    },
     getInitialState: function(){
         return { };
     },
     render: function(){
+        var ribbon = (
+            <Link to={"/"}>
+                <div className="ribbon-container">
+                    <div className="ribbon-title-text">Hai Le</div>
+                    <div className="ribbon-title-sep">W</div>
+                    <div className="ribbon-main">
+                        <div className="ribbon-left"></div>
+                        <div className="ribbon-right"></div>
+                    </div>
+                    <div className="stitching">
+                        <div className="stitching-left"></div>
+                        <div className="stitching-right"></div>
+                    </div>
+                </div>
+            </Link>);
         return (
             <DocumentTitle title={"Hai Le"}>
                 <div>
@@ -38,7 +58,7 @@ var Main = createReactClass({
                                 <li><a href="http://www.linkedin.com/pub/hai-le/46/50/259" target="_blank"><img src="/images/linkedin.svg"/><span>LinkedIn</span></a></li>
                             </ul>
                         </Menu>
-                        <Link to={"/"} id="home-small"><img id="logo" src="/images/logo-small.png"/></Link>
+                        <Link to={"/"} id="home-small"><span className="logo logo-wrap reverse">E</span><span className="logo">Hai Le</span><span className="logo logo-wrap">E</span></Link>
                         <div className="navigation container">
                             <div className="navigation-section">
                                 <ul>
@@ -62,7 +82,7 @@ var Main = createReactClass({
                                     </li>
                                 </ul>
                             </div>
-                            <Link to={"/"} className="home-link"><img id="logo" src="/images/banner.gif"/></Link>
+                            {this.state.loaded ? ribbon : <div className="ribbon-placeholder"></div>}
                             <div className="navigation-section social-links">
                                 <ul>
                                     <li className="social-links-title">FIND ME ON: </li>

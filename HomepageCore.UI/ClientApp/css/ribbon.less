@@ -1,0 +1,106 @@
+@import "variables";
+
+@font-face {
+  font-family: allspice;
+  src: url(../fonts/Allspice.otf),url("../fonts/Allspice.ttf");
+}
+@font-face {
+  font-family: allspice-alternates;
+  src: url(../fonts/Allspice-Alternates.otf),url("../fonts/Allspice-Alternates.ttf");
+}
+@font-face {
+  font-family: garlic-butter-doodads;
+  src: url(../fonts/Garlic-Butter-Doodads.otf),url("../fonts/Garlic-Butter-Doodads.ttf");
+}
+
+@ribbon-height: 160px;
+@ribbon-width: 220px;
+@ribbon-shadow-color: rgba(0,0,0, 0.4);
+
+@keyframes showribbon {
+  0% {transform: translateY(-100%);}
+  100% {transform: translateY(0%);}
+}
+
+.ribbon-placeholder{
+  width:@ribbon-width + 6;
+  display:none;
+}
+.ribbon-container {
+  margin-top:-52px;
+  animation: showribbon 200ms linear;
+  width:@ribbon-width + 6;
+  display:none;
+  cursor:pointer;
+  transition: margin-top 100ms;
+  &:hover {
+    margin-top: -42px;
+  }
+}
+.ribbon-main {
+  display:flex;
+}
+.ribbon-left {
+  width: @ribbon-width/2;
+  height: @ribbon-height + 40;
+  transform: skewY(-10deg);
+  background: linear-gradient(to right, #4377BF, #578FDE);
+  box-shadow: 6px 6px #888888;
+}
+.ribbon-right {
+  width: @ribbon-width/2;
+  height: @ribbon-height + 40;
+  transform: skewY(10deg);
+  background: linear-gradient(to left, #4377BF, #578FDE);
+  box-shadow: 6px 4px #888888;
+}
+.ribbon-title-text {
+  position: absolute;
+  z-index: 1;
+  width: 220px;
+  text-align: center;
+  margin-top: 38px;
+  font-size: 58px;
+  color: white;
+  font-family: 'allspice-alternates', sans-serif;
+  text-shadow: 5px 4px rgba(0, 0, 0, 0.6);
+}
+.ribbon-title-sep {
+  position: absolute;
+  z-index: 1;
+  width: 220px;
+  text-align: center;
+  margin-top: 116px;
+  font-size: 52px;
+  color: white;
+  text-shadow: 5px 4px rgba(0, 0, 0, 0.6);
+  font-family: 'garlic-butter-doodads', sans-serif;
+}
+.stitching {
+  display:flex;
+  position: absolute;
+  margin-top: -205px;
+}
+.stitching-left{
+  height: @ribbon-height + 40;
+  transform: skewY(-10deg);
+  border-left: 2px dashed rgba(0,0,0,0.2);
+  border-bottom: 2px dashed rgba(0,0,0,0.2);
+  width: 105px;
+  margin-left: 5px;
+}
+.stitching-right{
+  height: @ribbon-height + 40;
+  transform: skewY(10deg);
+  border-right: 2px dashed rgba(0,0,0,0.2);
+  border-bottom: 2px dashed rgba(0,0,0,0.2);
+  width: 105px;
+}
+@media (min-width: @screen-md-min) {
+  .ribbon-container {
+    display: inline-block;
+  }
+  .ribbon-placeholder {
+    display: inline-block;
+  }
+}

@@ -81,6 +81,10 @@ module.exports = {
                 test: /\.less$/,
                 exclude: /node_modules/,
                 loader: ExtractTextPlugin.extract("css-loader!less-loader")
+            },
+            {
+                test: /\.(otf|eot|woff|woff2|ttf|svg|png|jpg)$/,
+                loader: "url-loader?limit=30000&name=[name]-[hash].[ext]"
             }
         ]
     }
