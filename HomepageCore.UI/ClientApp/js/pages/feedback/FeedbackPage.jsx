@@ -13,7 +13,7 @@ var FeedbackPage = createReactClass({
         var label = !this.state.sending?"Submit": <WaitIcon size="20px"/>;
         return (
             <DocumentTitle title={"Hai Le | Contact"}>
-                <div className="feedback">
+                <div className="container feedback">
                     <div className="row">
                         <div style={{marginBottom:"40px",textAlign:"center"}}>Got something you would like to discuss? Do get in touch if you have any questions or even just to say hi!</div>
                     </div>

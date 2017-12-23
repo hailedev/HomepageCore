@@ -94,7 +94,7 @@ var Main = createReactClass({
                             </div>
                         </div>
                     </div>
-                    <div className="container content">
+                    <div className="content">
                         <Switch>
                             <Route exact path="/" component={HomeLandingPage}/>
                             <Route path="/about" component={AboutPage}/>

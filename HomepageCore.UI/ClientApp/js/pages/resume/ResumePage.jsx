@@ -7,7 +7,7 @@ var ResumePage = createReactClass({
     render: function(){
         return (
             <DocumentTitle title={"Hai Le | Hire Me"}>
-                <div className="hire-me">
+                <div className="container hire-me">
                     <div className="row">
                         <div className="col-md-offset-2 col-md-8">Where I'm currently working:<span style={{marginLeft:"30px"}}><a href="https://worldvision.com.au">World Vision Australia</a></span></div>
                     </div>

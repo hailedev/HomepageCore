@@ -7,7 +7,7 @@ var ProjectPage = createReactClass({
     render: function(){
         return (
             <DocumentTitle title={"Hai Le | Projects"}>
-                <div className="projects">
+                <div className="container projects">
                     <div className="row">
                         <div id="devsketch" className="col-md-offset-1 col-md-5" style={{height:"250px",padding:"0",overflow:"hidden"}}>
                             <img src="/images/screenshot.jpg"/>

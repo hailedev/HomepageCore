@@ -126,7 +126,7 @@ var AdminPage = createReactClass({
             }
         }
         return (
-            <div className="admin">
+            <div className="container admin">
                 <div className="row">
                     <div className="col-md-2">Title</div>
                     <div className="col-md-10"><input type="text" value={this.state.title} onChange={this.onTitleChange}/></div>

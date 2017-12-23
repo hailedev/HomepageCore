@@ -82,9 +82,9 @@ var HomeLandingPage = createReactClass({
             );
         return (
             <DocumentTitle title={"Hai Le | Home"}>
-                <div className="homepage">
-                    <div className="row" style={{height:"100px"}}></div>
-                    <div id="banner" className="row">
+                <div>
+                    <div style={{height:"100px"}}></div>
+                    <div id="banner">
                         <div id="avatar-home">
                             {this.images[this.state.currentProfile]}
                         </div>
@@ -99,29 +99,31 @@ var HomeLandingPage = createReactClass({
                             <div id="arrow" onClick={this.onArrowClick}></div>
                         </div>
                     </div>
-                    <div id="summaries" className="row">
-                        <div className="col-md-8 col-xs-12">
-                        {posts.length > 0 ? posts : <WaitIcon style={{display:"block",margin:"auto"}} size="40px"/>}
-                        </div>
-                        <div className="col-md-offset-1 col-md-3 category-container">
-                            <div style={{fontFamily:"Oswald, sans-serif",fontSize:"38px",color:"#7682a8"}}>Categories</div>
-                            {categories.length > 0 ? <ul className="category-list">{categories}</ul> : <WaitIcon style={{margin:"20px 60px 0"}} size="40px"/>}
-                        </div>
-                    </div>
-                    {
-                        posts.length > 0 ? (
-                            <div className="row">
-                                <div className="col-md-8 col-xs-12" style={{height:"100px"}}>
-                                    { this.state.enableShowMore ? showMore:null }
-                                </div>
+                    <div className="container homepage">
+                        <div id="summaries" className="row">
+                            <div className="col-md-8 col-xs-12">
+                            {posts.length > 0 ? posts : <WaitIcon style={{display:"block",margin:"auto"}} size="40px"/>}
                             </div>
-                        ): null
-                    }
-                    <img className="preload" src="/images/avatar.png"/>
-                    <img className="preload" src="/images/avatar2.png"/>
-                    <img className="preload" src="/images/avatar3.png"/>
-                    <img className="preload" src="/images/avatar4.png"/>
-                    <img className="preload" src="/images/avatar5.png"/>
+                            <div className="col-md-offset-1 col-md-3 category-container">
+                                <div style={{fontFamily:"Oswald, sans-serif",fontSize:"38px",color:"#7682a8"}}>Categories</div>
+                                {categories.length > 0 ? <ul className="category-list">{categories}</ul> : <WaitIcon style={{margin:"20px 60px 0"}} size="40px"/>}
+                            </div>
+                        </div>
+                        {
+                            posts.length > 0 ? (
+                                <div className="row">
+                                    <div className="col-md-8 col-xs-12" style={{height:"100px"}}>
+                                        { this.state.enableShowMore ? showMore:null }
+                                    </div>
+                                </div>
+                            ): null
+                        }
+                        <img className="preload" src="/images/avatar.png"/>
+                        <img className="preload" src="/images/avatar2.png"/>
+                        <img className="preload" src="/images/avatar3.png"/>
+                        <img className="preload" src="/images/avatar4.png"/>
+                        <img className="preload" src="/images/avatar5.png"/>
+                    </div>
                 </div>
             </DocumentTitle>
         );

@@ -7,7 +7,7 @@ var AboutPage = createReactClass({
     render: function(){
         return (
             <DocumentTitle title={"Hai Le | About"}>
-                <div className="about">
+                <div className="container about">
                     <div className="row">
                         <div className="col-md-6 image">
                             <img src="/images/blog/about.jpg"/>

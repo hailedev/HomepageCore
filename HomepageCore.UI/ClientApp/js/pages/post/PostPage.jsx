@@ -44,7 +44,7 @@ var PostPage = createReactClass({
         
         return (
             <DocumentTitle title={title}>
-                <div>
+                <div className="container">
                     <Progress percent={this.state.percent} color={"red"}/>
                     { 
                         this.state.post ?
