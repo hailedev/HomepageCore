@@ -83,20 +83,21 @@ var HomeLandingPage = createReactClass({
         return (
             <DocumentTitle title={"Hai Le | Home"}>
                 <div>
-                    <div style={{height:"100px"}}></div>
-                    <div id="banner">
-                        <div id="avatar-home">
-                            {this.images[this.state.currentProfile]}
-                        </div>
-                        <div id="speech-container">
-                            <div id="ticker-container">
-                                <TransitionGroup>
-                                    <CSSTransition classNames="messages" timeout={300} key={this.state.currentProfile}>
-                                        <span className="ticker-item">{this.messages[this.state.currentProfile]}</span>
-                                    </CSSTransition>
-                                </TransitionGroup>
+                    <div style={{paddingTop:"100px"}}>
+                        <div id="banner">
+                            <div id="avatar-home">
+                                {this.images[this.state.currentProfile]}
                             </div>
-                            <div id="arrow" onClick={this.onArrowClick}></div>
+                            <div id="speech-container">
+                                <div id="ticker-container">
+                                    <TransitionGroup>
+                                        <CSSTransition classNames="messages" timeout={300} key={this.state.currentProfile}>
+                                            <span className="ticker-item">{this.messages[this.state.currentProfile]}</span>
+                                        </CSSTransition>
+                                    </TransitionGroup>
+                                </div>
+                                <div id="arrow" onClick={this.onArrowClick}></div>
+                            </div>
                         </div>
                     </div>
                     <div className="container homepage">
