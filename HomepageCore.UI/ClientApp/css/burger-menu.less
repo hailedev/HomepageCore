@@ -13,8 +13,32 @@
 
 /* Position and sizing of clickable cross button */
 .bm-cross-button {
-  height: 24px;
+  position: absolute;
   width: 24px;
+  height: 24px;
+  top: 24px!important;
+  left: 38px!important;
+  right:unset!important;
+  span{
+    position: absolute;
+    top: 0!important;
+    left: unset!important;
+    right: unset!important;
+    margin-top: unset!important;
+    margin-left: 4px;
+    span{
+      width: 4px!important;
+      height: 22px!important;
+    }
+  }
+  button{
+    left: unset!important;
+    top: unset!important;
+    margin: unset!important;
+  }
+  &:hover{
+    opacity: 0.6;
+  }
 }
 
 /* Color/shape of close button cross */
@@ -25,7 +49,7 @@
 /* General sidebar styles */
 .bm-menu {
   background: #373a47;
-  padding: 2.5em 1em 0;
+  padding: 15px 0 0 20px;
   font-size: 1.15em;
 }
 
@@ -47,4 +71,5 @@
 
 .bm-menu-wrap{
   width:250px!important;
+  transition: all 0.1s!important;
 }
