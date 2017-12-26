@@ -13,6 +13,7 @@ var convertToRaw = require("draft-js").convertToRaw;
 var convertFromRaw = require("draft-js").convertFromRaw;
 var UserInfoApi = require("../../api/UserInfoApi");
 var createReactClass = require("create-react-class");
+var Entity = require("draft-js").Entity;
 
 var StyleButton = createReactClass({
     render: function(){
@@ -49,7 +50,6 @@ var AdminPage = createReactClass({
                 this.setState({loggedIn:true});
             }
         }.bind(this));
-        
         this.blockTypes = [
             {label: 'H1', style: 'header-one'},
             {label: 'H2', style: 'header-two'},
@@ -70,18 +70,9 @@ var AdminPage = createReactClass({
         ];
     },
     getInitialState: function(){
-        return {editorState: EditorState.createEmpty(),showURLInput:false,url:"",urlType:"",title:"",blurb:"",tags:"",category:"c3943998-774b-4ac4-9ccd-8e740e20ab2c"};
+        return {editorState: EditorState.createEmpty(),showURLInput:false,url:"",urlType:"",title:"",blurb:"",tags:"",link:"",category:"c3943998-774b-4ac4-9ccd-8e740e20ab2c"};
     },
     render: function(){
-        if(!this.state.loggedIn){
-            return (
-                <div className="admin">
-                    <div className="row">
-                        <div className="button" style={{marginLeft:"50px",width:"100px"}} onClick={this.onLogin}>Log in</div>
-                    </div>
-                </div>
-            );
-        }
         var className = "RichEditor-editor";
         var contentState = this.state.editorState.getCurrentContent();
         if (!contentState.hasText()) {
@@ -156,6 +147,10 @@ var AdminPage = createReactClass({
                             {inlineStyleControls}
                         </div>
                         <div className="RichEditor-controls">
+                            <button onMouseDown={this.toggleLink}>Add Link</button>
+                            <input type="text" style={{margin:"0 10px"}} value={this.state.link} onChange={this.onLinkChange}/>
+                        </div>
+                        <div className="RichEditor-controls">
                             <button onMouseDown={this.addImage}>
                                 Add Image
                             </button>
@@ -214,6 +209,10 @@ var AdminPage = createReactClass({
     },
     toggleInlineStyle: function(style){
         this.setState({editorState: RichUtils.toggleInlineStyle(this.state.editorState, style)});
+    },
+    toggleLink: function(){
+        var entityKey = Entity.create("LINK", "MUTABLE", {url: this.state.link});
+        this.setState({editorState: RichUtils.toggleLink(this.state.editorState, this.state.editorState.getSelection(), entityKey)});
     },
     getBlockStyle: function(block){
         switch (block.getType()) {
@@ -321,6 +320,9 @@ var AdminPage = createReactClass({
     },
     onCategoryChange: function(e){
         this.setState({category:e.target.value});
+    },
+    onLinkChange: function(e){
+        this.setState({link:e.target.value});
     },
     onLogin: function(){
         window.location.href = window.location.origin + "/api/account/external-login?returnUrl=" + encodeURIComponent(window.location.href);

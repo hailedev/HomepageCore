@@ -51,12 +51,14 @@ var HomeLandingPage = createReactClass({
         for(i=0; i<this.state.posts.length; i++){
             posts.push(
                 <div key={i} className="post-entry">
-                    <div className="date">
-                        <div className="date-content">{this.state.posts[i].day}<span className="month">{this.state.posts[i].month}</span></div>
-                    </div>
-                    <div className="post-title">
-                        <div className="title">{this.state.posts[i].title}</div>
-                        <Link to={"post/".concat(this.state.posts[i].id).concat("#disqus_thread")} style={{display:"inline-block",marginTop:"5px"}}><span className="disqus-comment-count" data-disqus-identifier={this.state.posts[i].id}>0 Comments</span></Link>
+                    <div style={{display:"flex"}}>
+                        <div className="date">
+                            <div className="date-content">{this.state.posts[i].day}<span className="month">{this.state.posts[i].month}</span></div>
+                        </div>
+                        <div className="post-title">
+                            <div className="title">{this.state.posts[i].title}</div>
+                            <Link to={"post/".concat(this.state.posts[i].id).concat("#disqus_thread")} style={{display:"inline-block",marginTop:"5px"}}><span className="disqus-comment-count" data-disqus-identifier={this.state.posts[i].id}>0 Comments</span></Link>
+                        </div>
                     </div>
                     <div className="blurb">{this.state.posts[i].blurb}...<br/><Link to={"post/".concat(this.state.posts[i].id)}>Read more >></Link></div>
                 </div>

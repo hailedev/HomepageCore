@@ -53,7 +53,7 @@ var PostPage = createReactClass({
                                     <div className="row" style={{height:"170px"}}></div>
                                     <div className="row">
                                         <div className="col-md-offset-2 col-md-8">
-                                            <div className="post-entry" style={{borderBottom:"2px solid #454545",paddingBottom:"15px"}}>
+                                            <div className="post-entry" style={{borderBottom:"2px solid #454545",paddingBottom:"15px",display:"flex"}}>
                                                 <div className="date" style={{lineHeight:"30px"}}>
                                                     <div className="date-content">{this.state.post.day}<span className="month">{this.state.post.month}</span></div>
                                                 </div>

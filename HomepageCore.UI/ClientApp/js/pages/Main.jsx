@@ -102,8 +102,8 @@ var Main = createReactClass({
                             <Route path="/feedback" component={FeedbackPage}/>
                             <Route path="/projects" component={ProjectsPage}/>
                             <Route path="/post/:id" component={PostPage}/>
-                            <Route path="/admin" component={AdminPage}/>
                             <Route path="/admin/:id" component={AdminPage}/>
+                            <Route path="/admin" component={AdminPage}/>
                         </Switch>
                     </div>
                     <div className="footer">
