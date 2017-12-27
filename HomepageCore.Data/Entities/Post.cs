@@ -13,5 +13,9 @@ namespace HomepageCore.Data.Entities
         public string Tags { get; set; }
         public string Raw { get; set; }
         public virtual Category Category { get; set; }
+        public string MetaTitle { get; set; }
+        public string MetaDescription { get; set; }
+        public string MetaImage { get; set; }
+        public string MetaUrl { get; set; }
     }
 }
