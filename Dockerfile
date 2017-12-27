@@ -32,6 +32,9 @@ RUN dotnet publish ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration} 
 FROM microsoft/aspnetcore:2.0
 WORKDIR /var/www
 COPY --from=build-env /target .
+COPY --from=build-env /build/HomepageCore.UI/node_modules/aspnet-prerendering/** ./node_modules/aspnet-prerendering/
+COPY --from=build-env /build/HomepageCore.UI/node_modules/domain-context/** ./node_modules/domain-context/
+COPY --from=build-env /build/HomepageCore.UI/node_modules/domain-task/** ./node_modules/domain-task/
 ENTRYPOINT [ "dotnet", "HomepageCore.UI.dll" ]
 
 # Enable health check

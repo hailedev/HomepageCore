@@ -1,5 +1,5 @@
 var prerendering = require('aspnet-prerendering');
-var prerenderService = require("./prerender-app");
+var prerenderService = require("prerender-app.min");
 
 module.exports = prerendering.createServerRenderer(function(params) {
     return new Promise(function (resolve, reject) {
