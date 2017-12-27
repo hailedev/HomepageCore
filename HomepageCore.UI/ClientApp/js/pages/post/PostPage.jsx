@@ -11,6 +11,7 @@ var VisibilitySensor = require("react-visibility-sensor");
 var SocialIcon = require("react-social-icons").SocialIcon;
 var Progress = require("react-progress");
 var createReactClass = require("create-react-class");
+var MetaTags = require("react-meta-tags").MetaTags;
 
 var PostPage = createReactClass({
     componentWillMount: function(){
@@ -45,6 +46,17 @@ var PostPage = createReactClass({
         return (
             <DocumentTitle title={title}>
                 <div className="container">
+                    {
+                        this.state.post ?
+                            (
+                                <MetaTags>
+                                    <meta property="og:title" content={this.state.post.title}/>
+                                    <meta property="og:image" content={this.state.post.metaImage}/>
+                                    <meta property="og:description" content={this.state.post.metaDescription}/>
+                                    <meta property="og:url" content={window.location.href} />
+                                </MetaTags>
+                            ):null
+                    }
                     <Progress percent={this.state.percent} color={"red"}/>
                     { 
                         this.state.post ?

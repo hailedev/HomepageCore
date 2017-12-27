@@ -16,5 +16,9 @@ namespace HomepageCore.Models
         public int Day { get; set; }
         public string Month { get; set; }
         public DateTime CreatedOn { get; set; }
+        public string MetaTitle { get; set; }
+        public string MetaDescription { get; set; }
+        public string MetaImage { get; set; }
+        public string MetaUrl { get; set; }
     }
 }
