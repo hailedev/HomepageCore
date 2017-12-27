@@ -26,7 +26,7 @@ namespace HomepageCore.Controllers
 
         private bool IsCrawler(string userAgent)
         {
-            return Regex.IsMatch(userAgent, @"googlebot|bingbot|twitterbot|slurp|duckduckbot|baiduspider|facebot", RegexOptions.IgnoreCase);
+            return Regex.IsMatch(userAgent, @"googlebot|bingbot|twitterbot|slurp|duckduckbot|baiduspider|facebot|linkedinbot", RegexOptions.IgnoreCase);
         }
     }
 }
