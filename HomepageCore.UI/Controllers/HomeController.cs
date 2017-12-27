@@ -21,7 +21,7 @@ namespace HomepageCore.Controllers
             { 
                 userAgent = Request.Headers["User-Agent"]; 
             }
-            return View(IsCrawler(userAgent));
+            return View(false);
         }
 
         private bool IsCrawler(string userAgent)
