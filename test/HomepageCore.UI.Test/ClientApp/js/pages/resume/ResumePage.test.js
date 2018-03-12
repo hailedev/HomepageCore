@@ -1,4 +1,4 @@
-var ResumePage = require("pages/resume/ResumePage");
+var ResumePage = require("pages/resume/ResumePage").default;
 var React = require("react");
 var mount = require("enzyme").mount;
 var StaticRouter = require("react-router-dom").StaticRouter;

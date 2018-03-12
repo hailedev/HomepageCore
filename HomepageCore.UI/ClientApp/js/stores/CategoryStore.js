@@ -1,22 +1,20 @@
-var DefaultDispatcher = require("DefaultDispatcher");
-var Actions = require("AppConstants").Actions;
+import DefaultDispatcher from 'DefaultDispatcher';
+import { Actions } from 'AppConstants';
+import { ReduceStore } from 'flux/utils';
 
-var ReduceStore = require("flux/utils").ReduceStore;
-var CategoryStore  = function(){
-    ReduceStore.call(this, DefaultDispatcher);
-};
-
-CategoryStore.prototype = Object.create(ReduceStore.prototype);
-CategoryStore.prototype.getInitialState = function(){
-    return null;
-};
-CategoryStore.prototype.reduce = function(state, action){
-    switch(action.type){
-        case Actions.FETCH_CATEGORIES:
-            return action.payload.response;
-        default:
-            return state;
+export default new class CategoryStore extends ReduceStore {
+    constructor() {
+        super(DefaultDispatcher);
     }
-};
-
-module.exports = new CategoryStore();
+    getInitialState() {
+        return null;
+    }
+    reduce(state, action) {
+        switch (action.type) {
+            case Actions.FETCH_CATEGORIES:
+                return action.payload.response;
+            default:
+                return state;
+        }
+    }
+}();

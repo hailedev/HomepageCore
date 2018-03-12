@@ -1,23 +1,22 @@
-var DefaultDispatcher = require("DefaultDispatcher");
-var Actions = require("AppConstants").Actions;
+import DefaultDispatcher from 'DefaultDispatcher';
+import { Actions } from 'AppConstants';
+import { ReduceStore } from 'flux/utils';
 
-var ReduceStore = require("flux/utils").ReduceStore;
-var PostStore  = function(){
-    ReduceStore.call(this, DefaultDispatcher);
-};
-
-PostStore.prototype = Object.create(ReduceStore.prototype);
-PostStore.prototype.getInitialState = function(){
-    return {};
-};
-PostStore.prototype.reduce = function(state, action){
-    switch(action.type){
-        case Actions.FETCH_POST:
-            state[action.payload.response.id] = action.payload.response;
-            return JSON.parse(JSON.stringify(state));
-        default:
-            return state;
+export default new class PostStore extends ReduceStore {
+    constructor() {
+        super(DefaultDispatcher);
     }
-};
+    getInitialState() {
+        return {};
+    }
 
-module.exports = new PostStore();
+    reduce(state, action) {
+        switch (action.type) {
+            case Actions.FETCH_POST:
+                state[action.payload.response.id] = action.payload.response;
+                return JSON.parse(JSON.stringify(state));
+            default:
+                return state;
+        }
+    }
+}();

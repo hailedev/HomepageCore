@@ -1,4 +1,4 @@
-var testcontext = require("api/CategoryApi");
+var testcontext = require("api/CategoryApi").default;
 
 var urlResult;
 global.fetch = jest.fn().mockImplementation(function(url, headers){

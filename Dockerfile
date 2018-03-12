@@ -4,7 +4,6 @@ ARG configuration=Release
 WORKDIR /build
 
 # Copy csproj and restore as distinct layers
-COPY ./HomepageCore.Common/HomepageCore.Common.csproj ./HomepageCore.Common/
 COPY ./HomepageCore.Data/HomepageCore.Data.csproj ./HomepageCore.Data/
 COPY ./HomepageCore.UI/HomepageCore.UI.csproj ./HomepageCore.UI/
 COPY ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj ./test/HomepageCore.UI.Test/

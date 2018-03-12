@@ -1,16 +1,11 @@
-var ContactApi = require("../api/ContactApi");
+import ContactApi from '../api/ContactApi';
 
-var ContactActionCreators = function(){ };
-ContactActionCreators.prototype.lodgeFeedback = function(model){
-    return new Promise(function(resolve, reject){
-        ContactApi.lodgeFeedback(model)
-            .then(function(response){
-                resolve(response);
-            })
-            .catch(function(error){
-                reject(error);
-            });
-    });
-};
-
-module.exports = new ContactActionCreators();
+export default new class ContactActionCreators {
+    lodgeFeedback(model) {
+        return new Promise((resolve, reject) => {
+            ContactApi.lodgeFeedback(model)
+                .then(response => resolve(response))
+                .catch(error => reject(error));
+        });
+    }
+}();

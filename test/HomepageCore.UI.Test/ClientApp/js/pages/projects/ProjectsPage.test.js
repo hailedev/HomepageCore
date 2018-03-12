@@ -1,4 +1,4 @@
-var ProjectPage = require("pages/projects/ProjectsPage");
+var ProjectPage = require("pages/projects/ProjectsPage").default;
 var React = require("react");
 var mount = require("enzyme").mount;
 var StaticRouter = require("react-router-dom").StaticRouter;

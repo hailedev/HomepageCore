@@ -1,4 +1,4 @@
-var testcontext = require("api/ContactApi");
+var testcontext = require("api/ContactApi").default;
 
 var urlResult, headersResult, jsonResult = {id:"test"};
 global.fetch = jest.fn().mockImplementation(function(url, headers){

@@ -16,45 +16,44 @@ beforeEach(function(){
 
 describe("<Main />", function(){
     it("should render content container", function(){
-        var Main = require("pages/Main");
+        var Main = require("pages/Main").default;
         var wrapper = mount(<StaticRouter location={"/"} context={{}}><Route path="/" component={Main}/></StaticRouter>);
 
         expect(wrapper.find(".content").length).toBe(1);
     });
     it("should render landing page by default", function(){
-        var mockHomeLandingPage = require("pages/home/HomeLandingPage");
+        var mockHomeLandingPage = require("pages/home/HomeLandingPage").default;
 
-        var Main = require("pages/Main");
+        var Main = require("pages/Main").default;
         var wrapper = mount(<StaticRouter location={"/"} context={{}}><Route path="/" component={Main}/></StaticRouter>);
 
         expect(mockHomeLandingPage.mock.calls.length).toBe(1);
     });
     it("should render post page", function(){
-        var mockHomeLandingPage = require("pages/post/PostPage");
+        var mockHomeLandingPage = require("pages/post/PostPage").default;
 
-        var Main = require("pages/Main");
+        var Main = require("pages/Main").default;
         var wrapper = mount(<StaticRouter location={"/post/1"} context={{}}><Route path="/" component={Main}/></StaticRouter>);
 
         expect(mockHomeLandingPage.mock.calls.length).toBe(1);
     });
     it("should render about page", function(){
-        var mockHomeLandingPage = require("pages/about/AboutPage");
-
-        var Main = require("pages/Main");
+        var mockHomeLandingPage = require("pages/about/AboutPage").default;
+        var Main = require("pages/Main").default;
         var wrapper = mount(<StaticRouter location={"/about"} context={{}}><Route path="/" component={Main}/></StaticRouter>);
 
         expect(mockHomeLandingPage.mock.calls.length).toBe(1);
     });
     it("should render projects page", function(){
-        var mockHomeLandingPage = require("pages/projects/ProjectsPage");
+        var mockHomeLandingPage = require("pages/projects/ProjectsPage").default;
 
-        var Main = require("pages/Main");
+        var Main = require("pages/Main").default;
         var wrapper = mount(<StaticRouter location={"/projects"} context={{}}><Route path="/" component={Main}/></StaticRouter>);
 
         expect(mockHomeLandingPage.mock.calls.length).toBe(1);
     });
     it("should render menus", function(){
-        var Main = require("pages/Main");
+        var Main = require("pages/Main").default;
         var wrapper = mount(<StaticRouter location={"/"} context={{}}><Route path="/" component={Main}/></StaticRouter>);
 
         // desktop menu
@@ -68,7 +67,7 @@ describe("<Main />", function(){
         expect(wrapper.find(".social-links-logo").length).toBe(4);
     });
     it("should render footer", function(){
-        var Main = require("pages/Main");
+        var Main = require("pages/Main").default;
         var wrapper = mount(<StaticRouter location={"/"} context={{}}><Route path="/" component={Main}/></StaticRouter>);
 
         expect(wrapper.find(".footer").length).toBe(1);

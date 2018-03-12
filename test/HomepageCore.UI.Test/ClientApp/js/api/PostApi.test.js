@@ -1,4 +1,4 @@
-var testcontext = require("api/PostApi");
+var testcontext = require("api/PostApi").default;
 
 var urlResult, headersResult, jsonResult = {id:"test"};
 global.fetch = jest.fn().mockImplementation(function(url, headers){

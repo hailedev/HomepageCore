@@ -1,22 +1,21 @@
-var DefaultDispatcher = require("DefaultDispatcher");
-var PostApi = require("../api/PostApi");
-var Actions = require("AppConstants").Actions;
+import DefaultDispatcher from 'DefaultDispatcher';
+import { Actions } from 'AppConstants';
+import PostApi from '../api/PostApi';
 
-var PostActionCreators = function(){ };
-PostActionCreators.prototype.getPostSummaries = function(range, update){
-    return new Promise(function(resolve, reject){
-        PostApi.getPostSummaries(range)
-            .then(function(response){
-                DefaultDispatcher.dispatch({
-                    type: update ? Actions.FETCH_POSTADDITIONALSUMMARIES : Actions.FETCH_POSTSUMMARIES,
-                    payload: { response: response }
+export default new class PostActionCreators {
+    getPostSummaries(range, update) {
+        return new Promise(((resolve, reject) => {
+            PostApi.getPostSummaries(range)
+                .then((response) => {
+                    DefaultDispatcher.dispatch({
+                        type: update ? Actions.FETCH_POSTADDITIONALSUMMARIES : Actions.FETCH_POSTSUMMARIES,
+                        payload: { response }
+                    });
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
                 });
-                resolve(response);
-            })
-            .catch(function(error){
-                reject(error);
-            });
-    });
-};
-
-module.exports = new PostActionCreators();
+        }));
+    }
+}();

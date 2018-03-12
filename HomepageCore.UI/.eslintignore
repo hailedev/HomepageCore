@@ -1,0 +1,3 @@
+webpack*
+/ClientApp/submodules/**
+/ClientApp/js/prerender-bootstrapper.js

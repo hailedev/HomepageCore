@@ -68,14 +68,14 @@ module.exports = {
         }
     },
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.jsx$/,
+                test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: "babel-loader",
-                query: {
-                    presets: ["react"]
-                }
+                use: [
+                    { loader: "babel-loader", options: { presets: ["es2015", "react"] } },
+                    { loader: "eslint-loader", options: { failOnError: true } }
+                ]
             },
             {
                 test: /\.less$/,

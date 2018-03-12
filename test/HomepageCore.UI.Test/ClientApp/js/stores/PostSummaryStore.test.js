@@ -8,20 +8,20 @@ beforeEach(function(){
 describe("PostSummaryStore", function() {
     describe("when instantiating", function(){
         it("registers a callback with the dispatcher", function() {
-            var mockDispatcher = require("DefaultDispatcher");
-            var testcontext = require("stores/PostSummaryStore");
+            var mockDispatcher = require("DefaultDispatcher").default;
+            var testcontext = require("stores/PostSummaryStore").default;
             expect(mockDispatcher.register.mock.calls.length).toBe(1);
         });
         it("initializes with no items", function(){
-            var testcontext = require("stores/PostSummaryStore");
+            var testcontext = require("stores/PostSummaryStore").default;
             expect(testcontext.getState().length).toBe(0);
         });
     });
     describe("when an action is dispatched", function(){
         describe("and action is type fetch post summaries", function(){
             it("updates store", function(){
-                var mockDispatcher = require("DefaultDispatcher");
-                var testcontext = require("stores/PostSummaryStore");
+                var mockDispatcher = require("DefaultDispatcher").default;
+                var testcontext = require("stores/PostSummaryStore").default;
                 mockDispatcher.isDispatching.mockImplementation(function(){
                     return true;
                 });

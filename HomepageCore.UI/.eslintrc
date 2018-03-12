@@ -1,0 +1,56 @@
+{
+    "parser": "babel-eslint",
+    "extends": "airbnb",
+    "plugins":[
+      "react",
+      "jsx-a11y",
+      "import"
+    ],
+    "rules": {
+      "func-names": "off",
+      "array-callback-return": "off",
+      "indent": ["error", 4, {"SwitchCase": 1}],
+      "no-underscore-dangle": "off",
+      "class-methods-use-this": "off",
+      "comma-dangle": [
+        "error",
+        "never"
+      ],
+      "no-param-reassign": [
+        "error",
+        {
+          "props": false
+        }
+      ],
+      "max-len": "off",
+      "linebreak-style": "off",
+      "object-curly-newline": [
+        "error",
+        {
+          "consistent": true
+        }
+      ],
+      "import/no-webpack-loader-syntax": "off",
+      "import/no-extraneous-dependencies": "off",
+      "import/no-unresolved": "off",
+      "import/extensions": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "react/prop-types": "off",
+      "react/jsx-indent": ["error", 4],
+      "react/jsx-indent-props": ["error", 4],
+      "react/no-array-index-key": "off",
+      "react/no-danger": "off",
+      "react/jsx-no-bind": ["error", {
+        "allowBind": true,
+        "allowArrowFunctions": true
+      }]
+    },
+    "globals": {
+      "document": false,
+      "window": false,
+      "fetch": false,
+      "XMLSerializer": false,
+      "canvg": false,
+      "DISQUS": false
+    }
+}

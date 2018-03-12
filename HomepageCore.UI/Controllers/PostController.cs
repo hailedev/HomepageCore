@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
-using HomepageCore.Common.Configuration;
+using HomepageCore.UI.Configuration;
 using HomepageCore.Data.Entities;
 using HomepageCore.Data.Repositories.Interfaces;
 using HomepageCore.Models;

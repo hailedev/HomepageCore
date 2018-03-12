@@ -23,6 +23,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HomepageCore.Data\HomepageCore.Data.csproj" />
-    <ProjectReference Include="..\HomepageCore.Common\HomepageCore.Common.csproj" />
   </ItemGroup>
 </Project>

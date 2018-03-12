@@ -1,16 +1,13 @@
-var React = require("react");
-var ReactDisqusThread = require("./ReactDisqusThread");
-var createReactClass = require("create-react-class");
+import React, { Component } from 'react';
+import ReactDisqusThread from './ReactDisqusThread';
 
-var DisqusThreadContainer = createReactClass({
-    shouldComponentUpdate: function(nextProps, nextState){
+export default class DisqusThreadContainer extends Component {
+    shouldComponentUpdate() {
         return false;
-    },
-    render: function(){
+    }
+    render() {
         return (
-            <ReactDisqusThread {...this.props}/>
+            <ReactDisqusThread {...this.props} />
         );
     }
-});
-
-module.exports = DisqusThreadContainer;
+}

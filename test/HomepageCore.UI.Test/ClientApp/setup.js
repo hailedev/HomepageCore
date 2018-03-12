@@ -1,4 +1,5 @@
 require("raf").polyfill();
+require("babel-polyfill");
 var Enzyme = require("enzyme");
 var EnzymeAdapter = require("enzyme-adapter-react-16");
 

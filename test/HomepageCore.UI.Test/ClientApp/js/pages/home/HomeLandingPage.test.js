@@ -15,9 +15,9 @@ beforeEach(function(){
 
 describe("<HomeLandingPage />", function(){
     it("should render all elements", function(){
-        var mockDefaultDispatcher = require("DefaultDispatcher");
-        var mockCategoryActionCreators = require("CategoryActionCreators");
-        var mockPostSummaryActionCreators = require("PostSummaryActionCreators");
+        var mockDefaultDispatcher = require("DefaultDispatcher").default;
+        var mockCategoryActionCreators = require("CategoryActionCreators").default;
+        var mockPostSummaryActionCreators = require("PostSummaryActionCreators").default;
 
         // setup dispatcher
         var callbacks = [];
@@ -82,7 +82,7 @@ describe("<HomeLandingPage />", function(){
             });
         });
 
-        var HomeLandingPage = require("pages/home/HomeLandingPage");
+        var HomeLandingPage = require("pages/home/HomeLandingPage").default;
         var wrapper = mount(<StaticRouter location={"/"} context={{}}><Route path="/" component={HomeLandingPage}/></StaticRouter>);
 
         // renders the main container

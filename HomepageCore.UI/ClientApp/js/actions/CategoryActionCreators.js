@@ -1,22 +1,21 @@
-var DefaultDispatcher = require("DefaultDispatcher");
-var CategoryApi = require("../api/CategoryApi");
-var Actions = require("AppConstants").Actions;
+import DefaultDispatcher from 'DefaultDispatcher';
+import { Actions } from 'AppConstants';
+import CategoryApi from '../api/CategoryApi';
 
-var CategoryActionCreators = function(){ };
-CategoryActionCreators.prototype.getCategories = function(id){
-    return new Promise(function(resolve, reject){
-        CategoryApi.getCategories()
-            .then(function(response){
-                DefaultDispatcher.dispatch({
-                    type: Actions.FETCH_CATEGORIES,
-                    payload: { response: response }
+export default new class CategoryActionCreators {
+    getCategories() {
+        return new Promise(((resolve, reject) => {
+            CategoryApi.getCategories()
+                .then((response) => {
+                    DefaultDispatcher.dispatch({
+                        type: Actions.FETCH_CATEGORIES,
+                        payload: { response }
+                    });
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
                 });
-                resolve(response);
-            })
-            .catch(function(error){
-                reject(error);
-            });
-    });
-};
-
-module.exports = new CategoryActionCreators();
+        }));
+    }
+}();

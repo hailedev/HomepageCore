@@ -24,11 +24,12 @@ using Microsoft.AspNetCore.Http;
 using NLog.Extensions.Logging;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
-using HomepageCore.Common.Configuration;
+using HomepageCore.UI.Configuration;
 using Microsoft.AspNetCore.Authentication.Google;
 using NSwag.AspNetCore;
 using HomepageCore.Services.Interfaces;
 using HomepageCore.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomepageCore.UI
 {
@@ -61,7 +62,7 @@ namespace HomepageCore.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>();
+            services.AddDbContext<ApplicationDbContext>(optionsBuilder => optionsBuilder.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();

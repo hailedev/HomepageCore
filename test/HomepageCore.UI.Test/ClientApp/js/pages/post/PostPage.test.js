@@ -13,8 +13,8 @@ beforeEach(function(){
 
 describe("<PostPage />", function(){
     it("should render all elements", function(){
-        var mockDefaultDispatcher = require("DefaultDispatcher");
-        var mockPostActionCreators = require("PostActionCreators");
+        var mockDefaultDispatcher = require("DefaultDispatcher").default;
+        var mockPostActionCreators = require("PostActionCreators").default;
 
         // setup dispatcher
         var callbacks = [];
@@ -52,7 +52,7 @@ describe("<PostPage />", function(){
             });
         });
 
-        var PostPage = require("pages/post/PostPage");
+        var PostPage = require("pages/post/PostPage").default;
         var wrapper = mount(<StaticRouter location={"/post/1"} context={{}}><Route path="/post/:id" component={PostPage}/></StaticRouter>);
 
         // renders the main container

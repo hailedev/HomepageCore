@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HomepageCore.Common.Configuration;
+using HomepageCore.UI.Configuration;
 using HomepageCore.Services.Interfaces;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Configuration;

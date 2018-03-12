@@ -1,11 +1,9 @@
-var ApiDispatcher = require("./ApiDispatcher");
+import ApiDispatcher from './ApiDispatcher';
 
-var CategoryApi = function(){};
-
-CategoryApi.prototype.getCategories = function(){
-    return new Promise(function(resolve, reject){
-        ApiDispatcher.dispatch(fetch.bind(this,"/api/category", { method: "GET", credentials:"include" }),resolve,reject);
-    });
-};
-
-module.exports = new CategoryApi();
+export default new class CategoryApi {
+    getCategories() {
+        return new Promise(function (resolve, reject) {
+            ApiDispatcher.dispatch(fetch.bind(this, '/api/category', { method: 'GET', credentials: 'include' }), resolve, reject);
+        });
+    }
+}();

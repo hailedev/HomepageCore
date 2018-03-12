@@ -5,7 +5,7 @@ using Moq;
 using Xunit;
 using HomepageCore.Controllers;
 using HomepageCore.Data.Repositories.Interfaces;
-using HomepageCore.Common.Configuration;
+using HomepageCore.UI.Configuration;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using Microsoft.Extensions.Options;

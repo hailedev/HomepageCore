@@ -15,10 +15,10 @@ describe("<AdminPage />", function(){
         jest.mock("api/UserInfoApi");
     
         // setup mocks
-        mockDefaultDispatcher = require("DefaultDispatcher");
-        mockCategoryActionCreators = require("CategoryActionCreators");
-        mockPostActionCreators = require("PostActionCreators");
-        mockUserInfoApi = require("api/UserInfoApi");
+        mockDefaultDispatcher = require("DefaultDispatcher").default;
+        mockCategoryActionCreators = require("CategoryActionCreators").default;
+        mockPostActionCreators = require("PostActionCreators").default;
+        mockUserInfoApi = require("api/UserInfoApi").default;
 
         var callbacks = [];
         mockDefaultDispatcher.register.mockImplementation(function(cb){
@@ -50,8 +50,7 @@ describe("<AdminPage />", function(){
         });
     });
     it("should render the main contaner", function(){
-        var AdminPage = require("pages/admin/AdminPage");
-
+        var AdminPage = require("pages/admin/AdminPage").default;
         //var wrapper = require("enzyme").mount(<StaticRouter location={"/"} context={{}}><Route path="/" component={AdminPage}/></StaticRouter>);
         var wrapper = shallow(<AdminPage match={{params:{}}} />); // issue rendering draft js in enzyme.. using shallow renderer instead
         expect(wrapper.find(".admin").length).toBe(1);
@@ -65,7 +64,7 @@ describe("<AdminPage />", function(){
             return done;
         });
 
-        var AdminPage = require("pages/admin/AdminPage");
+        var AdminPage = require("pages/admin/AdminPage").default;
         var wrapper = shallow(<AdminPage match={{params:{id:"1"}}} />);
         return done.then(function(){
             expect(mockPostActionCreators.getPost.mock.calls.length).toBe(1);
@@ -79,7 +78,7 @@ describe("<AdminPage />", function(){
         mockUserInfoApi.getUserInfo.mockImplementation(function(){
             return done;
         });
-        var AdminPage = require("pages/admin/AdminPage");
+        var AdminPage = require("pages/admin/AdminPage").default;
         var wrapper = shallow(<AdminPage match={{params:{}}} />);
         return done.then(function(){
             expect(wrapper.state().loggedIn).toBe(true);

@@ -1,4 +1,4 @@
-namespace HomepageCore.Common.Configuration
+namespace HomepageCore.UI.Configuration
 {
     public class EmailOptions
     {
