@@ -8,10 +8,10 @@
             "name": ".NET Core Launch (web)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            // "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceRoot}/HomepageCore.UI/bin/Debug/netcoreapp2.0/HomepageCore.UI.dll",
-            "args": [],
+            "args": ["--server.urls=http://localhost:5001/"],
             "cwd": "${workspaceRoot}/HomepageCore.UI",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
@@ -37,10 +37,48 @@
             }
         },
         {
+            "name": "Identity provider",
+            "type": "coreclr",
+            "request": "launch",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/HomepageCore.Identity/bin/Debug/netcoreapp2.0/HomepageCore.Identity.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/HomepageCore.Identity",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": true,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:pickProcess}"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Identity provider, MVC client, API",
+            "configurations": ["Identity provider", ".NET Core Launch (web)"],
+            "preLaunchTask": "build"
         }
     ]
 }

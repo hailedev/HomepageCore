@@ -6,6 +6,7 @@ WORKDIR /build
 # Copy csproj and restore as distinct layers
 COPY ./HomepageCore.Data/HomepageCore.Data.csproj ./HomepageCore.Data/
 COPY ./HomepageCore.UI/HomepageCore.UI.csproj ./HomepageCore.UI/
+COPY ./HomepageCore.Identity/HomepageCore.Identity.csproj ./HomepageCore.Identity/
 COPY ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj ./test/HomepageCore.UI.Test/
 COPY ./HomepageCore.sln ./
 RUN dotnet restore

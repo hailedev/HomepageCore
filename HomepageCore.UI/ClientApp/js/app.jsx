@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import browser from 'detect-browser';
 import { BrowserRouter, Route } from 'react-router-dom';
+import DefaultUserManager from 'DefaultUserManager';
 import Main from './pages/Main';
 
 window.onerror = function onerror(message, url, lineNo, colNo, error) {
@@ -27,6 +28,19 @@ window.onerror = function onerror(message, url, lineNo, colNo, error) {
 };
 
 let pageContent = <BrowserRouter><Route path="/" component={Main} /></BrowserRouter>;
+if (window.location.pathname === '/signin-callback') {
+    DefaultUserManager.signinRedirectCallback()
+        .then((token) => {
+            if (token.state && token.state.url) {
+                window.location = token.state.url;
+            }
+        });
+    pageContent = <div />;
+}
+if (window.location.pathname === '/signout-callback') {
+    DefaultUserManager.removeUser();
+    pageContent = <div />;
+}
 if (browser && browser.name === 'ie' && !browser.version.startsWith('11')) {
     pageContent = (
         <div className="container">

@@ -36,4 +36,20 @@ export default new class PostActionCreators {
                 });
         }));
     }
+
+    deletePost(id) {
+        return new Promise(((resolve, reject) => {
+            PostApi.deletePost(id)
+                .then((response) => {
+                    DefaultDispatcher.dispatch({
+                        type: Actions.DELETE_POST,
+                        payload: { response }
+                    });
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        }));
+    }
 }();

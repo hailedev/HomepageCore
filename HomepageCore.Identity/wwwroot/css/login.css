@@ -1,0 +1,18 @@
+.body-content {
+    margin-top: 180px;
+    font-family: sans-serif;
+}
+.external-button {
+    width: 100%;
+}
+.external-button a {
+    width: 100%;
+}
+.external-button:last-child {
+    margin-top: 10px;
+}
+.divider {
+    font-weight: bold;
+    margin: 15px auto;
+    text-align: center;
+}

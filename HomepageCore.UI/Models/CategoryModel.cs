@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HomepageCore.Models
+namespace HomepageCore.UI.Models
 {
     public class CategoryModel
     {

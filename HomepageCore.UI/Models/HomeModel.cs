@@ -1,6 +1,6 @@
 using System;
 
-namespace HomepageCore.Models
+namespace HomepageCore.UI.Models
 {
     public class HomeModel
     {

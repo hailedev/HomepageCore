@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using HomepageCore.Data.Repositories.Interfaces;
-using HomepageCore.Models;
+using HomepageCore.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

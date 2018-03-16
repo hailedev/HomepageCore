@@ -104,3 +104,54 @@
     display: inline-block;
   }
 }
+
+.admin-nav {
+  width: 100%;
+  background: darkorange;
+  position: relative;
+  z-index: 99;
+  border-bottom: 4px solid red;
+  padding: 4px 0;
+  display: flex;
+
+  .user-name-wrapper {
+    flex-grow: 1;
+    height: 25px;
+    margin-left: 10px;
+
+    svg {
+      height: 25px;
+      width: 25px;
+    }
+
+    .user-name {
+      vertical-align: top;
+      line-height: 25px;
+      padding-left: 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+      color: black;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: inline-block;
+      margin: 0 10px;
+      color: black;
+      font-weight: bold;
+      text-transform: uppercase;
+      vertical-align: middle;
+      cursor: pointer;
+
+      a {
+        text-decoration: none;
+        color: black;
+      }
+    }
+  }
+}

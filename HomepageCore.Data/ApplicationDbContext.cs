@@ -12,6 +12,7 @@ namespace HomepageCore.Data
 
         }
 
+        public DbSet<Image> Images { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Category> Categories { get; set; }
     }

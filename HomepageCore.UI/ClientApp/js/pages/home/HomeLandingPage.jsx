@@ -26,7 +26,7 @@ class HomeLandingPage extends Component {
     }
 
     componentWillMount() {
-        PostSummaryActionCreators.getPostSummaries().then(() => {
+        PostSummaryActionCreators.getPostSummaries({ page: 1 }).then(() => {
             this.loadDisqus();
         });
         if (this.state.categories === null) {
@@ -57,7 +57,7 @@ class HomeLandingPage extends Component {
     }
     onCategoryClick(category) {
         this.setState({ filter: category, enableShowMore: true });
-        PostSummaryActionCreators.getPostSummaries({ filter: category }).then(() => {
+        PostSummaryActionCreators.getPostSummaries({ page: 1, filter: category }).then(() => {
             this.loadDisqus();
         });
     }

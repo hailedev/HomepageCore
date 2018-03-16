@@ -7,10 +7,10 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
-using HomepageCore.Controllers;
+using HomepageCore.Controllers.Api;
 using HomepageCore.Services.Interfaces;
 using HomepageCore.Data.Repositories.Interfaces;
-using HomepageCore.Models;
+using HomepageCore.UI.Models;
 using Newtonsoft.Json;
 
 namespace HomepageCore.UI.Test.Controllers

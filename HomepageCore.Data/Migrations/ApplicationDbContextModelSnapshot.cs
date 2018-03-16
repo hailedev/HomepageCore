@@ -89,6 +89,22 @@ namespace HomepageCore.Data.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("HomepageCore.Data.Entities.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Caption");
+
+                    b.Property<string>("Title");
+
+                    b.Property<string>("Uri");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
+                });
+
             modelBuilder.Entity("HomepageCore.Data.Entities.Post", b =>
                 {
                     b.Property<Guid>("Id")

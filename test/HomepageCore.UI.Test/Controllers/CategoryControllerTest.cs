@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Moq;
 using Xunit;
-using HomepageCore.Controllers;
+using HomepageCore.Controllers.Api;
 using HomepageCore.Data.Repositories.Interfaces;
 using HomepageCore.UI.Configuration;
 using Microsoft.Extensions.Logging;
@@ -11,7 +11,7 @@ using AutoMapper;
 using System.Collections.Generic;
 using HomepageCore.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using HomepageCore.Models;
+using HomepageCore.UI.Models;
 using System.Linq.Expressions;
 using Newtonsoft.Json;
 

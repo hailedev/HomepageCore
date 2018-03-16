@@ -4,6 +4,7 @@ namespace HomepageCore.Data.Repositories.Interfaces
     {
         IPostRepository Posts { get; set; }
         ICategoryRepository Categories { get; set; }
+        IImageRepository Images { get; set; }
         void Commit();
     }
 }

@@ -30,6 +30,10 @@ using NSwag.AspNetCore;
 using HomepageCore.Services.Interfaces;
 using HomepageCore.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using IdentityServer4.AccessTokenValidation;
+using HomepageCore.UI.Services.Interfaces;
+using HomepageCore.UI.Services;
 
 namespace HomepageCore.UI
 {
@@ -55,9 +59,13 @@ namespace HomepageCore.UI
             env.ConfigureNLog("nlog.config");
             LogManager.Configuration.Variables["connectionString"] = Configuration.GetConnectionString("DefaultConnection");
             LogManager.Configuration.Install(new InstallationContext());
+
+            Environment = env;
         }
 
         public IConfigurationRoot Configuration { get; }
+        public IHostingEnvironment Environment { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -65,34 +73,38 @@ namespace HomepageCore.UI
             services.AddDbContext<ApplicationDbContext>(optionsBuilder => optionsBuilder.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddSingleton<IHostingEnvironment>(Environment);
+
             services.AddOptions();
             services.Configure<ApplicationOptions>(Configuration);
-            
-            services.AddIdentity<ApplicationUser, IdentityRole>(
-                config =>
-                {
-                    config.User.RequireUniqueEmail = true;
-                })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<Func<IServiceClient>>(provider => new Func<IServiceClient>(() => new ServiceClient(provider.GetService<IHttpContextAccessor>())));
 
-            services.ConfigureApplicationCookie(
-                config => config.Events = new CookieAuthenticationEvents
-                {
-                    OnRedirectToLogin = ctx =>
-                    {
-                        ctx.Response.StatusCode = 400;
-                        return Task.FromResult<object>(null);
-                    }
-                });
-
-            // Add Google auth
-            services.AddAuthentication().AddGoogle(options => 
-            {
-                options.ClientId = Configuration["Authentication:Google:ClientId"];
-                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            services.AddAuthentication(options => {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddOpenIdConnect(options => {
+                options.Authority = "http://localhost:5000";
+                options.ClientId = "mvc";
+                options.ResponseType = "code id_token";
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.Scope.Add("api1");
+                options.SaveTokens = true;
+                options.RequireHttpsMetadata = false;
+                options.ClientSecret = "49C1A7E1-0C79-4A89-A3D6-A37998FB86B0";
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.GetClaimsFromUserInfoEndpoint = true;
+            })
+            .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options => { // JWT authentication
+                options.Authority = "http://localhost:5000";
+                options.ApiName = "api1";
+                options.RequireHttpsMetadata = false;
             });
 
             // Add compression
@@ -128,12 +140,15 @@ namespace HomepageCore.UI
             loggerFactory.AddNLog();
             app.AddNLogWeb();
 
-            if (env.IsDevelopment())
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                app.UseDeveloperExceptionPage();
-                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+
+                context.Database.Migrate();
+
+                if (env.IsDevelopment())
                 {
-                    var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                    app.UseDeveloperExceptionPage();
                     if(context.Posts.Count() <= 0)
                     {
                         var userManager = serviceScope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
@@ -151,6 +166,7 @@ namespace HomepageCore.UI
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute("default","{controller}/{action=Index}/{id?}");
                 routes.MapSpaFallbackRoute("spa-fallback",new { Controller = "Home", action = "Index"});
             });
         }

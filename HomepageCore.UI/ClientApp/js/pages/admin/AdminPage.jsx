@@ -1,329 +1,96 @@
 import React, { Component } from 'react';
-import { Editor, EditorState, RichUtils, ContentState, AtomicBlockUtils, convertFromRaw, convertToRaw, Entity } from 'draft-js';
+import UserStore from 'UserStore';
+import { Container } from 'flux/utils';
+import DefaultUserManager from 'DefaultUserManager';
+import UserActionCreators from 'UserActionCreators';
+import PostSummaryActionCreators from 'PostSummaryActionCreators';
+import PostActionCreators from 'PostActionCreators';
+import PostSummaryStore from 'PostSummaryStore';
 import CategoryStore from 'CategoryStore';
 import CategoryActionCreators from 'CategoryActionCreators';
-import { stateToHTML } from 'draft-js-export-html';
-import PostActionCreators from 'PostActionCreators';
-import Model from 'react-modal';
-import { Container } from 'flux/utils';
-import UserInfoApi from '../../api/UserInfoApi';
-import StyleButton from './StyleButton';
+import { Link } from 'react-router-dom';
 
 class AdminPage extends Component {
     static getStores() {
-        return [CategoryStore];
+        return [UserStore, PostSummaryStore, CategoryStore];
     }
 
     static calculateState() {
-        return { categories: CategoryStore.getState() };
-    }
-    constructor(props) {
-        super(props);
-        this.customRefs = {};
-        this.state = { editorState: EditorState.createEmpty(), showURLInput: false, urlType: '', title: '', blurb: '', tags: '', link: '', category: 'c3943998-774b-4ac4-9ccd-8e740e20ab2c' };
-    }
-    componentWillMount() {
-        UserInfoApi.getUserInfo().then(() => {
-            if (this.state.categories === null) {
-                CategoryActionCreators.getCategories();
-            }
-            if (this.props.match.params.id) {
-                PostActionCreators.getPost(this.props.match.params.id, true).then((response) => {
-                    const contentState = convertFromRaw(JSON.parse(response.raw));
-                    const editorState = EditorState.createWithContent(contentState);
-                    this.setState({ id: response.id, title: response.title, blurb: response.blurb, tags: response.tags, editorState, category: response.categoryId, loggedIn: true }); // eslint-disable-line
-                });
-            } else {
-                this.setState({ loggedIn: true }); // eslint-disable-line
-            }
-        });
-        this.blockTypes = [
-            { label: 'H1', style: 'header-one' },
-            { label: 'H2', style: 'header-two' },
-            { label: 'H3', style: 'header-three' },
-            { label: 'H4', style: 'header-four' },
-            { label: 'H5', style: 'header-five' },
-            { label: 'H6', style: 'header-six' },
-            { label: 'Blockquote', style: 'blockquote' },
-            { label: 'UL', style: 'unordered-list-item' },
-            { label: 'OL', style: 'ordered-list-item' },
-            { label: 'Code Block', style: 'code-block' }
-        ];
-        this.inlineStyles = [
-            { label: 'Bold', style: 'BOLD' },
-            { label: 'Italic', style: 'ITALIC' },
-            { label: 'Underline', style: 'UNDERLINE' },
-            { label: 'Monospace', style: 'CODE' }
-        ];
+        return { user: UserStore.getState(), posts: PostSummaryStore.getState(), categories: CategoryStore.getState() };
     }
 
-    onTab(e) {
-        this.setState({ editorState: RichUtils.onTab(e, this.state.editorState, 4) });
-    }
-
-    onChange(editorState) {
-        this.setState({ editorState });
-    }
-
-    onSubmit() {
-        const options = {
-            blockRenderers: {
-                atomic: function (block) {
-                    const data = this.state.editorState.getCurrentContent().getEntity(block.getEntityAt(0)).getData();
-                    return `<div><img style='border:10px solid white;background-color:white;display:block;margin:auto' src='${data.src}'/><div style='font-size:14px;padding-top:10px;text-align:center'>${data.caption}</div></div>`;
-                }.bind(this)
-            }
-        };
-        const html = stateToHTML(this.state.editorState.getCurrentContent(), options);
-        const post = { title: this.state.title, content: html, tags: this.state.tags, categoryId: this.state.category, id: this.state.id, raw: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())) };
-        if (this.state.blurb) {
-            post.blurb = this.state.blurb;
+    componentDidMount() {
+        if (!this.state.user) {
+            UserActionCreators.setUserInfo()
+                .then((token) => {
+                    if (!token) {
+                        DefaultUserManager.signinRedirect({ state: { url: 'http://localhost:5001/admin' } });
+                    }
+                })
+                .catch(() => DefaultUserManager.signinRedirect({ state: { url: 'http://localhost:5001/admin' } }));
         }
-        PostActionCreators.addPost(post).then(() => {
-            const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));
-            this.setState({ editorState, title: '', blurb: '', tags: '', category: 'c3943998-774b-4ac4-9ccd-8e740e20ab2c' });
-        });
-    }
 
-    onURLChange(e) {
-        this.setState({ urlValue: e.target.value });
-    }
-
-    onCaptionChange(e) {
-        this.setState({ caption: e.target.value });
-    }
-
-    onTitleChange(e) {
-        this.setState({ title: e.target.value });
-    }
-
-    onBlurbChange(e) {
-        this.setState({ blurb: e.target.value });
-    }
-    onTagsChange(e) {
-        this.setState({ tags: e.target.value });
-    }
-    onCategoryChange(e) {
-        this.setState({ category: e.target.value });
-    }
-    onLinkChange(e) {
-        this.setState({ link: e.target.value });
-    }
-    onLogin() {
-        window.location.href = `${window.location.origin}/api/account/external-login?returnUrl=${encodeURIComponent(window.location.href)}`;
-    }
-
-    getMedia(props) {
-        const entity = props.contentState.getEntity(props.block.getEntityAt(0));
-        return <img src={entity.getData().src} alt="" />;
-    }
-
-    getBlockStyle(block) {
-        switch (block.getType()) {
-            case 'blockquote': return 'RichEditor-blockquote';
-            default: return null;
+        if (!this.state.categories || this.state.categories.length === 0) {
+            CategoryActionCreators.getCategories();
         }
+        PostSummaryActionCreators.getPostSummaries();
     }
-    addImage() {
-        this.promptForMedia('image');
-    }
-    promptForMedia(type) {
-        this.setState({
-            showURLInput: true,
-            urlValue: '',
-            caption: '',
-            urlType: type
-        });
-    }
-    focus() {
-        this.customRefs.editor.focus();
-    }
-    toggleLink() {
-        const entityKey = Entity.create('LINK', 'MUTABLE', { url: this.state.link });
-        this.setState({ editorState: RichUtils.toggleLink(this.state.editorState, this.state.editorState.getSelection(), entityKey) });
-    }
-    toggleInlineStyle(style) {
-        this.setState({ editorState: RichUtils.toggleInlineStyle(this.state.editorState, style) });
-    }
-    toggleBlockType(type) {
-        this.setState({ editorState: RichUtils.toggleBlockType(this.state.editorState, type) });
-    }
-    handleKeyCommand(command) {
-        const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
-        if (newState) {
-            this.setState({ editorState: newState });
-            return true;
-        }
-        return false;
-    }
-    closeModal() {
-        this.setState({ showURLInput: false });
-    }
-    mediaBlockRenderer(block) {
-        if (block.getType() === 'atomic') {
-            return {
-                component: this.getMedia,
-                editable: false
-            };
-        }
-        return null;
-    }
-    confirmMedia(e) {
-        e.preventDefault();
-        const { editorState, urlValue, urlType, caption } = this.state;
-        const contentState = editorState.getCurrentContent();
-        const contentStateWithEntity = contentState.createEntity(
-            urlType,
-            'IMMUTABLE',
-            { src: urlValue, caption }
-        );
-        const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-        const newEditorState = EditorState.set(
-            editorState,
-            { currentContent: contentStateWithEntity }
-        );
 
-        this.setState({
-            editorState: AtomicBlockUtils.insertAtomicBlock(
-                newEditorState,
-                entityKey,
-                ' '
-            ),
-            showURLInput: false,
-            urlValue: '',
-            caption: ''
-        });
+    delete(id) {
+        PostActionCreators.deletePost(id)
+            .then(() => PostSummaryActionCreators.getPostSummaries());
     }
 
     render() {
-        let className = 'RichEditor-editor';
-        const contentState = this.state.editorState.getCurrentContent();
-        if (!contentState.hasText()) {
-            if (contentState.getBlockMap().first().getType() !== 'unstyled') {
-                className += ' RichEditor-hidePlaceholder';
-            }
+        if (!this.state.user) {
+            return <div />;
         }
 
-        const selection = this.state.editorState.getSelection();
-        const blockType = this.state.editorState.getCurrentContent()
-            .getBlockForKey(selection.getStartKey())
-            .getType();
+        const close = (
+            <svg style={{ height: '20px', width: '25px', cursor: 'pointer' }}>
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+        );
 
-        const blockStyleControls = [];
-        const inlineStyleControls = [];
-        let type;
+        const edit = (
+            <svg style={{ height: '20px', width: '25px' }}>
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+            </svg>
+        );
 
-        for (let i = 0; i < this.blockTypes.length; i += 1) {
-            type = this.blockTypes[i];
-            blockStyleControls.push(<StyleButton
-                key={type.label}
-                active={type.style === blockType}
-                label={type.label}
-                onToggle={this.toggleBlockType}
-                style={type.style}
-            />);
+        const posts = [];
+        if (this.state.categories && this.state.categories.length > 0) {
+            this.state.posts.map((post) => {
+                const category = this.state.categories.find(cat => cat.id === post.categoryId);
+                posts.push( // eslint-disable-line
+                    <tr key={post.id}>
+                        <td>{post.title}</td>
+                        <td>{category ? category.name : ''}</td>
+                        <td>{post.createdOn}</td>
+                        <td><Link to={'edit/'.concat(post.id)}>{edit}</Link></td>
+                        <td onClick={this.delete.bind(this, post.id)} role="presentation">{close}</td>
+                    </tr>);
+            });
         }
 
-        const currentStyle = this.state.editorState.getCurrentInlineStyle();
-        for (let i = 0; i < this.inlineStyles.length; i += 1) {
-            type = this.inlineStyles[i];
-            inlineStyleControls.push(<StyleButton
-                key={type.label}
-                active={currentStyle.has(type.style)}
-                label={type.label}
-                onToggle={this.toggleInlineStyle}
-                style={type.style}
-            />);
-        }
-        const categoryOptions = [];
-        if (this.state.categories !== null) {
-            for (let i = 0; i < this.state.categories.length; i += 1) {
-                const category = this.state.categories[i];
-                categoryOptions.push(<option key={category.id} value={category.id}>{category.name}</option>);
-            }
-        }
         return (
             <div className="container admin">
-                <div className="row">
-                    <div className="col-md-2">Title</div>
-                    <div className="col-md-10"><input type="text" value={this.state.title} onChange={this.onTitleChange} /></div>
-                </div>
-                <div className="row">
-                    <div className="col-md-2">Blurb</div>
-                    <div className="col-md-10"><input type="text" value={this.state.blurb} onChange={this.onBlurbChange} /></div>
-                </div>
-                <div className="row">
-                    <div className="col-md-2">Tags</div>
-                    <div className="col-md-10"><input type="text" value={this.state.tags} onChange={this.onTagsChange} /></div>
-                </div>
-                <div className="row">
-                    <div className="col-md-2">Category</div>
-                    <div className="col-md-10">
-                        <select name="category" value={this.state.category} onChange={this.onCategoryChange}>
-                            {categoryOptions}
-                        </select>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-12 RichEditor-root">
-                        <div className="RichEditor-controls">
-                            {blockStyleControls}
-                        </div>
-                        <div className="RichEditor-controls">
-                            {inlineStyleControls}
-                        </div>
-                        <div className="RichEditor-controls">
-                            <button onMouseDown={this.toggleLink}>Add Link</button>
-                            <input type="text" style={{ margin: '0 10px' }} value={this.state.link} onChange={this.onLinkChange} />
-                        </div>
-                        <div className="RichEditor-controls">
-                            <button onMouseDown={this.addImage}>
-                                Add Image
-                            </button>
-                        </div>
-                        <div className={className} onClick={this.focus} role="presentation">
-                            <Editor
-                                blockRendererFn={this.mediaBlockRenderer}
-                                blockStyleFn={this.getBlockStyle}
-                                editorState={this.state.editorState}
-                                handleKeyCommand={this.handleKeyCommand}
-                                onChange={this.onChange}
-                                onTab={this.onTab}
-                                ref={function (input) { this.customRefs.editor = input; }.bind(this)}
-                                spellCheck
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="row" style={{ marginTop: '10px' }}>
-                    <div className="col-md-offset-10 col-md-2">
-                        <div className="button" style={{ marginLeft: '50px' }} onClick={this.onSubmit} role="presentation">Submit</div>
-                    </div>
-                </div>
-                <Model
-                    isOpen={this.state.showURLInput}
-                    contentLabel="Modal"
-                    onRequestClose={this.closeModal}
-                    style={{ overlay: { backgroundColor: 'inherit' }, content: { position: 'relative', left: 'auto', right: 'auto', bottom: 'auto', top: 'auto', margin: '150px auto', width: '500px', height: '210px' } }}
-                >
-                    <div>
-                        <div>URL</div>
-                        <input
-                            onChange={this.onURLChange}
-                            ref={function (input) { this.customRefs.url = input; }.bind(this)}
-                            type="text"
-                            value={this.state.urlValue}
-                        />
-                        <div>Caption</div>
-                        <input
-                            onChange={this.onCaptionChange}
-                            ref={function (input) { this.customRefs.caption = input; }.bind(this)}
-                            type="text"
-                            value={this.state.caption}
-                        />
-                        <div className="button" onClick={this.confirmMedia} role="presentation">Confirm</div>
-                    </div>
-                </Model>
+                <div className="col-sm-2 row"><Link to="edit"><div className="button" style={{ marginLeft: '20px' }}>Add post</div></Link></div>
+                <div className="row" />
+                <table className="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Created</th>
+                            <th />
+                            <th />
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {posts}
+                    </tbody>
+                </table>
             </div>
         );
     }

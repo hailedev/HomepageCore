@@ -60,7 +60,8 @@ module.exports = {
             "./js/stores",
             "./js/actions",
             "./js/api",
-            "./js/common"
+            "./js/common",
+            "./js/services"
         ],
         extensions: [".js", ".jsx"],
         alias: {

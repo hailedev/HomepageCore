@@ -1,0 +1,32 @@
+﻿@using IdentityServer4.Extensions
+@{
+    string name = null;
+    if (!true.Equals(ViewData["signed-out"]))
+    {
+        name = Context.User?.GetDisplayName();
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/RichEditor.css">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/login.css" rel="stylesheet">
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <div id="root">
+        <div class="navigation-container"><div class="navigation container"><div class="navigation-section"></div><a href="/"><div class="ribbon-container"><div class="ribbon-title-text">Hai Le</div><div class="ribbon-title-sep">W</div><div class="ribbon-main"><div class="ribbon-left"></div><div class="ribbon-right"></div></div><div class="stitching"><div class="stitching-left"></div><div class="stitching-right"></div></div></div></a><div class="navigation-section social-links"></div></div></div>
+        <div class="container body-content">
+            @RenderBody()
+        </div>
+
+        <script src="~/lib/jquery/jquery.js"></script>
+        @RenderSection("scripts", required: false)
+    </div>
+</body>
+</html>

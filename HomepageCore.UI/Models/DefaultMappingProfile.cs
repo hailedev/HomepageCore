@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HomepageCore.Data.Entities;
 
-namespace HomepageCore.Models
+namespace HomepageCore.UI.Models
 {
     public class DefaultMappingProfile : Profile
     {

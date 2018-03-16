@@ -11,7 +11,7 @@ beforeEach(function(){
     jest.mock("pages/resume/ResumePage");
     jest.mock("pages/feedback/FeedbackPage");
     jest.mock("pages/projects/ProjectsPage");
-    jest.mock("pages/admin/AdminPage");
+    jest.mock("pages/admin/EditPage");
 });
 
 describe("<Main />", function(){

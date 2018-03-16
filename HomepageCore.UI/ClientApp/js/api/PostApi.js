@@ -2,7 +2,7 @@ import ApiDispatcher from './ApiDispatcher';
 
 export default new class PostApi {
     getPostSummaries(options) {
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             let url = '/api/post?summary=true';
             if (options) {
                 if (options.page) {
@@ -12,7 +12,7 @@ export default new class PostApi {
                     url = url.concat('&filter=').concat(options.filter);
                 }
             }
-            ApiDispatcher.dispatch(fetch.bind(this, url, { method: 'GET', credentials: 'include' }), resolve, reject);
+            ApiDispatcher.dispatch(url, { method: 'GET', credentials: 'include' }, resolve, reject);
         });
     }
 
@@ -21,22 +21,28 @@ export default new class PostApi {
         if (editable) {
             url = url.concat('?editable=true');
         }
-        return new Promise(function (resolve, reject) {
-            ApiDispatcher.dispatch(fetch.bind(this, url, { method: 'GET', credentials: 'include' }), resolve, reject);
+        return new Promise((resolve, reject) => {
+            ApiDispatcher.dispatch(url, { method: 'GET', credentials: 'include' }, resolve, reject);
         });
     }
 
     addPost(post) {
-        return new Promise(function (resolve, reject) {
-            ApiDispatcher.dispatch(fetch.bind(
-                this, '/api/post/',
+        return new Promise((resolve, reject) => {
+            ApiDispatcher.dispatch(
+                '/api/post/',
                 {
                     method: 'POST',
                     credentials: 'include',
                     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
                     body: JSON.stringify(post)
-                }
-            ), resolve, reject);
+                }, resolve, reject
+            );
+        });
+    }
+
+    deletePost(id) {
+        return new Promise((resolve, reject) => {
+            ApiDispatcher.dispatch('/api/post/'.concat(id), { method: 'DELETE', credentials: 'include' }, resolve, reject);
         });
     }
 }();
