@@ -9,7 +9,14 @@ services:
       replicas: 1
     ports: 
       - "80:80"
-
+  identity:
+    image: hailedev/homepagecore.identity:latest
+    volumes:
+      - "db-data-id:/data/db"
+    deploy:
+      replicas: 1
+    ports: 
+      - "8080:80"
   viz:
     image: dockersamples/visualizer:latest
     volumes: 
@@ -25,4 +32,6 @@ volumes:
   db-data:
     driver: "cloudstor:aws"
   images:
+    driver: "cloudstor:aws"
+  db-data-id:
     driver: "cloudstor:aws"
