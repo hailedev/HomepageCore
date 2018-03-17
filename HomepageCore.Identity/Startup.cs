@@ -66,6 +66,7 @@ namespace HomepageCore.Identity
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<ApplicationUser>();
 
+            builder.AddDeveloperSigningCredential();
             if (Environment.IsDevelopment())
             {
                 builder.AddDeveloperSigningCredential();
@@ -90,6 +91,7 @@ namespace HomepageCore.Identity
 
         public void Configure(IApplicationBuilder app)
         {
+            app.UseDeveloperExceptionPage();
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
