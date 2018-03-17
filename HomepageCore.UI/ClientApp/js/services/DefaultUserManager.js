@@ -3,10 +3,10 @@ import { UserManager } from 'oidc-client';
 export default new class DefaultUserManager extends UserManager {
     constructor() {
         const settings = {
-            authority: 'http://localhost:5000',
+            authority: 'http://haile.info:8080',
             client_id: 'spa',
-            redirect_uri: 'http://localhost:5001/signin-callback',
-            post_logout_redirect_uri: 'http://localhost:5001',
+            redirect_uri: 'http://haile.info/signin-callback',
+            post_logout_redirect_uri: 'http://haile.info',
             response_type: 'id_token token',
             // scope: 'openid email roles',
             scope: 'openid profile api1',

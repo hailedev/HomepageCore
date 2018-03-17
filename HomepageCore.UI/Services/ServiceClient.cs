@@ -20,7 +20,7 @@ namespace HomepageCore.UI.Services
         public ServiceClient(IHttpContextAccessor contextAccessor)
         {
             _contextAccessor = contextAccessor;
-            BaseUrl = new Uri("http://localhost:5001");
+            BaseUrl = new Uri("http://haile.info");
 
             var token = _contextAccessor.HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.AccessToken).Result;
             if(token != null) 

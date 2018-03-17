@@ -89,20 +89,20 @@ namespace HomepageCore.UI
             })
             .AddCookie()
             .AddOpenIdConnect(options => {
-                options.Authority = "http://localhost:5000";
-                options.ClientId = "mvc";
+                options.Authority = Configuration["OpenIdConnect:Authority"];
+                options.ClientId = Configuration["OpenIdConnect:ClientId"];
                 options.ResponseType = "code id_token";
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");
                 options.Scope.Add("api1");
                 options.SaveTokens = true;
                 options.RequireHttpsMetadata = false;
-                options.ClientSecret = "49C1A7E1-0C79-4A89-A3D6-A37998FB86B0";
+                options.ClientSecret = Configuration["OpenIdConnect:ClientSecret"];
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.GetClaimsFromUserInfoEndpoint = true;
             })
             .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options => { // JWT authentication
-                options.Authority = "http://localhost:5000";
+                options.Authority = Configuration["OpenIdConnect:Authority"];
                 options.ApiName = "api1";
                 options.RequireHttpsMetadata = false;
             });
@@ -139,7 +139,7 @@ namespace HomepageCore.UI
         {
             loggerFactory.AddNLog();
             app.AddNLogWeb();
-
+            app.UseDeveloperExceptionPage();
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();

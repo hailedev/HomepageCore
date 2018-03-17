@@ -91,7 +91,7 @@ namespace HomepageCore.Controllers
         {
             // Sign out of identity server
             var idToken = await HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
-            return Redirect($"http://localhost:5000/connect/endsession?id_token_hint={idToken}");
+            return Redirect($"http://haile.info:8080/connect/endsession?id_token_hint={idToken}");
         }
     }
 }

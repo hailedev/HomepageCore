@@ -24,10 +24,10 @@ class AdminPage extends Component {
             UserActionCreators.setUserInfo()
                 .then((token) => {
                     if (!token) {
-                        DefaultUserManager.signinRedirect({ state: { url: 'http://localhost:5001/admin' } });
+                        DefaultUserManager.signinRedirect({ state: { url: 'http://haile.info/admin' } });
                     }
                 })
-                .catch(() => DefaultUserManager.signinRedirect({ state: { url: 'http://localhost:5001/admin' } }));
+                .catch(() => DefaultUserManager.signinRedirect({ state: { url: 'http://haile.info/admin' } }));
         }
 
         if (!this.state.categories || this.state.categories.length === 0) {

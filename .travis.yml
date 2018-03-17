@@ -8,7 +8,8 @@ branches:
     - master
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_62b461b4c6ca_key -iv $encrypted_62b461b4c6ca_iv -in ./HomepageCore.UI/appsettings.Production.json.enc -out ./HomepageCore.UI/appsettings.Production.json -d
+  - openssl aes-256-cbc -K $encrypted_ea94f69b2db5_key -iv $encrypted_ea94f69b2db5_iv -in ./HomepageCore.UI/appsettings.Production.json.enc -out ./HomepageCore.UI/appsettings.Production.json -d
+  - openssl aes-256-cbc -K $encrypted_ceb7069f3a5c_key -iv $encrypted_ceb7069f3a5c_iv -in ./HomepageCore.Identity/appsettings.Production.json.enc -out ./HomepageCore.Identity/appsettings.Production.json -d
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update

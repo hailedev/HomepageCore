@@ -12,7 +12,8 @@ COPY ./HomepageCore.sln ./
 RUN dotnet restore
 
 # Install webpack
-RUN npm install webpack -g
+RUN npm install webpack@3.11.0 -g
+RUN npm install webpack-cli -g
 
 # Restore npm packages
 COPY ./HomepageCore.UI/package*.json ./HomepageCore.UI/
