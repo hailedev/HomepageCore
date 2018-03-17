@@ -18,8 +18,10 @@ before_install:
 
 script:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker build -t $CONTAINER_REGISTRY/homepagecore:latest .
+  - docker build -f ./HomepageCore.UI/Dockerfile -t $CONTAINER_REGISTRY/homepagecore:latest .
   - docker push $CONTAINER_REGISTRY/homepagecore:latest
+  - docker build -f ./HomepageCore.Identity/Dockerfile -t $CONTAINER_REGISTRY/homepagecore.identity:latest .
+  - docker push $CONTAINER_REGISTRY/homepagecore.identity:latest
 
 deploy:
   provider: script

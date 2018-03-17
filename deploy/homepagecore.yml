@@ -6,7 +6,7 @@ services:
       - "db-data:/data/db"
       - "images:/var/www/wwwroot/images/blog"
     deploy:
-      replicas: 2
+      replicas: 1
     ports: 
       - "80:80"
 
