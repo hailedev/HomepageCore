@@ -51,5 +51,10 @@ module.exports = merge(common, {
                 "NODE_ENV": JSON.stringify("production")
             }
         })
-    ]
+    ],
+    resolve: {
+        alias: {
+            "env": path.resolve(__dirname, "./appsettings.Production.json")
+        }
+    }
 });

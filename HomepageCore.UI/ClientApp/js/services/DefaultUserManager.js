@@ -1,12 +1,13 @@
 import { UserManager } from 'oidc-client';
+import env from 'env';
 
 export default new class DefaultUserManager extends UserManager {
     constructor() {
         const settings = {
-            authority: 'http://haile.info:8080',
+            authority: env.OpenIdConnect.Authority,
             client_id: 'spa',
-            redirect_uri: 'http://haile.info/signin-callback',
-            post_logout_redirect_uri: 'http://haile.info',
+            redirect_uri: `${env.OpenIdConnect.RedirectUri}/signin-callback`,
+            post_logout_redirect_uri: env.OpenIdConnect.RedirectUri,
             response_type: 'id_token token',
             // scope: 'openid email roles',
             scope: 'openid profile api1',
