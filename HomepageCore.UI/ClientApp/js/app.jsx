@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import browser from 'detect-browser';
 import { BrowserRouter, Route } from 'react-router-dom';
 import DefaultUserManager from 'DefaultUserManager';
+import env from 'env';
 import Main from './pages/Main';
 
 window.onerror = function onerror(message, url, lineNo, colNo, error) {
@@ -39,6 +40,10 @@ if (window.location.pathname === '/signin-callback') {
 }
 if (window.location.pathname === '/signout-callback') {
     DefaultUserManager.removeUser();
+    pageContent = <div />;
+}
+if (window.location.pathname === '/login') {
+    DefaultUserManager.signinRedirect({ state: { url: `${env.OpenIdConnect.RedirectUri}/admin` } });
     pageContent = <div />;
 }
 if (browser && browser.name === 'ie' && !browser.version.startsWith('11')) {

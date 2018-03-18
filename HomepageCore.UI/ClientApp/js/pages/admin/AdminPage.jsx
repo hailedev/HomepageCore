@@ -9,6 +9,7 @@ import PostSummaryStore from 'PostSummaryStore';
 import CategoryStore from 'CategoryStore';
 import CategoryActionCreators from 'CategoryActionCreators';
 import { Link } from 'react-router-dom';
+import env from 'env';
 
 class AdminPage extends Component {
     static getStores() {
@@ -24,10 +25,10 @@ class AdminPage extends Component {
             UserActionCreators.setUserInfo()
                 .then((token) => {
                     if (!token) {
-                        DefaultUserManager.signinRedirect({ state: { url: 'http://haile.info/admin' } });
+                        DefaultUserManager.signinRedirect({ state: { url: `${env.OpenIdConnect.RedirectUri}/admin` } });
                     }
                 })
-                .catch(() => DefaultUserManager.signinRedirect({ state: { url: 'http://haile.info/admin' } }));
+                .catch(() => DefaultUserManager.signinRedirect({ state: { url: `${env.OpenIdConnect.RedirectUri}/admin` } }));
         }
 
         if (!this.state.categories || this.state.categories.length === 0) {
