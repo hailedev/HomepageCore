@@ -61,10 +61,11 @@ class Main extends Component {
                 </ul>
             </div>
         );
+        const banner = this.state.user ? <img src="/images/react.svg" alt="react" style={{ width: '90px' }} /> : 'Hai Le';
         const ribbon = (
             <Link to="/">
                 <div className="ribbon-container">
-                    <div className="ribbon-title-text">Hai Le</div>
+                    <div className="ribbon-title-text">{banner}</div>
                     <div className="ribbon-title-sep">W</div>
                     <div className="ribbon-main">
                         <div className="ribbon-left" />
