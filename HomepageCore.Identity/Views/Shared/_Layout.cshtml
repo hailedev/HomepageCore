@@ -14,13 +14,12 @@
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/RichEditor.css">
-    <link href="/css/styles.css" rel="stylesheet">
-    <link href="/css/login.css" rel="stylesheet">
+    @RenderSection("stylesheets", required: false)
     <title>@ViewData["Title"]</title>
 </head>
 <body>
     <div id="root">
-        <div class="navigation-container"><div class="navigation container"><div class="navigation-section"></div><a href="/"><div class="ribbon-container"><div class="ribbon-title-text">Hai Le</div><div class="ribbon-title-sep">W</div><div class="ribbon-main"><div class="ribbon-left"></div><div class="ribbon-right"></div></div><div class="stitching"><div class="stitching-left"></div><div class="stitching-right"></div></div></div></a><div class="navigation-section social-links"></div></div></div>
+        @RenderSection("navigation", required: false)
         <div class="container body-content">
             @RenderBody()
         </div>
