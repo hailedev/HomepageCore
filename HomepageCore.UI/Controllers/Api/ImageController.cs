@@ -49,11 +49,11 @@ namespace HomepageCore.Controllers.Api
             try
             {
                 // Ensure the directory is created
-                var directory = $"{_hostingEnvironment.WebRootPath}/images/posts";
+                var directory = $"{_hostingEnvironment.WebRootPath}/images/blog";
                 System.IO.Directory.CreateDirectory(directory);
 
                 // Add the file to the posts directory
-                var uri = $"/images/posts/{model.Title}.jpg";
+                var uri = $"/images/blog/{model.Title}.jpg";
                 var absolutePath = $"{_hostingEnvironment.WebRootPath}{uri}";
                 await System.IO.File.WriteAllBytesAsync(absolutePath, model.PictureBytes);
 
@@ -84,7 +84,7 @@ namespace HomepageCore.Controllers.Api
                 _applicationUnitOfWork.Images.Delete(image);
                 _applicationUnitOfWork.Commit();
 
-                var uri = $"/images/posts/{image.Title}.jpg";
+                var uri = $"/images/blog/{image.Title}.jpg";
                 var absolutePath = $"{_hostingEnvironment.WebRootPath}{uri}";
                 System.IO.File.Delete(absolutePath);
                 return Json(id);

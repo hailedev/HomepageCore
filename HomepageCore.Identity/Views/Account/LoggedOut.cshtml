@@ -6,6 +6,14 @@
 }
 
 <div class="page-header logged-out">
+    @if (Model.PostLogoutRedirectUri != null)
+    {
+        <div>
+            Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the
+            <span>@Model.ClientName</span> application.
+        </div>
+    }
+
     @if (Model.SignOutIframeUrl != null)
     {
         <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>

@@ -13,6 +13,7 @@ services:
     image: hailedev/homepagecore.identity:latest
     volumes:
       - "db-data-id:/data/db"
+      - "images:/var/www/wwwroot/images/blog"
     deploy:
       replicas: 1
     ports: 
