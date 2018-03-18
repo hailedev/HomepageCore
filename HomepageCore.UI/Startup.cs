@@ -34,6 +34,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using IdentityServer4.AccessTokenValidation;
 using HomepageCore.UI.Services.Interfaces;
 using HomepageCore.UI.Services;
+using Microsoft.Extensions.Options;
 
 namespace HomepageCore.UI
 {
@@ -81,7 +82,7 @@ namespace HomepageCore.UI
             services.AddOptions();
             services.Configure<ApplicationOptions>(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<Func<IServiceClient>>(provider => new Func<IServiceClient>(() => new ServiceClient(provider.GetService<IHttpContextAccessor>())));
+            services.AddSingleton<Func<IServiceClient>>(provider => new Func<IServiceClient>(() => new ServiceClient(provider.GetService<IHttpContextAccessor>(), provider.GetService<IOptions<ApplicationOptions>>())));
 
             services.AddAuthentication(options => {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;

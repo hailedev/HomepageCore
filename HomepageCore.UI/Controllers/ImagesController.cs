@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using HomepageCore.UI.Configuration;
 using HomepageCore.UI.Models;
 using HomepageCore.UI.Services.Interfaces;
 using HomepageCore.UI.ViewModels;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace HomepageCore.Controllers
@@ -22,11 +24,13 @@ namespace HomepageCore.Controllers
     {
         private readonly ILogger _logger;
         private readonly Func<IServiceClient> _serviceClientFactory;
+        private readonly ApplicationOptions _applicationOptions;
 
-        public ImagesController(ILoggerFactory loggerFactory, Func<IServiceClient> serviceClientFactory)
+        public ImagesController(ILoggerFactory loggerFactory, Func<IServiceClient> serviceClientFactory, IOptions<ApplicationOptions> optionsAccessor)
         {
             _logger = loggerFactory.CreateLogger(GetType().Namespace);
             _serviceClientFactory = serviceClientFactory;
+            _applicationOptions = optionsAccessor.Value;
         }
 
         public async Task<IActionResult> Index()
@@ -91,7 +95,7 @@ namespace HomepageCore.Controllers
         {
             // Sign out of identity server
             var idToken = await HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
-            return Redirect($"http://haile.info:8080/connect/endsession?id_token_hint={idToken}");
+            return Redirect($"{_applicationOptions.OpenIdConnect.Authority}/connect/endsession?id_token_hint={idToken}");
         }
     }
 }
