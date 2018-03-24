@@ -277,3 +277,5 @@ HomepageCore.UI/ClientApp/images/blog/
 HomepageCore.Identity/identityserver4_log.txt
 HomepageCore.Identity/appsettings.Production.json
 HomepageCore.Identity/AspIdUsers.db
+
+deploy/*.conf
