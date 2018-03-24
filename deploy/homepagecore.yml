@@ -16,7 +16,7 @@ services:
     deploy:
       replicas: 1
     ports: 
-      - "8070:80"
+      - "8060:8060"
   identity:
     image: hailedev/homepagecore.identity:latest
     volumes:
