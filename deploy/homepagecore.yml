@@ -8,6 +8,10 @@ services:
       replicas: 1
     ports: 
       - "80:80"
+    links:
+      - web
+      - identity
+      - viz
   web:
     image: hailedev/homepagecore:latest
     volumes:
@@ -15,10 +19,12 @@ services:
       - "images:/var/www/wwwroot/images/blog"
     deploy:
       replicas: 1
-    ports: 
-      - "8070:8070"
+#    ports: 
+#      - "8070:8070"
+    expose:
+      - "8080"
     environment:
-      - ASPNETCORE_URLS=http://*:8070
+      - ASPNETCORE_URLS=http://*:8080
   identity:
     image: hailedev/homepagecore.identity:latest
     volumes:
@@ -26,8 +32,10 @@ services:
       - "images:/var/www/wwwroot/images/blog"
     deploy:
       replicas: 1
-    ports: 
-      - "8080:8080"
+#    ports: 
+#      - "8080:8080"
+    expose:
+      - "8080"
     environment:
       - ASPNETCORE_URLS=http://*:8080
   viz:
@@ -39,8 +47,10 @@ services:
         constraints:
           - node.role==manager
       replicas: 1
-    ports:
-      - "8090:8080"
+#    ports:
+#      - "8090:8080"
+    expose:
+      - "8080"
 
 volumes:
   config:
