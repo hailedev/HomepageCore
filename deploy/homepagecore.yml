@@ -8,10 +8,8 @@ services:
       replicas: 1
     ports: 
       - "80:80"
-    links:
-      - web
-      - identity
-      - viz
+      - "8080:8080"
+      - "8090:8090"
   web:
     image: hailedev/homepagecore:latest
     volumes:
@@ -19,8 +17,6 @@ services:
       - "images:/var/www/wwwroot/images/blog"
     deploy:
       replicas: 1
-#    ports: 
-#      - "8070:8070"
     expose:
       - "8080"
     environment:
@@ -32,8 +28,6 @@ services:
       - "images:/var/www/wwwroot/images/blog"
     deploy:
       replicas: 1
-#    ports: 
-#      - "8080:8080"
     expose:
       - "8080"
     environment:
@@ -47,8 +41,6 @@ services:
         constraints:
           - node.role==manager
       replicas: 1
-#    ports:
-#      - "8090:8080"
     expose:
       - "8080"
 
