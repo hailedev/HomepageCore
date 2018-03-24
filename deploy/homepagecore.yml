@@ -17,6 +17,8 @@ services:
       replicas: 1
     ports: 
       - "8060:8060"
+    environment:
+      - ASPNETCORE_URLS=http://*:8060
   identity:
     image: hailedev/homepagecore.identity:latest
     volumes:

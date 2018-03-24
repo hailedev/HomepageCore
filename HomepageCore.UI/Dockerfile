@@ -33,7 +33,7 @@ RUN dotnet publish ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration} 
 FROM microsoft/aspnetcore:2.0
 WORKDIR /var/www
 COPY --from=build-env /target .
-ENTRYPOINT [ "dotnet", "HomepageCore.UI.dll --server.urls=http://localhost:8060/" ]
+ENTRYPOINT [ "dotnet", "HomepageCore.UI.dll" ]
 
 # Enable health check
 #HEALTHCHECK --interval=2m --timeout=3s CMD curl -f http://localhost/ || exit 1
