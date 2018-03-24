@@ -1,5 +1,13 @@
 version: "3"
 services:
+  nginx:
+    image: nginx
+    volumes:
+      - "config:/etc/nginx/conf.d"
+    deploy:
+      replicas: 1
+    ports: 
+      - "80:80"
   web:
     image: hailedev/homepagecore:latest
     volumes:
@@ -8,7 +16,7 @@ services:
     deploy:
       replicas: 1
     ports: 
-      - "80:80"
+      - "8070:80"
   identity:
     image: hailedev/homepagecore.identity:latest
     volumes:
@@ -26,10 +34,13 @@ services:
       placement:
         constraints:
           - node.role==manager
+      replicas: 1
     ports:
       - "8090:8080"
 
 volumes:
+  config:
+    driver: "cloudstor:aws"
   db-data:
     driver: "cloudstor:aws"
   images:

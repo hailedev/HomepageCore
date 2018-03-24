@@ -36,4 +36,4 @@ COPY --from=build-env /target .
 ENTRYPOINT [ "dotnet", "HomepageCore.UI.dll" ]
 
 # Enable health check
-HEALTHCHECK --interval=2m --timeout=3s CMD curl -f http://localhost/ || exit 1
+#HEALTHCHECK --interval=2m --timeout=3s CMD curl -f http://localhost/ || exit 1
