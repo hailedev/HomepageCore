@@ -16,9 +16,9 @@ services:
     deploy:
       replicas: 1
     ports: 
-      - "8060:8060"
+      - "8070:8070"
     environment:
-      - ASPNETCORE_URLS=http://*:8060
+      - ASPNETCORE_URLS=http://*:8070
   identity:
     image: hailedev/homepagecore.identity:latest
     volumes:
@@ -27,9 +27,9 @@ services:
     deploy:
       replicas: 1
     ports: 
-      - "8070:8070"
+      - "8080:8080"
     environment:
-      - ASPNETCORE_URLS=http://*:8070
+      - ASPNETCORE_URLS=http://*:8080
   viz:
     image: dockersamples/visualizer:latest
     volumes: 
@@ -40,7 +40,7 @@ services:
           - node.role==manager
       replicas: 1
     ports:
-      - "8080:8080"
+      - "8090:8080"
 
 volumes:
   config:
