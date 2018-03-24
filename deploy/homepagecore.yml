@@ -12,7 +12,7 @@ services:
   identity:
     image: hailedev/homepagecore.identity:latest
     volumes:
-      - "db-data-id:/data/db"
+      - "db-data:/data/db"
       - "images:/var/www/wwwroot/images/blog"
     deploy:
       replicas: 1
@@ -33,6 +33,4 @@ volumes:
   db-data:
     driver: "cloudstor:aws"
   images:
-    driver: "cloudstor:aws"
-  db-data-id:
     driver: "cloudstor:aws"
