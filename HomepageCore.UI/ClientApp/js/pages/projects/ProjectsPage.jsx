@@ -25,7 +25,7 @@ export default class ProjectPage extends Component { // eslint-disable-line
                     <div className="row">
                         <div id="homepage" className="col-md-offset-1 col-md-5 col-xs-12" style={{ height: '250px', backgroundColor: '#F5F5F5', padding: '20px 30px', display: 'flex', alignItems: 'center' }}>
                             <div>
-                                <div className="projects-title"><a href="https://haile.info/resume">Interactive resume</a></div>
+                                <div className="projects-title"><a href="http://haile.info/resume">Interactive resume</a></div>
                                 <div className="blurb">
                                     This is something I created while experimenting with HTML canvas animations using the CreateJS suite.  It kind of started with a simple running sprite animation, then added user controls and collision detection.  Not knowing where to go next I turned it into my interactive resume.
                                 </div>

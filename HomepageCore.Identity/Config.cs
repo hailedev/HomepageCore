@@ -39,9 +39,9 @@ namespace HomepageCore.Identity
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                     ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
 
-                    RedirectUris = { "https://haile.info/signin-oidc" },
-                    FrontChannelLogoutUri = "https://haile.info/signout-oidc",
-                    PostLogoutRedirectUris = { "https://haile.info" },
+                    RedirectUris = { "http://haile.info/signin-oidc" },
+                    FrontChannelLogoutUri = "http://haile.info/signout-oidc",
+                    PostLogoutRedirectUris = { "http://haile.info" },
 
                     AllowOfflineAccess = true,
                     AllowedScopes = { "openid", "profile", "api1" },
@@ -54,24 +54,24 @@ namespace HomepageCore.Identity
                 {
                     ClientId = "spa",
                     ClientName = "React client",
-                    ClientUri = "https://haile.info",
+                    ClientUri = "http://haile.info",
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
                     RedirectUris =
                     {
-                        "https://haile.info",
-                        "https://haile.info/signin-callback",
-                        "https://haile.info/admin",
-                        "https://haile.info/callback.html",
-                        "https://haile.info/silent.html",
-                        "https://haile.info/popup.html",
+                        "http://haile.info",
+                        "http://haile.info/signin-callback",
+                        "http://haile.info/admin",
+                        "http://haile.info/callback.html",
+                        "http://haile.info/silent.html",
+                        "http://haile.info/popup.html",
                     },
-                    FrontChannelLogoutUri = "https://haile.info/signout-callback",
-                    PostLogoutRedirectUris = { "https://haile.info" },
+                    FrontChannelLogoutUri = "http://haile.info/signout-callback",
+                    PostLogoutRedirectUris = { "http://haile.info" },
 
-                    AllowedCorsOrigins = { "https://haile.info" },
+                    AllowedCorsOrigins = { "http://haile.info" },
                     AllowedScopes = { "openid", "profile", "api1" },
 
                     RequireConsent = false
