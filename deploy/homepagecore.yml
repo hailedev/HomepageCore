@@ -2,8 +2,8 @@ version: "3"
 services:
   nginx:
     image: hailedev/nginx
-#    volumes:
-#      - "config:/etc/nginx/conf.d"
+    volumes:
+      - "certs:/root/certs/haile.info"
     deploy:
       replicas: 1
     ports: 
@@ -45,8 +45,8 @@ services:
       - "8080"
 
 volumes:
-#  config:
-#    driver: "cloudstor:aws"
+  certs:
+    driver: "cloudstor:aws"
   db-data:
     driver: "cloudstor:aws"
   images:
