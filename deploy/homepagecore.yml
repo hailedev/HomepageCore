@@ -27,6 +27,7 @@ services:
     volumes:
       - "db-data:/data/db"
       - "images:/var/www/wwwroot/images/blog"
+      - "certs:/certificates"
     deploy:
       replicas: 1
     expose:

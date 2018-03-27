@@ -33,6 +33,11 @@ RUN dotnet publish ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration} 
 FROM microsoft/aspnetcore:2.0
 WORKDIR /var/www
 COPY --from=build-env /target .
+
+# Trust the signing certificate
+COPY ./cert.crt /usr/local/share/ca-certificates
+RUN update-ca-certificates
+
 ENTRYPOINT [ "dotnet", "HomepageCore.UI.dll" ]
 
 # Enable health check

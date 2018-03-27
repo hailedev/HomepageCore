@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace HomepageCore.Identity
 {
@@ -66,14 +67,13 @@ namespace HomepageCore.Identity
                 .AddInMemoryClients(Config.GetClients())
                 .AddAspNetIdentity<ApplicationUser>();
 
-            builder.AddDeveloperSigningCredential();
             if (Environment.IsDevelopment())
             {
                 builder.AddDeveloperSigningCredential();
             }
             else
             {
-                //throw new Exception("need to configure key material");
+                builder.AddSigningCredential(new X509Certificate2(Configuration["Certificate"]));
             }
 
             services.AddAuthentication()
@@ -88,7 +88,7 @@ namespace HomepageCore.Identity
                     options.ClientSecret = Configuration["Authentication:Facebook:ClientSecret"];
                 });
         }
-
+        
         public void Configure(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
