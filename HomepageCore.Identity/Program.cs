@@ -2,8 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
@@ -16,6 +19,21 @@ namespace HomepageCore.Identity
     {
         public static void Main(string[] args)
         {
+            var host = BuildWebHost(args);
+
+            using (var scope = host.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                scope.ServiceProvider.GetService<PersistedGrantDbContext>().Database.Migrate();
+
+                var context = scope.ServiceProvider.GetService<ConfigurationDbContext>();
+                context.Database.Migrate();
+            }
+
+            host.Run();
+        }
+
+        public static IWebHost BuildWebHost(string[] args)
+        {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
@@ -26,15 +44,14 @@ namespace HomepageCore.Identity
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate)
                 .CreateLogger();
 
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .ConfigureLogging(builder =>
-                {
-                    builder.ClearProviders();
-                    builder.AddSerilog();
-                })
-                .Build()
-                .Run();
+            return WebHost.CreateDefaultBuilder(args)
+                    .UseStartup<Startup>()
+                    .ConfigureLogging(builder =>
+                    {
+                        builder.ClearProviders();
+                        builder.AddSerilog();
+                    })
+                    .Build();
         }
     }
 }

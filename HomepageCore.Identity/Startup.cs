@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 
 namespace HomepageCore.Identity
@@ -55,6 +56,9 @@ namespace HomepageCore.Identity
                 iis.AutomaticAuthentication = false;
             });
 
+            var connectionString = Configuration.GetConnectionString("IdServerDbConnection");
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+
             var builder = services.AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -62,9 +66,23 @@ namespace HomepageCore.Identity
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
             })
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApis())
-                .AddInMemoryClients(Config.GetClients())
+                .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = optionsBuilder =>
+                        optionsBuilder.UseSqlite(connectionString,
+                            sql => sql.MigrationsAssembly(migrationsAssembly));
+                })
+                // this adds the operational data from DB (codes, tokens, consents)
+                .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = optionsBuilder =>
+                        optionsBuilder.UseSqlite(connectionString,
+                            sql => sql.MigrationsAssembly(migrationsAssembly));
+
+                    // this enables automatic token cleanup. this is optional.
+                    //options.EnableTokenCleanup = true;
+                    //options.TokenCleanupInterval = 30;
+                })
                 .AddAspNetIdentity<ApplicationUser>();
 
             if (Environment.IsDevelopment())
