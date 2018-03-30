@@ -1,11 +1,26 @@
 version: "3"
 services:
+  identity:
+    build: 
+      args:
+        configuration: Debug
+    image: hailedev/homepagecore.identity:dev
+    volumes:
+      - "/tmp/homepagecore/data:/data/db"
+      - "/tmp/homepagecore/images:/var/www/wwwroot/images/blog"
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Development 
+    ports:
+     - "5000:8080"
   web:
     build: 
       args:
         configuration: Debug
     image: hailedev/homepagecore:dev
-    ports:
-      - "8080:80"
+    volumes:
+      - "/tmp/homepagecore/data:/data/db"
+      - "/tmp/homepagecore/images:/var/www/wwwroot/images/blog"
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development 
+    ports:
+     - "5001:8080"

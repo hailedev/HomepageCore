@@ -1,8 +1,14 @@
 version: "3"
 services:
+  identity:
+    build: 
+      context: .
+      dockerfile: ./HomepageCore.Identity/Dockerfile
+    environment:
+     - ASPNETCORE_URLS=http://*:8080
   web:
     build: 
       context: .
-      dockerfile: Dockerfile
-    ports:
-     - "8080:80"
+      dockerfile: ./HomepageCore.UI/Dockerfile
+    environment:
+     - ASPNETCORE_URLS=http://*:8080

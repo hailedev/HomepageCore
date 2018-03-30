@@ -72,10 +72,10 @@ then
     then
         if [ "${3,,}" = "dev" ]
         then
-            docker build --build-arg configuration=Debug -t ${CONTAINER_REGISTRY}/homepagecore:dev .
+            docker build --build-arg configuration=Debug -t ${CONTAINER_REGISTRY}/homepagecore:dev -f ./HomepageCore.UI/Dockerfile .
         elif [ "${3,,}" = "prod" ]
         then
-            docker build --build-arg configuration=Release -t ${CONTAINER_REGISTRY}/homepagecore:latest .
+            docker build --build-arg configuration=Release -t ${CONTAINER_REGISTRY}/homepagecore:latest -f ./HomepageCore.UI/Dockerfile .
         else
             imageMenu
         fi
@@ -83,10 +83,10 @@ then
     then
         if [ "${3,,}" = "dev" ]
         then
-            docker run --rm -d -p 8080:80 ${CONTAINER_REGISTRY}/homepagecore:dev
+            docker run --rm -d -p 5001:8080 -e ASPNETCORE_ENVIRONMENT=Development -e ASPNETCORE_URLS=http://*:8080 ${CONTAINER_REGISTRY}/homepagecore:dev
         elif [ "${3,,}" = "prod" ]
         then
-            docker run --rm -d -p 8080:80 ${CONTAINER_REGISTRY}/homepagecore:latest
+            docker run --rm -d -p 5001:8080 -e ASPNETCORE_ENVIRONMENT=Production -e ASPNETCORE_URLS=http://*:8080 ${CONTAINER_REGISTRY}/homepagecore:latest
         else
             imageMenu
         fi
