@@ -35,6 +35,7 @@ using IdentityServer4.AccessTokenValidation;
 using HomepageCore.UI.Services.Interfaces;
 using HomepageCore.UI.Services;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 
 namespace HomepageCore.UI
 {
@@ -149,6 +150,11 @@ namespace HomepageCore.UI
 
                 if (env.IsDevelopment())
                 {
+                    app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
+                        HotModuleReplacement = true,
+                        ReactHotModuleReplacement = true,
+                        ConfigFile = Configuration["WebpackConfig"]
+                    });
                     app.UseDeveloperExceptionPage();
                     if(context.Posts.Count() <= 0)
                     {

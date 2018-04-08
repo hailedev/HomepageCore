@@ -7,11 +7,17 @@ var RequireJsPlugin = require("./plugins/RequireJsPlugin");
 var outputPath = path.resolve(__dirname, "./wwwroot/");
 var resumeOutputPath = outputPath + "/resume/";
 
+var sourcePath = path.resolve(__dirname, "./ClientApp/submodules/InteractiveResume/src/js");
+var bootstrapPath = sourcePath + "/module-bootstrap.js";
+
 module.exports = merge(common, {
+    output: {
+        publicPath: "/_/"
+    },
     plugins: [
         new RequireJsPlugin({
-            baseUrl:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js",
-            mainConfigFile:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
+            baseUrl: sourcePath,
+            mainConfigFile: bootstrapPath,
             include: ["module-bootstrap.js","main.js"],
             optimize: "none",
             out: resumeOutputPath + "js/main.js"
@@ -24,8 +30,8 @@ module.exports = merge(common, {
             scriptName: "js/main.js"
         }),
         new RequireJsPlugin({
-            baseUrl:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js",
-            mainConfigFile:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
+            baseUrl: sourcePath,
+            mainConfigFile: bootstrapPath,
             include: ["module-bootstrap.js","main.js"],
             optimize: "none",
             out: outputPath + "/blizzard/js/main.js"

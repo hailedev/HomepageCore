@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --color",
+    "build:prod": "webpack --config ./webpack.Production.js --color",
+    "dev": "webpack --config ./webpack.Development.js --color"
   },
   "author": "Hai Le",
   "license": "MIT",
   "devDependencies": {
+    "aspnet-webpack": "^2.0.3",
+    "aspnet-webpack-react": "^3.0.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
@@ -17,7 +21,6 @@
     "babelify": "^8.0.0",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.2.0",
-    "create-react-class": "^15.6.2",
     "css-loader": "^0.28.7",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^16.1.0",
@@ -30,10 +33,12 @@
     "html-webpack-plugin": "^2.30.1",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
+    "react-hot-loader": "^4.0.1",
     "requirejs": "^2.2.0",
     "uglifyjs-webpack-plugin": "^1.0.1",
     "url-loader": "^0.6.2",
     "webpack": "^3.8.1",
+    "webpack-hot-middleware": "^2.21.2",
     "webpack-merge": "^4.1.1"
   },
   "dependencies": {
@@ -42,7 +47,6 @@
     "detect-browser": "^2.0.0",
     "draft-js": "^0.10.4",
     "draft-js-export-html": "^1.2.0",
-    "es6-promise": "^4.1.1",
     "flux": "^3.1.2",
     "immutable": "^3.8.1",
     "oidc-client": "^1.4.1",
