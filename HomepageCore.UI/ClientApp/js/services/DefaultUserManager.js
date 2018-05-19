@@ -1,13 +1,12 @@
 import { UserManager } from 'oidc-client';
-import env from 'env';
 
 export default new class DefaultUserManager extends UserManager {
     constructor() {
         const settings = {
-            authority: env.OpenIdConnect.Authority,
+            authority: AUTHORITY,
             client_id: 'spa',
-            redirect_uri: `${env.OpenIdConnect.RedirectUri}/signin-callback`,
-            post_logout_redirect_uri: env.OpenIdConnect.RedirectUri,
+            redirect_uri: `${REDIRECT_URI}/signin-callback`,
+            post_logout_redirect_uri: REDIRECT_URI,
             response_type: 'id_token token',
             // scope: 'openid email roles',
             scope: 'openid profile api1',

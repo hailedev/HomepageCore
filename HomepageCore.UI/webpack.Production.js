@@ -49,12 +49,10 @@ module.exports = merge(common, {
         new webpack.DefinePlugin({
             "process.env": {
                 "NODE_ENV": JSON.stringify("production")
-            }
+            },
+            AUTHORITY: JSON.stringify("http://haile.info:8080"),
+            REDIRECT_URI: JSON.stringify("http://haile.info"),
+            PAGE_SIZE: 5
         })
-    ],
-    resolve: {
-        alias: {
-            "env": path.resolve(__dirname, "./appsettings.Production.json")
-        }
-    }
+    ]
 });

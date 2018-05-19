@@ -7,7 +7,6 @@ import CategoryStore from 'CategoryStore';
 import CategoryActionCreators from 'CategoryActionCreators';
 import { Categories } from 'AppConstants';
 import { Link } from 'react-router-dom';
-import env from 'env';
 import { Container } from 'flux/utils';
 import WaitIcon from './WaitIcon';
 
@@ -70,7 +69,7 @@ class HomeLandingPage extends Component {
         }
         PostSummaryActionCreators.getPostSummaries(options, true).then((response) => {
             const newState = { loading: false };
-            if (response.length < env.pageSize) {
+            if (response.length < PAGE_SIZE) {
                 newState.enableShowMore = false;
             }
             this.setState(newState);

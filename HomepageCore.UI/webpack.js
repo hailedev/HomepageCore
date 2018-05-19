@@ -63,10 +63,7 @@ module.exports = {
             "./js/common",
             "./js/services"
         ],
-        extensions: [".js", ".jsx"],
-        alias: {
-            "env": path.resolve(__dirname, "./appsettings.Development.json")
-        }
+        extensions: [".js", ".jsx"]
     },
     module: {
         rules: [

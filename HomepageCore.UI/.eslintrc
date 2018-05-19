@@ -51,6 +51,9 @@
       "fetch": false,
       "XMLSerializer": false,
       "canvg": false,
-      "DISQUS": false
+      "DISQUS": false,
+      "AUTHORITY": false,
+      "REDIRECT_URI": false,
+      "PAGE_SIZE": false
     }
 }

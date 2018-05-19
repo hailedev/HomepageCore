@@ -1,3 +1,4 @@
+var webpack = require("webpack");
 var path = require("path");
 var merge = require("webpack-merge");
 var common = require("./webpack.js");
@@ -42,6 +43,11 @@ module.exports = merge(common, {
             inject: false,
             application: true,
             scriptName: "js/main.js"
+        }),
+        new webpack.DefinePlugin({
+            AUTHORITY: JSON.stringify("http://localhost:5000"),
+            REDIRECT_URI: JSON.stringify("http://localhost:5001"),
+            PAGE_SIZE: 5
         })
     ]
 });
