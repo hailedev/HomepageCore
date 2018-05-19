@@ -50,8 +50,8 @@ module.exports = merge(common, {
             "process.env": {
                 "NODE_ENV": JSON.stringify("production")
             },
-            AUTHORITY: JSON.stringify("http://haile.info:8080"),
-            REDIRECT_URI: JSON.stringify("http://haile.info"),
+            AUTHORITY: JSON.stringify("https://identity.haile.info"),
+            REDIRECT_URI: JSON.stringify("https://haile.info"),
             PAGE_SIZE: 5
         })
     ]
