@@ -165,6 +165,16 @@ namespace HomepageCore.UI
             }
 
             app.UseResponseCompression();
+
+            if (!env.IsDevelopment())
+            {
+                app.Use((context, next) =>
+                {
+                    context.Request.Scheme = "https";
+                    return next();
+                });
+            }
+
             app.UseAuthentication();
 
             app.UseFileServer();
