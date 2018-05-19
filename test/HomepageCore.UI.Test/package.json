@@ -12,7 +12,12 @@
       "<rootDir>../../HomepageCore.UI/ClientApp/js/services",
       "<rootDir>/ClientApp/js"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/ClientApp/setup.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/ClientApp/setup.js",
+    "globals": {
+      "AUTHORITY": "http://localhost:5000",
+      "REDIRECT_URI": "http://localhost:5001",
+      "PAGE_SIZE": 5
+    }
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
