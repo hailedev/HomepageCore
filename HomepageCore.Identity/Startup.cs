@@ -107,7 +107,7 @@ namespace HomepageCore.Identity
                 });
         }
         
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseDeveloperExceptionPage();
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
@@ -125,6 +125,15 @@ namespace HomepageCore.Identity
                 {
                     app.UseExceptionHandler("/Home/Error");
                 }
+            }
+
+            if (!env.IsDevelopment())
+            {
+                app.Use((context, next) =>
+                {
+                    context.Request.Scheme = "https";
+                    return next();
+                });
             }
 
             app.UseStaticFiles();
