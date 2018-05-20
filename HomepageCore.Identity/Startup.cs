@@ -6,6 +6,7 @@ using HomepageCore.Identity.Data;
 using HomepageCore.Identity.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -129,11 +130,13 @@ namespace HomepageCore.Identity
 
             if (!env.IsDevelopment())
             {
-                app.Use((context, next) =>
+                var forwardingOptions = new ForwardedHeadersOptions()
                 {
-                    context.Request.Scheme = "https";
-                    return next();
-                });
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                };
+                forwardingOptions.KnownNetworks.Clear();
+                forwardingOptions.KnownProxies.Clear();
+                app.UseForwardedHeaders(forwardingOptions);
             }
 
             app.UseStaticFiles();

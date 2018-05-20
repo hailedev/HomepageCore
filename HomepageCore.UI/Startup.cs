@@ -36,6 +36,7 @@ using HomepageCore.UI.Services.Interfaces;
 using HomepageCore.UI.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace HomepageCore.UI
 {
@@ -168,11 +169,13 @@ namespace HomepageCore.UI
 
             if (!env.IsDevelopment())
             {
-                app.Use((context, next) =>
+                var forwardingOptions = new ForwardedHeadersOptions()
                 {
-                    context.Request.Scheme = "https";
-                    return next();
-                });
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+                };
+                forwardingOptions.KnownNetworks.Clear();
+                forwardingOptions.KnownProxies.Clear();
+                app.UseForwardedHeaders(forwardingOptions);
             }
 
             app.UseAuthentication();
