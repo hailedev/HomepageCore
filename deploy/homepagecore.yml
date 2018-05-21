@@ -9,8 +9,6 @@ services:
     ports: 
       - "443:443"
       - "80:80"
-      - "8080:8080"
-      - "8090:8090"
   web:
     image: hailedev/homepagecore:latest
     volumes:
@@ -18,8 +16,6 @@ services:
       - "images:/var/www/wwwroot/images/blog"
     deploy:
       replicas: 1
-    expose:
-      - "8080"
     environment:
       - ASPNETCORE_URLS=http://*:8080
   identity:
@@ -30,8 +26,6 @@ services:
       - "certs:/certificates"
     deploy:
       replicas: 1
-    expose:
-      - "8080"
     environment:
       - ASPNETCORE_URLS=http://*:8080
   viz:
@@ -43,8 +37,6 @@ services:
         constraints:
           - node.role==manager
       replicas: 1
-    expose:
-      - "8080"
 
 volumes:
   certs:
