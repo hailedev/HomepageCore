@@ -279,6 +279,4 @@ HomepageCore.Identity/appsettings.Production.json
 HomepageCore.Identity/AspIdUsers.db
 HomepageCore.Identity/IdServerConfig_prod.db
 
-deploy/default.conf
-
 configs.tar

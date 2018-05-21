@@ -102,7 +102,7 @@ then
     then
         aws ssm delete-document --name "DeployStack"
     else
-        aws ssm send-command --instance-ids "${INSTANCE}" --document-name "DeployStack" --comment "Deploying build ${VERSION}" --parameters stackfile="https://raw.githubusercontent.com/hailedev/homepagecore/master/deploy/homepagecore.yml",image="hailedev/homepagecore"
+        aws ssm send-command --instance-ids "${INSTANCE}" --document-name "DeployStack" --comment "Deploying build ${VERSION}" --parameters stackfile="https://raw.githubusercontent.com/hailedev/homepagecore/master/deploy/homepagecore.yml",configfile="https://raw.githubusercontent.com/hailedev/homepagecore/master/deploy/default.conf",image="hailedev/homepagecore"
     fi
 else
     menu

@@ -1,7 +1,7 @@
-version: "3"
+version: "3.3"
 services:
   nginx:
-    image: hailedev/nginx
+    image: nginx
     volumes:
       - "certs:/root/certs/haile.info"
     deploy:
@@ -9,6 +9,9 @@ services:
     ports: 
       - "443:443"
       - "80:80"
+    configs:
+      - source: default.conf
+        target: /etc/nginx/conf.d/default.conf
   web:
     image: hailedev/homepagecore:latest
     volumes:
@@ -45,3 +48,7 @@ volumes:
     driver: "cloudstor:aws"
   images:
     driver: "cloudstor:aws"
+
+configs:
+  default.conf:
+    file: ./default.conf
