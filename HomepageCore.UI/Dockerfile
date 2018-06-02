@@ -44,7 +44,7 @@ COPY ./cert.crt /usr/local/share/ca-certificates
 RUN update-ca-certificates
 
 # Copy the bootstrapper
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY ./HomepageCore.UI/docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT [ "docker-entrypoint.sh", "HomepageCore.UI.dll" ]
 

@@ -37,6 +37,6 @@ WORKDIR /var/www
 COPY --from=build-env /target .
 
 # Copy the bootstrapper
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY ./HomepageCore.Identity/docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT [ "docker-entrypoint.sh", "HomepageCore.Identity.dll" ]
