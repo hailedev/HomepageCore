@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:2.0 AS build-env
+FROM microsoft/dotnet:2.1-sdk AS build-env
 ARG configuration=Release
 
 WORKDIR /build
@@ -29,7 +29,7 @@ RUN ./go.sh test
 RUN dotnet publish ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration} -o /target
 
 # Build runtime image
-FROM microsoft/aspnetcore:2.0
+FROM microsoft/dotnet:2.1-aspnetcore-runtime
 WORKDIR /var/www
 COPY --from=build-env /target .
 ENTRYPOINT [ "dotnet", "HomepageCore.UI.dll" ]

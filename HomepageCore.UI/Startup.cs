@@ -182,7 +182,7 @@ namespace HomepageCore.UI
 
             app.UseFileServer();
 
-            app.UseSwaggerUi(typeof(Startup).Assembly, new SwaggerUiSettings());
+            app.UseSwaggerUi(typeof(Startup).Assembly, settings => {});
 
             app.UseMvc(routes =>
             {

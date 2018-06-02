@@ -1,4 +1,4 @@
-FROM microsoft/aspnetcore-build:2.0 AS build-env
+FROM microsoft/dotnet:2.1-sdk AS build-env
 ARG configuration=Release
 
 WORKDIR /build
@@ -10,6 +10,11 @@ COPY ./HomepageCore.Identity/HomepageCore.Identity.csproj ./HomepageCore.Identit
 COPY ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj ./test/HomepageCore.UI.Test/
 COPY ./HomepageCore.sln ./
 RUN dotnet restore
+
+# Install npm
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash
+RUN apt-get install -yq nodejs build-essential
+RUN npm install npm -g
 
 # Install webpack
 RUN npm install webpack@3.11.0 -g
@@ -27,7 +32,7 @@ RUN ./go.sh build ${configuration}
 RUN dotnet publish ./HomepageCore.Identity/HomepageCore.Identity.csproj -c ${configuration} -o /target
 
 # Build runtime image
-FROM microsoft/aspnetcore:2.0
+FROM microsoft/dotnet:2.1-aspnetcore-runtime
 WORKDIR /var/www
 COPY --from=build-env /target .
 ENTRYPOINT [ "dotnet", "HomepageCore.Identity.dll" ]
