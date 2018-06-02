@@ -43,7 +43,10 @@ COPY --from=build-env /target .
 COPY ./cert.crt /usr/local/share/ca-certificates
 RUN update-ca-certificates
 
-ENTRYPOINT [ "dotnet", "HomepageCore.UI.dll" ]
+# Copy the bootstrapper
+COPY docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT [ "docker-entrypoint.sh", "HomepageCore.UI.dll" ]
 
 # Enable health check
 #HEALTHCHECK --interval=2m --timeout=3s CMD curl -f http://localhost/ || exit 1

@@ -35,4 +35,8 @@ RUN dotnet publish ./HomepageCore.Identity/HomepageCore.Identity.csproj -c ${con
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
 WORKDIR /var/www
 COPY --from=build-env /target .
-ENTRYPOINT [ "dotnet", "HomepageCore.Identity.dll" ]
+
+# Copy the bootstrapper
+COPY docker-entrypoint.sh /usr/local/bin/
+
+ENTRYPOINT [ "docker-entrypoint.sh", "HomepageCore.Identity.dll" ]
