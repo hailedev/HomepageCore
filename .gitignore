@@ -268,7 +268,6 @@ __pycache__/
 # tools/
 
 Target/
-HomepageCore.UI/appsettings.Production.json
 HomepageCore.UI/wwwroot
 HomepageCore.UI/Views/Home/Index.cshtml
 HomepageCore.UI/HomepageCore.db

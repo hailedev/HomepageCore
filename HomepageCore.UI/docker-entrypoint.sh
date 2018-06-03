@@ -22,4 +22,15 @@ file_env() {
 	unset "$fileVar"
 }
 
+file_env 'CONNECTIONSTRINGS__DEFAULTCONNECTION'
+file_env 'OPENIDCONNECT__CLIENTID'
+file_env 'OPENIDCONNECT__CLIENTSECRET'
+file_env 'OPENIDCONNECT__AUTHORITY'
+file_env 'OPENIDCONNECT__REDIRECTURI'
+file_env 'EMAIL__SERVER'
+file_env 'EMAIL__ACCOUNT'
+file_env 'EMAIL__PASSWORD'
+file_env 'EMAIL__ADMIN'
+file_env 'EMAIL__RETURNADDRESS'
+
 dotnet $1

@@ -12,6 +12,7 @@ services:
     configs:
       - source: default.conf
         target: /etc/nginx/conf.d/default.conf
+
   web:
     image: hailedev/homepagecore:latest
     volumes:
@@ -20,7 +21,29 @@ services:
     deploy:
       replicas: 1
     environment:
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION_FILE=/run/secrets/web_connectionstrings_defaultconnection
+      - OPENIDCONNECT__CLIENTID_FILE=/run/secrets/web_openidconnect_clientid
+      - OPENIDCONNECT__CLIENTSECRET_FILE=/run/secrets/web_openidconnect_clientsecret
+      - OPENIDCONNECT__AUTHORITY_FILE=/run/secrets/web_openidconnect_authority
+      - OPENIDCONNECT__REDIRECTURI_FILE=/run/secrets/web_openidconnect_redirecturi
+      - EMAIL__SERVER_FILE=/run/secrets/web_email_server
+      - EMAIL__ACCOUNT_FILE=/run/secrets/web_email_account
+      - EMAIL__PASSWORD_FILE=/run/secrets/web_email_password
+      - EMAIL__ADMIN_FILE=/run/secrets/web_email_admin
+      - EMAIL__RETURNADDRESS_FILE=/run/secrets/web_email_returnaddress
       - ASPNETCORE_URLS=http://*:8080
+    secrets:
+      - web_connectionstrings_defaultconnection
+      - web_openidconnect_clientid
+      - web_openidconnect_clientsecret
+      - web_openidconnect_authority
+      - web_openidconnect_redirecturi
+      - web_email_server
+      - web_email_account
+      - web_email_password
+      - web_email_admin
+      - web_email_returnaddress
+
   identity:
     image: hailedev/homepagecore.identity:latest
     volumes:
@@ -31,6 +54,7 @@ services:
       replicas: 1
     environment:
       - ASPNETCORE_URLS=http://*:8080
+
   viz:
     image: dockersamples/visualizer:latest
     volumes: 
@@ -40,6 +64,7 @@ services:
         constraints:
           - node.role==manager
       replicas: 1
+
 
 volumes:
   certs:
@@ -52,3 +77,25 @@ volumes:
 configs:
   default.conf:
     file: ./default.conf
+
+secrets:
+  web_connectionstrings_defaultconnection:
+    external: true
+  web_openidconnect_clientid:
+    external: true
+  web_openidconnect_clientsecret:
+    external: true
+  web_openidconnect_authority:
+    external: true
+  web_openidconnect_redirecturi:
+    external: true
+  web_email_server:
+    external: true
+  web_email_account:
+    external: true
+  web_email_password:
+    external: true
+  web_email_admin:
+    external: true
+  web_email_returnaddress:
+    external: true
