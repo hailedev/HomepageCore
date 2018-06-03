@@ -141,6 +141,7 @@ namespace HomepageCore.UI
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddNLog();
+            loggerFactory.AddConsole();
             app.AddNLogWeb();
 
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())

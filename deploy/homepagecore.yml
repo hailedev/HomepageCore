@@ -12,6 +12,8 @@ services:
     configs:
       - source: default.conf
         target: /etc/nginx/conf.d/default.conf
+      - source: nginx.conf
+        target: /etc/nginx/nginx.conf
 
   web:
     image: hailedev/homepagecore:latest
@@ -90,6 +92,8 @@ volumes:
 configs:
   default.conf:
     file: ./default.conf
+  nginx.conf:
+    file: ./nginx.conf
 
 secrets:
   web_connectionstrings_defaultconnection:
