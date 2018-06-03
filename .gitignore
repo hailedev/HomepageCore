@@ -274,8 +274,5 @@ HomepageCore.UI/HomepageCore.db
 HomepageCore.UI/ClientApp/images/blog/
 
 HomepageCore.Identity/identityserver4_log.txt
-HomepageCore.Identity/appsettings.Production.json
 HomepageCore.Identity/AspIdUsers.db
 HomepageCore.Identity/IdServerConfig_prod.db
-
-configs.tar

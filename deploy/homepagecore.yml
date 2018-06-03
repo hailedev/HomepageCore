@@ -53,7 +53,20 @@ services:
     deploy:
       replicas: 1
     environment:
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION_FILE=/run/secrets/id_connectionstrings_defaultconnection
+      - CONNECTIONSTRINGS__IDSERVERDBCONNECTION_FILE=/run/secrets/id_connectionstrings_idserverdbconnection
+      - AUTHENTICATION__GOOGLE__CLIENTSECRET_FILE=/run/secrets/id_google_clientsecret
+      - AUTHENTICATION__GOOGLE__CLIENTID_FILE=/run/secrets/id_google_clientid
+      - AUTHENTICATION__FACEBOOK__CLIENTSECRET_FILE=/run/secrets/id_facebook_clientsecret
+      - AUTHENTICATION__FACEBOOK__CLIENTID_FILE=/run/secrets/id_facebook_clientid
       - ASPNETCORE_URLS=http://*:8080
+    secrets:
+      - id_connectionstrings_defaultconnection
+      - id_connectionstrings_idserverdbconnection
+      - id_google_clientsecret
+      - id_google_clientid
+      - id_facebook_clientsecret
+      - id_facebook_clientid
 
   viz:
     image: dockersamples/visualizer:latest
@@ -98,4 +111,16 @@ secrets:
   web_email_admin:
     external: true
   web_email_returnaddress:
+    external: true
+  id_connectionstrings_defaultconnection:
+    external: true
+  id_connectionstrings_idserverdbconnection:
+    external: true
+  id_google_clientsecret:
+    external: true
+  id_google_clientid:
+    external: true
+  id_facebook_clientsecret:
+    external: true
+  id_facebook_clientid:
     external: true
