@@ -10,9 +10,9 @@
         "type":"String",
         "description":"(Required) The configuration for the reverse proxy server"
       },
-      "image":{
+      "nginxfile":{
         "type":"String",
-        "description":"(Required) The image to deploy"
+        "description":"(Required) The global nginx config file"
       }
     },
     "mainSteps" : [
@@ -36,19 +36,10 @@
         },
         {
             "action":"aws:runShellScript",
-            "name":"PullImage",
+            "name":"FetchNginxFile",
             "inputs":{
                 "runCommand": [
-                    "docker pull {{ image }}"
-                ]
-            }
-        },
-        {
-            "action":"aws:runShellScript",
-            "name":"PullVisualizerImage",
-            "inputs":{
-                "runCommand": [
-                    "docker pull dockersamples/visualizer:latest"
+                    "wget -O /tmp/nginx.conf {{ nginxfile }}"
                 ]
             }
         },
