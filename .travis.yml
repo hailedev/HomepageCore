@@ -16,10 +16,11 @@ before_install:
   - sudo apt-get install docker-ce=17.09.0~ce-0~ubuntu
   - sudo docker --version
   - sudo pip install awscli
+  - export APP_VERSION=$[APP_VERSION+1]
 
 script:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker build -f ./HomepageCore.UI/Dockerfile -t $CONTAINER_REGISTRY/homepagecore:latest .
+  - docker build --build-arg version=$APP_VERSION -f ./HomepageCore.UI/Dockerfile -t $CONTAINER_REGISTRY/homepagecore:latest .
   - docker push $CONTAINER_REGISTRY/homepagecore:latest
   - docker build -f ./HomepageCore.Identity/Dockerfile -t $CONTAINER_REGISTRY/homepagecore.identity:latest .
   - docker push $CONTAINER_REGISTRY/homepagecore.identity:latest

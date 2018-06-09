@@ -1,5 +1,6 @@
 FROM microsoft/dotnet:2.1-sdk AS build-env
 ARG configuration=Release
+ARG version=0
 
 WORKDIR /build
 

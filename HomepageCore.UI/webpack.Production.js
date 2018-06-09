@@ -9,6 +9,8 @@ var UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 var outputPath = path.resolve(__dirname, "./wwwroot/");
 var resumeOutputPath = outputPath + "/resume/";
 
+var HtmlWebpackPlugin = require("html-webpack-plugin");
+
 module.exports = merge(common, {
     devtool: "source-map",
     output: {
@@ -17,6 +19,13 @@ module.exports = merge(common, {
     plugins: [
         new UglifyJSPlugin({
             sourceMap: true
+        }),
+        new HtmlWebpackPlugin({ 
+            template: "./templates/index.html",
+            filename: path.join(__dirname, "./Views/Home/Index.cshtml"),
+            inject: false,
+            enableGoogleAnalytics: true,
+            version: process.env.version
         }),
         new RequireJsPlugin({
             baseUrl:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js",

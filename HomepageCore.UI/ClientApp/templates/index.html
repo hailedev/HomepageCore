@@ -39,7 +39,7 @@
 } else {
     <div id="root"></div>
 <% if(htmlWebpackPlugin.files.chunks["app"]) { %>
-    <script src="<%= htmlWebpackPlugin.files.chunks['app'].entry %>"></script>
+    <script src="<%= htmlWebpackPlugin.files.chunks['app'].entry %>?v=<%= htmlWebpackPlugin.options.version %>"></script>
 <% } %>
 }
 </body>

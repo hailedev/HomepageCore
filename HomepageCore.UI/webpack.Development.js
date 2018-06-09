@@ -11,11 +11,20 @@ var resumeOutputPath = outputPath + "/resume/";
 var sourcePath = path.resolve(__dirname, "./ClientApp/submodules/InteractiveResume/src/js");
 var bootstrapPath = sourcePath + "/module-bootstrap.js";
 
+var HtmlWebpackPlugin = require("html-webpack-plugin");
+
 module.exports = merge(common, {
     output: {
         publicPath: "/_/"
     },
     plugins: [
+        new HtmlWebpackPlugin({ 
+            template: "./templates/index.html",
+            filename: path.join(__dirname, "./Views/Home/Index.cshtml"),
+            inject: false,
+            enableGoogleAnalytics: false,
+            version: 0
+        }),
         new RequireJsPlugin({
             baseUrl: sourcePath,
             mainConfigFile: bootstrapPath,

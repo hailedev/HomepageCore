@@ -2,7 +2,6 @@ var path = require("path");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var CleanWebpackPlugin = require("clean-webpack-plugin");
-var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 var outputPath = path.resolve(__dirname, "./wwwroot/");
 var jsOutputPath = outputPath + "/js/";
@@ -44,13 +43,7 @@ module.exports = {
             { from: "./styles/**/*", to: outputPath + "/blizzard/", context: "./submodules/InteractiveResume/src" },
             { from: "./js/lib/jquery-1.11.2.min.js", to: outputPath + "/blizzard/js/lib/", context: "./submodules/InteractiveResume/src" },
             { from: "./js/lib/require.js", to: outputPath + "/blizzard/js/lib/", context: "./submodules/InteractiveResume/src" }
-        ]),
-        new HtmlWebpackPlugin({ 
-            template: "./templates/index.html",
-            filename: path.join(__dirname, "./Views/Home/Index.cshtml"),
-            inject: false,
-            enableGoogleAnalytics: false
-        })
+        ])
     ],
     resolve: {
         modules: [
