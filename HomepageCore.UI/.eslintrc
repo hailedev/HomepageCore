@@ -54,6 +54,7 @@
       "DISQUS": false,
       "AUTHORITY": false,
       "REDIRECT_URI": false,
-      "PAGE_SIZE": false
+      "PAGE_SIZE": false,
+      "DISQUSWIDGETS": true
     }
 }

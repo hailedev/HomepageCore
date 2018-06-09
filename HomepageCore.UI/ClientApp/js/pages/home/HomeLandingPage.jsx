@@ -80,10 +80,8 @@ class HomeLandingPage extends Component {
         if (node) {
             node.parentNode.removeChild(node);
         }
-        const disqus = document.head.getElementsByTagName('script');
-        while (disqus.length > 0) {
-            disqus[0].parentNode.removeChild(disqus[0]);
-            DISQUSWIDGETS = undefined; // eslint-disable-line
+        if (DISQUSWIDGETS) {
+            DISQUSWIDGETS = undefined;
         }
         const script = document.createElement('script');
         script.src = '//thepersonalblogofhaile.disqus.com/count.js';
