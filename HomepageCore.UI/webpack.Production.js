@@ -32,28 +32,28 @@ module.exports = merge(common, {
             mainConfigFile:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
             include: ["module-bootstrap.js","main.js"],
             optimize: "uglify2",
-            out: resumeOutputPath + "js/main.min.js"
+            out: resumeOutputPath + "js/main." + process.env.version + ".min.js"
         }),
         new HtmlWebpackPlugin({ 
             template: "./templates/resume-index.html",
             filename: path.join(__dirname, "./wwwroot/resume/index.html"),
             inject: false,
             application: false,
-            scriptName: "js/main.min.js"
+            scriptName: "js/main." + process.env.version + ".min.js"
         }),
         new RequireJsPlugin({
             baseUrl:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js",
             mainConfigFile:"./HomepageCore.UI/ClientApp/submodules/InteractiveResume/src/js/module-bootstrap.js",
             include: ["module-bootstrap.js","main.js"],
             optimize: "uglify2",
-            out: outputPath + "/blizzard/js/main.min.js"
+            out: outputPath + "/blizzard/js/main." + process.env.version + ".min.js"
         }),
         new HtmlWebpackPlugin({ 
             template: "./templates/resume-index.html",
             filename: path.join(__dirname, "./wwwroot/blizzard/index.html"),
             inject: false,
             application: true,
-            scriptName: "js/main.min.js"
+            scriptName: "js/main." + process.env.version + ".min.js"
         }),
         new webpack.DefinePlugin({
             "process.env": {
