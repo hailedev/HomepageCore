@@ -10,7 +10,7 @@
             "request": "launch",
             // "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/HomepageCore.UI/bin/Debug/netcoreapp2.0/HomepageCore.UI.dll",
+            "program": "${workspaceRoot}/HomepageCore.UI/bin/Debug/netcoreapp2.1/HomepageCore.UI.dll",
             "args": ["--server.urls=http://localhost:5001/"],
             "cwd": "${workspaceRoot}/HomepageCore.UI",
             "stopAtEntry": false,
@@ -41,7 +41,7 @@
             "type": "coreclr",
             "request": "launch",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/HomepageCore.Identity/bin/Debug/netcoreapp2.0/HomepageCore.Identity.dll",
+            "program": "${workspaceFolder}/HomepageCore.Identity/bin/Debug/netcoreapp2.1/HomepageCore.Identity.dll",
             "args": [],
             "cwd": "${workspaceFolder}/HomepageCore.Identity",
             "stopAtEntry": false,

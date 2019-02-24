@@ -71,7 +71,7 @@ class PostPage extends Component {
                         this.state.post ?
                             (
                                 <div className="post">
-                                    <div className="row" style={{ height: '170px' }} />
+                                    <div className="row post-header" />
                                     <div className="row">
                                         <div className="col-md-offset-2 col-md-8">
                                             <div className="post-entry" style={{ borderBottom: '2px solid #454545', paddingBottom: '15px', display: 'flex' }}>

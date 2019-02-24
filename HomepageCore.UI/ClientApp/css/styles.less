@@ -646,6 +646,13 @@ pre{
 
 /*** Post ***/
 .post{
+  .post-header{
+    height: 100px;
+
+    @media(min-width: @screen-md-min){
+      height: 170px;
+    }
+  }
   .post-content{
     font-size:18px;
     padding-top: 20px;
@@ -656,6 +663,11 @@ pre{
   .share-links{
     z-index:100;
     transition: opacity 300ms;
+    display: none;
+
+    @media (min-width: @screen-md-min){
+      display: block;
+    }
     ul{
       margin:0;
       padding:0;
