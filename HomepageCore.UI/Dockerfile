@@ -13,9 +13,10 @@ COPY ./HomepageCore.sln ./
 RUN dotnet restore
 
 # Install npm
+RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash
 RUN apt-get install -yq nodejs build-essential
-RUN npm install npm -g
+RUN npm install npm@6.14.13 -g
 
 # Install webpack
 RUN npm install webpack@3.11.0 -g
