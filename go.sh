@@ -34,10 +34,10 @@ imageMenu()
 
 if [ "${1,,}" = "dev" ] 
 then
-    docker-compose up -d
+    docker compose up -d
 elif [ "${1,,}" = "prod" ]
 then
-    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+    docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 elif [ "${1,,}" = "test" ]
 then
     dotnet test ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj
