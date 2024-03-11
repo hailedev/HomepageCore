@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:2.1 AS build-env
 ARG configuration=Release
 
 WORKDIR /build
@@ -32,7 +32,7 @@ RUN ./go.sh build ${configuration}
 RUN dotnet publish ./HomepageCore.Identity/HomepageCore.Identity.csproj -c ${configuration} -o /target
 
 # Build runtime image
-FROM microsoft/dotnet:2.1-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/aspnet:2.1
 WORKDIR /var/www
 COPY --from=build-env /target .
 
