@@ -15,7 +15,7 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
     output: {
-        publicPath: "/_/"
+        publicPath: process.env.CONTAINER ? "/" : "/_/"
     },
     plugins: [
         new HtmlWebpackPlugin({ 

@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +23,6 @@ using NLog.Extensions.Logging;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
 using HomepageCore.UI.Configuration;
-using Microsoft.AspNetCore.Authentication.Google;
 using NSwag.AspNetCore;
 using HomepageCore.Services.Interfaces;
 using HomepageCore.Services;
@@ -152,11 +149,15 @@ namespace HomepageCore.UI
 
                 if (env.IsDevelopment())
                 {
-                    app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
-                        HotModuleReplacement = true,
-                        ReactHotModuleReplacement = true,
-                        ConfigFile = Configuration["WebpackConfig"]
-                    });
+                    if (!bool.TryParse(System.Environment.GetEnvironmentVariable("CONTAINER"), out var result) && !result)
+                    {
+                        app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
+                            HotModuleReplacement = true,
+                            ReactHotModuleReplacement = true,
+                            ConfigFile = Configuration["WebpackConfig"]
+                        });
+                    }
+
                     app.UseDeveloperExceptionPage();
                     if(context.Posts.Count() <= 0)
                     {

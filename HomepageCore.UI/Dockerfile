@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:2.1 AS build-env
 ARG configuration=Release
 ARG version=0
+ENV CONTAINER=true
 
 WORKDIR /build
 
@@ -38,6 +39,7 @@ RUN dotnet publish ./HomepageCore.UI/HomepageCore.UI.csproj -c ${configuration} 
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:2.1
+ENV CONTAINER=true
 WORKDIR /var/www
 COPY --from=build-env /target .
 
