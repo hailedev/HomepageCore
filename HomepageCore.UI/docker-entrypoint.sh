@@ -18,22 +18,21 @@ file_env() {
 	elif [ "${!fileVar:-}" ]; then
 		val="$(< "${!fileVar}")"
 	fi
-	export "$var"="$val"
+	if [ -n "${val}" ]; then
+		export "$var"="$val"
+	fi
 	unset "$fileVar"
 }
 
-if [ "$ASPNETCORE_ENVIRONMENT" = "Release" ]
-then
-	file_env 'CONNECTIONSTRINGS__DEFAULTCONNECTION'
-	file_env 'OPENIDCONNECT__CLIENTID'
-	file_env 'OPENIDCONNECT__CLIENTSECRET'
-	file_env 'OPENIDCONNECT__AUTHORITY'
-	file_env 'OPENIDCONNECT__REDIRECTURI'
-	file_env 'EMAIL__SERVER'
-	file_env 'EMAIL__ACCOUNT'
-	file_env 'EMAIL__PASSWORD'
-	file_env 'EMAIL__ADMIN'
-	file_env 'EMAIL__RETURNADDRESS'
-fi
+file_env 'CONNECTIONSTRINGS__DEFAULTCONNECTION'
+file_env 'OPENIDCONNECT__CLIENTID'
+file_env 'OPENIDCONNECT__CLIENTSECRET'
+file_env 'OPENIDCONNECT__AUTHORITY'
+file_env 'OPENIDCONNECT__REDIRECTURI'
+file_env 'EMAIL__SERVER'
+file_env 'EMAIL__ACCOUNT'
+file_env 'EMAIL__PASSWORD'
+file_env 'EMAIL__ADMIN'
+file_env 'EMAIL__RETURNADDRESS'
 
 dotnet $1

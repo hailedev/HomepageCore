@@ -6,7 +6,7 @@ services:
       dockerfile: ./deploy/nginx
     image: hailedev/nginx:latest
     volumes:
-      - "/tmp/homepagecore/certs:/root/certs/haile.info"
+      - "/var/homepagecore/certs:/root/certs/haile.info"
     ports:
      - "80:80"
   identity:
@@ -15,8 +15,8 @@ services:
         configuration: Release
     image: hailedev/homepagecore.identity:latest
     volumes:
-      - "/tmp/homepagecore/data:/data/db"
-      - "/tmp/homepagecore/images:/var/www/wwwroot/images/blog"
+      - "/var/homepagecore/data:/data/db"
+      - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
     expose:
       - "8080"
     environment:
@@ -27,8 +27,8 @@ services:
         configuration: Release
     image: hailedev/homepagecore:latest
     volumes:
-      - "/tmp/homepagecore/data:/data/db"
-      - "/tmp/homepagecore/images:/var/www/wwwroot/images/blog"
+      - "/var/homepagecore/data:/data/db"
+      - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
     expose:
       - "8080"
     environment:

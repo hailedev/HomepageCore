@@ -18,18 +18,17 @@ file_env() {
 	elif [ "${!fileVar:-}" ]; then
 		val="$(< "${!fileVar}")"
 	fi
-	export "$var"="$val"
+	if [ -n "${val}" ]; then
+		export "$var"="$val"
+	fi
 	unset "$fileVar"
 }
 
-if [ "$ASPNETCORE_ENVIRONMENT" = "Release" ]
-then
-	file_env 'CONNECTIONSTRINGS__DEFAULTCONNECTION'
-	file_env 'CONNECTIONSTRINGS__IDSERVERDBCONNECTION'
-	file_env 'AUTHENTICATION__GOOGLE__CLIENTSECRET'
-	file_env 'AUTHENTICATION__GOOGLE__CLIENTID'
-	file_env 'AUTHENTICATION__FACEBOOK__CLIENTSECRET'
-	file_env 'AUTHENTICATION__FACEBOOK__CLIENTID'
-fi
+file_env 'CONNECTIONSTRINGS__DEFAULTCONNECTION'
+file_env 'CONNECTIONSTRINGS__IDSERVERDBCONNECTION'
+file_env 'AUTHENTICATION__GOOGLE__CLIENTSECRET'
+file_env 'AUTHENTICATION__GOOGLE__CLIENTID'
+file_env 'AUTHENTICATION__FACEBOOK__CLIENTSECRET'
+file_env 'AUTHENTICATION__FACEBOOK__CLIENTID'
 
 dotnet $1

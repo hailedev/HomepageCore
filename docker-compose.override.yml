@@ -6,10 +6,12 @@ services:
         configuration: Debug
     image: hailedev/homepagecore.identity:dev
     volumes:
-      - "/tmp/homepagecore/data:/data/db"
-      - "/tmp/homepagecore/images:/var/www/wwwroot/images/blog"
+      - "/var/homepagecore/data:/data/db"
+      - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development 
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION=Data Source=/data/db/AspIdUsers.db
+      - CONNECTIONSTRINGS__IDSERVERDBCONNECTION=Data Source=/data/db/IdServerConfig.db
     ports:
      - "5000:8080"
   web:
@@ -18,9 +20,10 @@ services:
         configuration: Debug
     image: hailedev/homepagecore:dev
     volumes:
-      - "/tmp/homepagecore/data:/data/db"
-      - "/tmp/homepagecore/images:/var/www/wwwroot/images/blog"
+      - "/var/homepagecore/data:/data/db"
+      - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development 
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION=Data Source=/data/db/HomepageCore.db
     ports:
      - "5001:8080"
