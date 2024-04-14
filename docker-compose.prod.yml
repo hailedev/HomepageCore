@@ -1,14 +1,20 @@
 version: "3"
 services:
   nginx:
-    build: 
-      context: .
-      dockerfile: ./deploy/nginx
-    image: hailedev/nginx:latest
+    image: nginx
     volumes:
       - "/var/homepagecore/certs:/root/certs/haile.info"
-    ports:
-     - "80:80"
+    ports: 
+      - "443:443"
+      - "80:80"
+    configs:
+      - source: default.conf
+        target: /etc/nginx/conf.d/default.conf
+      - source: nginx.conf
+        target: /etc/nginx/nginx.conf
+    depends_on:
+      - "web"
+      - "identity"
   identity:
     build: 
       args:
@@ -17,10 +23,24 @@ services:
     volumes:
       - "/var/homepagecore/data:/data/db"
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
-    expose:
-      - "8080"
+      - "/var/homepagecore/certs:/certificates"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production 
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION_FILE=/run/secrets/id_connectionstrings_defaultconnection
+      - CONNECTIONSTRINGS__IDSERVERDBCONNECTION_FILE=/run/secrets/id_connectionstrings_idserverdbconnection
+      - AUTHENTICATION__GOOGLE__CLIENTSECRET_FILE=/run/secrets/id_google_clientsecret
+      - AUTHENTICATION__GOOGLE__CLIENTID_FILE=/run/secrets/id_google_clientid
+      - AUTHENTICATION__FACEBOOK__CLIENTSECRET_FILE=/run/secrets/id_facebook_clientsecret
+      - AUTHENTICATION__FACEBOOK__CLIENTID_FILE=/run/secrets/id_facebook_clientid
+      - ASPNETCORE_URLS=http://*:8080
+    secrets:
+      - id_connectionstrings_defaultconnection
+      - id_connectionstrings_idserverdbconnection
+      - id_google_clientsecret
+      - id_google_clientid
+      - id_facebook_clientsecret
+      - id_facebook_clientid
+
   web:
     build: 
       args:
@@ -29,7 +49,67 @@ services:
     volumes:
       - "/var/homepagecore/data:/data/db"
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
-    expose:
-      - "8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production 
+      - ASPNETCORE_ENVIRONMENT=Production
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION_FILE=/run/secrets/web_connectionstrings_defaultconnection
+      - OPENIDCONNECT__CLIENTID_FILE=/run/secrets/web_openidconnect_clientid
+      - OPENIDCONNECT__CLIENTSECRET_FILE=/run/secrets/web_openidconnect_clientsecret
+      - OPENIDCONNECT__AUTHORITY_FILE=/run/secrets/web_openidconnect_authority
+      - OPENIDCONNECT__REDIRECTURI_FILE=/run/secrets/web_openidconnect_redirecturi
+      - EMAIL__SERVER_FILE=/run/secrets/web_email_server
+      - EMAIL__ACCOUNT_FILE=/run/secrets/web_email_account
+      - EMAIL__PASSWORD_FILE=/run/secrets/web_email_password
+      - EMAIL__ADMIN_FILE=/run/secrets/web_email_admin
+      - EMAIL__RETURNADDRESS_FILE=/run/secrets/web_email_returnaddress
+      - ASPNETCORE_URLS=http://*:8080
+    secrets:
+      - web_connectionstrings_defaultconnection
+      - web_openidconnect_clientid
+      - web_openidconnect_clientsecret
+      - web_openidconnect_authority
+      - web_openidconnect_redirecturi
+      - web_email_server
+      - web_email_account
+      - web_email_password
+      - web_email_admin
+      - web_email_returnaddress
+
+configs:
+  default.conf:
+    file: ./default.conf
+  nginx.conf:
+    file: ./nginx.conf
+
+secrets:
+  web_connectionstrings_defaultconnection:
+    file: ./secrets/web_connectionstrings_defaultconnection.secret
+  web_openidconnect_clientid:
+    file: ./secrets/web_openidconnect_clientid.secret
+  web_openidconnect_clientsecret:
+    file: ./secrets/web_openidconnect_clientsecret.secret
+  web_openidconnect_authority:
+    file: ./secrets/web_openidconnect_authority.secret
+  web_openidconnect_redirecturi:
+    file: ./secrets/web_openidconnect_redirecturi.secret
+  web_email_server:
+    file: ./secrets/web_email_server.secret
+  web_email_account:
+    file: ./secrets/web_email_account.secret
+  web_email_password:
+    file: ./secrets/web_email_password.secret
+  web_email_admin:
+    file: ./secrets/web_email_admin.secret
+  web_email_returnaddress:
+    file: ./secrets/web_email_returnaddress.secret
+  id_connectionstrings_defaultconnection:
+    file: ./secrets/id_connectionstrings_defaultconnection.secret
+  id_connectionstrings_idserverdbconnection:
+    file: ./secrets/id_connectionstrings_idserverdbconnection.secret
+  id_google_clientsecret:
+    file: ./secrets/id_google_clientsecret.secret
+  id_google_clientid:
+    file: ./secrets/id_google_clientid.secret
+  id_facebook_clientsecret:
+    file: ./secrets/id_facebook_clientsecret.secret
+  id_facebook_clientid:
+    file: ./secrets/id_facebook_clientid.secret

@@ -10,6 +10,8 @@ services:
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development 
+      # Override the connection strings to point to the static database
+      # This is so the database changes persist after removing the container
       - CONNECTIONSTRINGS__DEFAULTCONNECTION=Data Source=/data/db/AspIdUsers.db
       - CONNECTIONSTRINGS__IDSERVERDBCONNECTION=Data Source=/data/db/IdServerConfig.db
     ports:
@@ -24,6 +26,8 @@ services:
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development 
+      # Override the connection strings to point to the static database
+      # This is so the database changes persist after removing the container
       - CONNECTIONSTRINGS__DEFAULTCONNECTION=Data Source=/data/db/HomepageCore.db
     ports:
      - "5001:8080"
