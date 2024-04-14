@@ -3,7 +3,7 @@ services:
   nginx:
     image: nginx
     volumes:
-      - "/var/homepagecore/certs:/root/certs/haile.info"
+      - "certs:/root/certs/haile.info"
     deploy:
       replicas: 1
     ports: 
@@ -22,9 +22,9 @@ services:
   identity:
     image: hailedev/homepagecore.identity:latest
     volumes:
-      - "/var/homepagecore/data:/data/db"
-      - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
-      - "/var/homepagecore/certs:/certificates"
+      - "db-data:/data/db"
+      - "images:/var/www/wwwroot/images/blog"
+      - "certs:/certificates"
     deploy:
       replicas: 1
     environment:
@@ -47,8 +47,8 @@ services:
   web:
     image: hailedev/homepagecore:latest
     volumes:
-      - "/var/homepagecore/data:/data/db"
-      - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
+      - "db-data:/data/db"
+      - "images:/var/www/wwwroot/images/blog"
     deploy:
       replicas: 1
     environment:
@@ -84,6 +84,26 @@ services:
         constraints:
           - node.role==manager
       replicas: 1
+
+volumes:
+  certs:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "/var/homepagecore/certs"
+  db-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "/var/homepagecore/data"
+  images:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: "/var/homepagecore/images"
 
 configs:
   default.conf:
