@@ -4,6 +4,8 @@ services:
     image: nginx
     volumes:
       - "/var/homepagecore/certs:/root/certs/haile.info"
+    deploy:
+      replicas: 1
     ports: 
       - "443:443"
       - "80:80"
@@ -25,6 +27,8 @@ services:
       - "/var/homepagecore/data:/data/db"
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
       - "/var/homepagecore/certs:/certificates"
+    deploy:
+      replicas: 1
     environment:
       - ASPNETCORE_ENVIRONMENT=Production 
       - CONNECTIONSTRINGS__DEFAULTCONNECTION_FILE=/run/secrets/id_connectionstrings_defaultconnection
@@ -33,6 +37,7 @@ services:
       - AUTHENTICATION__GOOGLE__CLIENTID_FILE=/run/secrets/id_google_clientid
       - AUTHENTICATION__FACEBOOK__CLIENTSECRET_FILE=/run/secrets/id_facebook_clientsecret
       - AUTHENTICATION__FACEBOOK__CLIENTID_FILE=/run/secrets/id_facebook_clientid
+      - ASPNETCORE_URLS=http://*:8080
     secrets:
       - id_connectionstrings_defaultconnection
       - id_connectionstrings_idserverdbconnection
@@ -49,6 +54,8 @@ services:
     volumes:
       - "/var/homepagecore/data:/data/db"
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
+    deploy:
+      replicas: 1
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - CONNECTIONSTRINGS__DEFAULTCONNECTION_FILE=/run/secrets/web_connectionstrings_defaultconnection
@@ -61,6 +68,7 @@ services:
       - EMAIL__PASSWORD_FILE=/run/secrets/web_email_password
       - EMAIL__ADMIN_FILE=/run/secrets/web_email_admin
       - EMAIL__RETURNADDRESS_FILE=/run/secrets/web_email_returnaddress
+      - ASPNETCORE_URLS=http://*:8080
     secrets:
       - web_connectionstrings_defaultconnection
       - web_openidconnect_clientid
