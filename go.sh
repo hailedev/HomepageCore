@@ -2,8 +2,7 @@
 
 menu()
 {
-    echo "dev                       Build and run the dev container on port 8080"
-    echo "prod                      Build and run the prod container on port 80"
+    echo "start                     Build and run the containers"
     echo "build                     The build sub menu"
     echo "test                      Run the unit tests"
     echo "db                        DB initialize commands"
@@ -11,6 +10,7 @@ menu()
     echo "deploy                    Deploy to production server"
     echo "deploy createdocument     Create the SSM document to deploy the stack"
     echo "deploy deletedocument     Remove the SSM document"
+    echo "stack                     Deploy or remove the stack to the current node"
     echo ""
 }
 buildMenu()
@@ -32,12 +32,28 @@ imageMenu()
     echo ""
 }
 
-if [ "${1,,}" = "dev" ] 
+if [ "${1,,}" = "start" ]
 then
-    docker compose up -d
-elif [ "${1,,}" = "prod" ]
+    if [ "${2,,}" = "dev" ]
+    then
+        docker compose up -d
+    elif [ "${2,,}" = "prod" ]
+    then
+        docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+    else
+        echo "start <dev|prod>      Start the <dev|prod> containers on port <8080|80>"
+    fi
+elif [ "${1,,}" = "stop" ]
 then
-    docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+    if [ "${2,,}" = "dev" ]
+    then
+        docker compose down
+    elif [ "${2,,}" = "prod" ]
+    then
+        docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+    else
+        echo "stop <dev|prod>       Stop the <dev|prod> containers"
+    fi
 elif [ "${1,,}" = "test" ]
 then
     dotnet test ./test/HomepageCore.UI.Test/HomepageCore.UI.Test.csproj
@@ -103,6 +119,17 @@ then
         aws ssm delete-document --name "DeployStack"
     else
         aws ssm send-command --instance-ids "${INSTANCE}" --document-name "DeployStack" --comment "Deploying build ${VERSION}" --parameters stackfile="https://raw.githubusercontent.com/hailedev/homepagecore/master/deploy/homepagecore.yml",configfile="https://raw.githubusercontent.com/hailedev/homepagecore/master/deploy/default.conf",nginxfile="https://raw.githubusercontent.com/hailedev/homepagecore/master/deploy/nginx.conf"
+    fi
+elif [ "${1,,}" = "stack" ]
+then
+    if [ "${2,,}" = "up" ]
+    then
+        docker stack deploy -c ./services.yml homepagecore --detach=false
+    elif [ "${2,,}" = "down" ]
+    then
+        docker stack rm homepagecore
+    else
+        echo "stack <up|down>       Deploy or remove the stack"
     fi
 else
     menu

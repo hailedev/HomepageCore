@@ -17,11 +17,9 @@ services:
     depends_on:
       - "web"
       - "identity"
+      - "viz"
 
   identity:
-    build: 
-      args:
-        configuration: Release
     image: hailedev/homepagecore.identity:latest
     volumes:
       - "/var/homepagecore/data:/data/db"
@@ -47,9 +45,6 @@ services:
       - id_facebook_clientid
 
   web:
-    build: 
-      args:
-        configuration: Release
     image: hailedev/homepagecore:latest
     volumes:
       - "/var/homepagecore/data:/data/db"
@@ -92,40 +87,40 @@ services:
 
 configs:
   default.conf:
-    file: ./default.conf
+    file: ./default.stack.conf
   nginx.conf:
     file: ./nginx.conf
 
 secrets:
   web_connectionstrings_defaultconnection:
-    file: ./secrets/web_connectionstrings_defaultconnection.secret
+    external: true
   web_openidconnect_clientid:
-    file: ./secrets/web_openidconnect_clientid.secret
+    external: true
   web_openidconnect_clientsecret:
-    file: ./secrets/web_openidconnect_clientsecret.secret
+    external: true
   web_openidconnect_authority:
-    file: ./secrets/web_openidconnect_authority.secret
+    external: true
   web_openidconnect_redirecturi:
-    file: ./secrets/web_openidconnect_redirecturi.secret
+    external: true
   web_email_server:
-    file: ./secrets/web_email_server.secret
+    external: true
   web_email_account:
-    file: ./secrets/web_email_account.secret
+    external: true
   web_email_password:
-    file: ./secrets/web_email_password.secret
+    external: true
   web_email_admin:
-    file: ./secrets/web_email_admin.secret
+    external: true
   web_email_returnaddress:
-    file: ./secrets/web_email_returnaddress.secret
+    external: true
   id_connectionstrings_defaultconnection:
-    file: ./secrets/id_connectionstrings_defaultconnection.secret
+    external: true
   id_connectionstrings_idserverdbconnection:
-    file: ./secrets/id_connectionstrings_idserverdbconnection.secret
+    external: true
   id_google_clientsecret:
-    file: ./secrets/id_google_clientsecret.secret
+    external: true
   id_google_clientid:
-    file: ./secrets/id_google_clientid.secret
+    external: true
   id_facebook_clientsecret:
-    file: ./secrets/id_facebook_clientsecret.secret
+    external: true
   id_facebook_clientid:
-    file: ./secrets/id_facebook_clientid.secret
+    external: true

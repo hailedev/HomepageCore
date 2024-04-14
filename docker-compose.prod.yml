@@ -72,19 +72,10 @@ services:
       - web_email_password
       - web_email_admin
       - web_email_returnaddress
-  viz:
-    image: dockersamples/visualizer:latest
-    volumes: 
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints:
-          - node.role==manager
-      replicas: 1
 
 configs:
   default.conf:
-    file: ./default.conf
+    file: ./default.prod.conf
   nginx.conf:
     file: ./nginx.conf
 
