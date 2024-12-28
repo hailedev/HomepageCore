@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
@@ -20,9 +21,9 @@ namespace HomepageCore.Identity
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment Environment { get; }
+        public IWebHostEnvironment Environment { get; }
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -106,9 +107,11 @@ namespace HomepageCore.Identity
                     options.ClientId = Configuration["Authentication:Facebook:ClientId"];
                     options.ClientSecret = Configuration["Authentication:Facebook:ClientSecret"];
                 });
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseDeveloperExceptionPage();
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
@@ -120,7 +123,7 @@ namespace HomepageCore.Identity
                 if (Environment.IsDevelopment())
                 {
                     app.UseDeveloperExceptionPage();
-                    app.UseDatabaseErrorPage();
+                    app.UseMigrationsEndPoint();
                 }
                 else
                 {
@@ -141,7 +144,8 @@ namespace HomepageCore.Identity
 
             app.UseStaticFiles();
             app.UseIdentityServer();
-            app.UseMvcWithDefaultRoute();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
         }
     }
 }

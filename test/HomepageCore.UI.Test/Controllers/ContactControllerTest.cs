@@ -20,13 +20,13 @@ namespace HomepageCore.UI.Test.Controllers
         private ContactController _sut;
 
         private Mock<IEmailSender> _emailSenderMock;
-        private Mock<ILoggerFactory> _loggerMock;
+        private Mock<ILogger<ContactController>> _loggerMock;
 
         [Fact]
         public void Post_Message_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<ContactController>>();
             _emailSenderMock = new Mock<IEmailSender>();
             _emailSenderMock
                 .Setup(x => x.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(true));
@@ -49,10 +49,7 @@ namespace HomepageCore.UI.Test.Controllers
         public void Post_ExceptionReturnsInternalError_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
-            var loggerMock = new Mock<ILogger>();
-            _loggerMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(loggerMock.Object);
-            
+            _loggerMock = new Mock<ILogger<ContactController>>();
             _emailSenderMock = new Mock<IEmailSender>();
             _emailSenderMock
                 .Setup(x => x.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))

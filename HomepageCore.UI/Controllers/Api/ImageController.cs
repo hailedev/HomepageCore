@@ -17,10 +17,10 @@ namespace HomepageCore.Controllers.Api
     [ApiVersion("1.0")]
     public class ImageController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
 
-        public ImageController(IHostingEnvironment hostingEnvironment, IApplicationUnitOfWork applicationUnitOfWork)
+        public ImageController(IWebHostEnvironment hostingEnvironment, IApplicationUnitOfWork applicationUnitOfWork)
         {
             _hostingEnvironment = hostingEnvironment;
             _applicationUnitOfWork = applicationUnitOfWork;

@@ -11,6 +11,7 @@ menu()
     echo "deploy createdocument     Create the SSM document to deploy the stack"
     echo "deploy deletedocument     Remove the SSM document"
     echo "stack                     Deploy or remove the stack to the current node"
+    echo "clean                     Stop and remove all containers"
     echo ""
 }
 buildMenu()
@@ -131,6 +132,10 @@ then
     else
         echo "stack <up|down>       Deploy or remove the stack"
     fi
+elif [ "${1,,}" = "clean" ]
+then
+    docker stop $(docker ps -a -q)
+    docker rm $(docker ps -a -q)
 else
     menu
 fi

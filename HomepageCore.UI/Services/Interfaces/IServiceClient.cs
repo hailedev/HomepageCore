@@ -7,7 +7,7 @@ using RestSharp;
 
 namespace HomepageCore.UI.Services.Interfaces
 {
-    public interface IServiceClient : IRestClient
+    public interface IServiceClient
     {
         Task<List<ImageModel>> GetAsync();
         Task<HttpStatusCode> PostAsync(ImageModel post);

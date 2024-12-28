@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:2.1 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 ARG configuration=Release
 
 WORKDIR /build
@@ -13,7 +13,7 @@ RUN dotnet restore
 
 # Install npm
 RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash
 RUN apt-get install -yq nodejs build-essential
 RUN npm install npm@6.14.13 -g -g
 
@@ -33,7 +33,7 @@ RUN ./go.sh build ${configuration}
 RUN dotnet publish ./HomepageCore.Identity/HomepageCore.Identity.csproj -c ${configuration} -o /target
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:2.1
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /var/www
 COPY --from=build-env /target .
 

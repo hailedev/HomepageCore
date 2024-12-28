@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using HomepageCore.Data.Entities;
+using HomepageCore.Data.Migrations;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 
@@ -10,7 +11,7 @@ namespace HomepageCore.Data.Extensions
     {
         public static void EnsureSeedData(this ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            userManager.CreateAsync(new ApplicationUser { FirstName = "Hai", LastName = "Le", UserName = "hai.le@hotmail.com.au", Email = "hai.le@hotmail.com.au" }, "123Qwerty").Wait();
+            userManager.CreateAsync(new ApplicationUser { FirstName = "Hai", LastName = "Le", UserName = "hai.le@hotmail.com.au", Email = "hai.le@hotmail.com.au" }, "123Qwerty!kdflkCie").Wait();
 
             if (!context.Categories.Any(x => x.Id == Guid.Parse("c3943998-774b-4ac4-9ccd-8e740e20ab2c")))
             {
@@ -52,7 +53,7 @@ namespace HomepageCore.Data.Extensions
                 });
             }
             context.SaveChanges();
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("9efa6bf2-7ecf-4947-adfc-6431914da1c6"),
                 Title = "Lorem Ipsum 1",
@@ -72,7 +73,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-1)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("50dcef2D-2d4a-4cfd-a959-6a19490e4b30"),
                 Title = "Lorem Ipsum 2",
@@ -83,7 +84,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-2)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("cb8a9f02-21f5-45d9-a173-53692c3f6e49"),
                 Title = "Lorem Ipsum 3",
@@ -94,7 +95,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-3)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("075428d9-6f28-40c3-abf5-f36930f04659"),
                 Title = "Lorem Ipsum 4",
@@ -105,7 +106,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-4)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("ffdcef2D-2d4a-4cfd-a959-ff19490e4b30"),
                 Title = "Lorem Ipsum 5",
@@ -116,7 +117,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-5)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("cb8a9f02-2ef5-e5f9-a173-53692cff6e49"),
                 Title = "Lorem Ipsum 6",
@@ -127,7 +128,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-6)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("0f542fd9-6f28-40c3-abf5-f3a930f0a659"),
                 Title = "Lorem Ipsum 7",
@@ -138,7 +139,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-7)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("a0dcef2D-2d4a-ecfd-a959-6a19490e4b30"),
                 Title = "Lorem Ipsum 8",
@@ -149,7 +150,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-8)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("cb8a9f02-21f5-45d9-a173-13612c3f6e49"),
                 Title = "Lorem Ipsum 9",
@@ -160,7 +161,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-9)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("075428d9-6f28-40c3-abf5-f36932f02629"),
                 Title = "Lorem Ipsum 10",
@@ -171,7 +172,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-10)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("504cef24-2d4a-4cfd-a959-ff19490e4b30"),
                 Title = "Lorem Ipsum 11",
@@ -182,7 +183,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-11)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("cb8a9f02-21f5-45f9-a173-56652cff6e49"),
                 Title = "Lorem Ipsum 12",
@@ -193,7 +194,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-12)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("0f8428d9-6f28-40c3-abf5-f36930f04659"),
                 Title = "Lorem Ipsum 13",
@@ -204,7 +205,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-13)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("50dcef2D-2d4a-4cfd-a959-6a19110e4b30"),
                 Title = "Lorem Ipsum 14",
@@ -215,7 +216,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-14)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("cb8a9f02-21f5-45d9-117a-53692c3f6e49"),
                 Title = "Lorem Ipsum 15",
@@ -226,7 +227,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-15)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("a75a28d9-6f28-40c3-abf5-f36930f04659"),
                 Title = "Lorem Ipsum 16",
@@ -237,7 +238,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-16)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("50dcef2D-2d4a-4cfd-a959-ff19490e4bee"),
                 Title = "Lorem Ipsum 17",
@@ -248,7 +249,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-17)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("cb8a9f02-21f5-55ab-a173-53692cff6e49"),
                 Title = "Lorem Ipsum 18",
@@ -259,7 +260,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-18)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("0fabcfd9-6f28-40c3-abf5-f36930f04659"),
                 Title = "Lorem Ipsum 19",
@@ -270,7 +271,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-19)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("50dcef2D-2d4a-4cfd-a959-6a19490a4b34"),
                 Title = "Lorem Ipsum 20",
@@ -281,7 +282,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-20)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("bbca9f02-21f5-45d9-a173-53692c3f6e49"),
                 Title = "Lorem Ipsum 21",
@@ -292,7 +293,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-21)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("07542849-6f28-40c3-abf5-f36930f04659"),
                 Title = "Lorem Ipsum 22",
@@ -303,7 +304,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-22)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("5fdcef2a-2d4a-4cfd-a9a9-ff19490e4b30"),
                 Title = "Lorem Ipsum 23",
@@ -314,7 +315,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-23)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("cb8a9fc2-c1f5-45f9-a173-53692cff6e49"),
                 Title = "Lorem Ipsum 24",
@@ -325,7 +326,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-24)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("0f5727d9-7f28-40c3-abf5-f36930f04659"),
                 Title = "Lorem Ipsum 25",
@@ -336,7 +337,7 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
                 ModifiedOn = DateTime.UtcNow.AddDays(-25)
             });
 
-            context.Posts.Add(new Post
+            context.Posts.AddPost(new Post
             {
                 Id = new Guid("0f5727dd-af28-40c3-abf5-f36930f04659"),
                 Title = "Lorem Ipsum 26",
@@ -348,6 +349,14 @@ Nam quis tellus ullamcorper quam finibus sodales ut eu nulla. Pellentesque ac er
             });
 
             context.SaveChanges();
+        }
+
+        private static void AddPost(this Microsoft.EntityFrameworkCore.DbSet<Post> posts, Post post)
+        {
+            if (!posts.Any(x => x.Id == post.Id))
+            {
+                posts.Add(post);
+            }
         }
     }
 }

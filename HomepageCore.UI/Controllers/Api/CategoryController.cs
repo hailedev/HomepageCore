@@ -18,13 +18,13 @@ namespace HomepageCore.Controllers.Api
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
+        private readonly ILogger<CategoryController> _logger;
 
-        public CategoryController(IApplicationUnitOfWork applicationUnitOfWork, IMapper mapper, ILoggerFactory loggerFactory)
+        public CategoryController(IApplicationUnitOfWork applicationUnitOfWork, IMapper mapper, ILogger<CategoryController> logger)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
             _mapper = mapper;
-            _logger = loggerFactory.CreateLogger(GetType().Namespace);
+            _logger = logger;
         }
 
         [HttpGet("{id?}")]
@@ -38,6 +38,7 @@ namespace HomepageCore.Controllers.Api
                 {
                     var result =
                         _applicationUnitOfWork.Categories.GetAll()
+                            .AsEnumerable()
                             .OrderBy(x => JsonConvert.DeserializeObject<JObject>(x.Properties)["order"])
                             .Select(x => _mapper.Map<CategoryModel>(x));
 

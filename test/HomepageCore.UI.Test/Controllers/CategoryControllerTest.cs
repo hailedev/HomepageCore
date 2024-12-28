@@ -23,18 +23,20 @@ namespace HomepageCore.UI.Test.Controllers
 
         private Mock<IApplicationUnitOfWork> _applicationUnitOfWorkMock;
         private Mock<ICategoryRepository> _categoryRepositoryMock;
-        private Mock<ILoggerFactory> _loggerMock;
+        private Mock<ILogger<CategoryController>> _loggerMock;
+        private readonly Mapper _mapper;
 
         public CategoryControllerTest()
         {
-            Mapper.Initialize(config => { config.CreateMissingTypeMaps = true; });
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<DefaultMappingProfile>());
+            _mapper = new Mapper(config);
         }
 
         [Fact]
         public void Get_NoIdReturnsAll_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<CategoryController>>();
 
             var categories = GetCategories(4);
             _categoryRepositoryMock = new Mock<ICategoryRepository>();
@@ -42,7 +44,7 @@ namespace HomepageCore.UI.Test.Controllers
 
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             _applicationUnitOfWorkMock.Setup(x => x.Categories).Returns(_categoryRepositoryMock.Object);
-            _sut = new CategoryController(_applicationUnitOfWorkMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new CategoryController(_applicationUnitOfWorkMock.Object, _mapper, _loggerMock.Object);
 
             // action
             var result = _sut.Get() as JsonResult;
@@ -64,7 +66,7 @@ namespace HomepageCore.UI.Test.Controllers
         public void Get_WithIdReturnsCategory_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<CategoryController>>();
 
             var categories = GetCategories(1);
             _categoryRepositoryMock = new Mock<ICategoryRepository>();
@@ -72,7 +74,7 @@ namespace HomepageCore.UI.Test.Controllers
 
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             _applicationUnitOfWorkMock.Setup(x => x.Categories).Returns(_categoryRepositoryMock.Object);
-            _sut = new CategoryController(_applicationUnitOfWorkMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new CategoryController(_applicationUnitOfWorkMock.Object, _mapper, _loggerMock.Object);
 
             // action
             var result = _sut.Get(categories.First().Id) as JsonResult;
@@ -88,16 +90,14 @@ namespace HomepageCore.UI.Test.Controllers
         public void Get_WithInvalidCategoryId_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
-            var loggerMock = new Mock<ILogger>();
-            _loggerMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(loggerMock.Object);
+            _loggerMock = new Mock<ILogger<CategoryController>>();
             
             _categoryRepositoryMock = new Mock<ICategoryRepository>();
             _categoryRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>())).Returns<Category>(null);
 
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             _applicationUnitOfWorkMock.Setup(x => x.Categories).Returns(_categoryRepositoryMock.Object);
-            _sut = new CategoryController(_applicationUnitOfWorkMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new CategoryController(_applicationUnitOfWorkMock.Object, _mapper, _loggerMock.Object);
 
             // action
             var result = _sut.Get(Guid.NewGuid()) as NotFoundResult;

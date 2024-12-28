@@ -68,7 +68,7 @@ class AdminPage extends Component {
                         <td>{category ? category.name : ''}</td>
                         <td>{post.createdOn}</td>
                         <td><Link to={'edit/'.concat(post.id)}>{edit}</Link></td>
-                        <td onClick={this.delete.bind(this, post.id)} role="presentation">{close}</td>
+                        <td><div onClick={this.delete.bind(this, post.id)} role="presentation">{close}</div></td>
                     </tr>);
             });
         }

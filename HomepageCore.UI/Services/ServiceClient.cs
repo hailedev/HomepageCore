@@ -15,43 +15,50 @@ using RestSharp.Authenticators;
 
 namespace HomepageCore.UI.Services
 {
-    public class ServiceClient : RestClient, IServiceClient
+    public class ServiceClient : IServiceClient, IDisposable
     {
-        IHttpContextAccessor _contextAccessor;
+        private readonly IRestClient _client;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public ServiceClient(IHttpContextAccessor contextAccessor, IOptions<ApplicationOptions> optionsAccessor)
+        public ServiceClient(IHttpContextAccessor contextAccessor, IOptions<ApplicationOptions> optionsAccessor) 
         {
             _contextAccessor = contextAccessor;
-            BaseUrl = new Uri(optionsAccessor.Value.OpenIdConnect.RedirectUri);
 
+            var restClientOptions = new RestClientOptions { BaseUrl = new Uri(optionsAccessor.Value.OpenIdConnect.RedirectUri) };
             var token = _contextAccessor.HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.AccessToken).Result;
             if(token != null) 
             {
-                Authenticator = new JwtAuthenticator(token);
+                restClientOptions.Authenticator = new JwtAuthenticator(token);
             }
+            _client = new RestClient(restClientOptions);
         }
 
         public async Task<List<ImageModel>> GetAsync()
         {
             var request = new RestRequest("/api/image");
-            var result = await ExecuteTaskAsync<List<ImageModel>>(request);
+            var result = await _client.ExecuteAsync<List<ImageModel>>(request);
             return result.Data;
         }
 
         public async Task<HttpStatusCode> PostAsync(ImageModel post)
         {
-            var request = new RestRequest("/api/image", Method.POST);
+            var request = new RestRequest("/api/image", Method.Post);
             request.AddJsonBody(post);
-            var result = await ExecuteTaskAsync<ImageModel>(request);
+            var result = await _client.ExecuteAsync<ImageModel>(request);
             return result.StatusCode;
         }
 
         public async Task<Guid> DeleteAsync(Guid id)
         {
-            var request = new RestRequest("/api/image/{id}", Method.DELETE);
+            var request = new RestRequest("/api/image/{id}", Method.Delete);
             request.AddParameter("id", id, ParameterType.UrlSegment);
-            var result = await ExecuteTaskAsync<Guid>(request);
+            var result = await _client.ExecuteAsync<Guid>(request);
             return result.Data;
+        }
+
+        public void Dispose()
+        {
+            _client?.Dispose();
         }
     }
 }

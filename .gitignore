@@ -270,7 +270,7 @@ __pycache__/
 Target/
 HomepageCore.UI/wwwroot
 HomepageCore.UI/Views/Home/Index.cshtml
-HomepageCore.UI/HomepageCore.db
+HomepageCore.UI/HomepageCore.db*
 HomepageCore.UI/ClientApp/images/blog/
 
 HomepageCore.Identity/identityserver4_log.txt

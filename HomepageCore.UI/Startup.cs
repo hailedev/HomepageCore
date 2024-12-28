@@ -12,18 +12,13 @@ using HomepageCore.Data.Entities;
 using HomepageCore.Data.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using NLog.Web;
-using NLog;
-using NLog.Config;
 using Microsoft.AspNetCore.Http;
-using NLog.Extensions.Logging;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
 using HomepageCore.UI.Configuration;
-using NSwag.AspNetCore;
 using HomepageCore.Services.Interfaces;
 using HomepageCore.Services;
 using Microsoft.EntityFrameworkCore;
@@ -32,14 +27,18 @@ using IdentityServer4.AccessTokenValidation;
 using HomepageCore.UI.Services.Interfaces;
 using HomepageCore.UI.Services;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Hosting;
+using HomepageCore.UI.Models;
+using Microsoft.AspNetCore.SpaServices.Webpack;
+using NLog;
+using NLog.Config;
 
 namespace HomepageCore.UI
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -55,8 +54,6 @@ namespace HomepageCore.UI
             
             Configuration = builder.Build();
 
-            // set nlog config
-            env.ConfigureNLog("nlog.config");
             LogManager.Configuration.Variables["connectionString"] = Configuration.GetConnectionString("DefaultConnection");
             LogManager.Configuration.Install(new InstallationContext());
 
@@ -64,26 +61,31 @@ namespace HomepageCore.UI
         }
 
         public IConfigurationRoot Configuration { get; }
-        public IHostingEnvironment Environment { get; }
+        public IWebHostEnvironment Environment { get; }
 
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(loggingBuilder => {
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddNLogWeb("nlog.config");
+                loggingBuilder.AddConsole();
+            });
             services.AddDbContext<ApplicationDbContext>(optionsBuilder => optionsBuilder.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddSingleton<IHostingEnvironment>(Environment);
+            services.AddSingleton<IWebHostEnvironment>(Environment);
 
             services.AddOptions();
             services.Configure<ApplicationOptions>(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<Func<IServiceClient>>(provider => new Func<IServiceClient>(() => new ServiceClient(provider.GetService<IHttpContextAccessor>(), provider.GetService<IOptions<ApplicationOptions>>())));
 
-            services.AddAuthentication(options => {
+            /*services.AddAuthentication(options => {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
@@ -105,7 +107,34 @@ namespace HomepageCore.UI
                 options.Authority = Configuration["OpenIdConnect:Authority"];
                 options.ApiName = "api1";
                 options.RequireHttpsMetadata = false;
-            });
+            });*/
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .Services
+                    .AddAuthentication(options => {
+                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                    })
+                    .AddCookie()
+                    .AddOpenIdConnect(options => {
+                        options.Authority = Configuration["OpenIdConnect:Authority"];
+                        options.ClientId = Configuration["OpenIdConnect:ClientId"];
+                        options.ResponseType = "code id_token";
+                        options.Scope.Add("openid");
+                        options.Scope.Add("profile");
+                        options.Scope.Add("api1");
+                        options.SaveTokens = true;
+                        options.RequireHttpsMetadata = false;
+                        options.ClientSecret = Configuration["OpenIdConnect:ClientSecret"];
+                        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        options.GetClaimsFromUserInfoEndpoint = true;
+                    })
+                    .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options => { // JWT authentication
+                        options.Authority = Configuration["OpenIdConnect:Authority"];
+                        options.ApiName = "api1";
+                        options.RequireHttpsMetadata = false;
+                    });
 
             // Add compression
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
@@ -119,7 +148,7 @@ namespace HomepageCore.UI
             services.AddMvc();
 
             // Add automapper
-            services.AddAutoMapper(x => x.CreateMissingTypeMaps = true);
+            services.AddAutoMapper(x => x.AddProfile<DefaultMappingProfile>());
 
             // needed for NLog
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -132,15 +161,13 @@ namespace HomepageCore.UI
                 x.ApiVersionReader = new HeaderApiVersionReader("version");
                 x.ReportApiVersions = true;
             });
+
+            services.AddOpenApiDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            loggerFactory.AddNLog();
-            loggerFactory.AddConsole();
-            app.AddNLogWeb();
-
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
@@ -159,10 +186,11 @@ namespace HomepageCore.UI
                     }
 
                     app.UseDeveloperExceptionPage();
-                    if(context.Posts.Count() <= 0)
+                    if(!context.Posts.Any())
                     {
                         var userManager = serviceScope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
                         context.EnsureSeedData(userManager);
+                        
                     }
                 }
             }
@@ -180,16 +208,21 @@ namespace HomepageCore.UI
                 app.UseForwardedHeaders(forwardingOptions);
             }
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
             app.UseFileServer();
 
-            app.UseSwaggerUi(typeof(Startup).Assembly, settings => {});
+            app.UseOpenApi();
+            app.UseSwaggerUi();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endPoints => 
             {
-                routes.MapRoute("default","{controller}/{action=Index}/{id?}");
-                routes.MapSpaFallbackRoute("spa-fallback",new { Controller = "Home", action = "Index"});
+                endPoints.MapControllers();
+                endPoints.MapFallbackToController("Index", "Home"); // Eqivalent to routes.MapSpaFallbackRoute("spa-fallback",new { Controller = "Home", action = "Index"})
             });
         }
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using HomepageCore.Data.Entities;
 
 namespace HomepageCore.UI.Models
@@ -23,6 +19,8 @@ namespace HomepageCore.UI.Models
             CreateMap<Post, PostModel>()
                     .ForMember(x => x.Day, opt => opt.MapFrom(x => x.CreatedOn.Day))
                     .ForMember(x => x.Month, opt => opt.MapFrom(x => x.CreatedOn.ToString("MMM")));
+
+            CreateMap<Category, CategoryModel>();
         }
     }
 }

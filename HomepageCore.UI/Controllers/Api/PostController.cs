@@ -27,14 +27,15 @@ namespace HomepageCore.Controllers.Api
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         private readonly ApplicationOptions _applicationOptions;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
 
-        public PostController(IApplicationUnitOfWork applicationUnitOfWork, IOptions<ApplicationOptions> optionsAccessor, IMapper mapper, ILoggerFactory loggerFactory)
+        private readonly ILogger<PostController> _logger;
+
+        public PostController(IApplicationUnitOfWork applicationUnitOfWork, IOptions<ApplicationOptions> optionsAccessor, IMapper mapper, ILogger<PostController> logger)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
             _applicationOptions = optionsAccessor.Value;
             _mapper = mapper;
-            _logger = loggerFactory.CreateLogger(GetType().Namespace);
+            _logger = logger;
         }
 
         [AllowAnonymous]

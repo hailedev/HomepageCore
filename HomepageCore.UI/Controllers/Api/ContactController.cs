@@ -14,12 +14,12 @@ namespace HomepageCore.Controllers.Api
     public class ContactController : Controller
     {
         private readonly IEmailSender _emailSender;
-        private readonly ILogger _logger;
+        private readonly ILogger<ContactController> _logger;
 
-        public ContactController(IEmailSender emailSender, ILoggerFactory loggerFactory)
+        public ContactController(IEmailSender emailSender, ILogger<ContactController> logger)
         {
             _emailSender = emailSender;
-            _logger = loggerFactory.CreateLogger(GetType().Namespace);
+            _logger = logger;
         }
 
         [HttpPost]

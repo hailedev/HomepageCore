@@ -25,18 +25,20 @@ namespace HomepageCore.UI.Test.Controllers
         private Mock<IPostRepository> _postRepositoryMock;
         private Mock<ICategoryRepository> _categoryRepositoryMock;
         private Mock<IOptions<ApplicationOptions>> _applicationOptionsMock;
-        private Mock<ILoggerFactory> _loggerMock;
+        private Mock<ILogger<PostController>> _loggerMock;
+        private readonly Mapper _mapper;
 
         public PostControllerTest()
         {
-            Mapper.Initialize(config => { config.CreateMissingTypeMaps = true; });
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<DefaultMappingProfile>());
+            _mapper = new Mapper(config);
         }
 
         [Fact]
         public async Task Get_NoIdReturnsAll_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             var posts = GetTestPosts(3);
             _postRepositoryMock = new Mock<IPostRepository>();
@@ -44,7 +46,7 @@ namespace HomepageCore.UI.Test.Controllers
             _applicationOptionsMock = new Mock<IOptions<ApplicationOptions>>();
             _applicationOptionsMock.Setup(x => x.Value).Returns(new ApplicationOptions{PageSize = 5});
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
 
             // action
             var result = await _sut.Get() as JsonResult;
@@ -59,7 +61,7 @@ namespace HomepageCore.UI.Test.Controllers
         public async Task Get_WithSummaryReturnsPostSummaries_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             var posts = GetTestPosts(5);
             _postRepositoryMock = new Mock<IPostRepository>();
@@ -67,7 +69,7 @@ namespace HomepageCore.UI.Test.Controllers
             _applicationOptionsMock = new Mock<IOptions<ApplicationOptions>>();
             _applicationOptionsMock.Setup(x => x.Value).Returns(new ApplicationOptions{PageSize = 5});
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
 
             // action
             var result = await _sut.Get(null, true) as JsonResult;
@@ -82,7 +84,7 @@ namespace HomepageCore.UI.Test.Controllers
         public async Task Get_WithPageReturnsPaged_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             var posts = GetTestPosts(6);
             _postRepositoryMock = new Mock<IPostRepository>();
@@ -90,7 +92,7 @@ namespace HomepageCore.UI.Test.Controllers
             _applicationOptionsMock = new Mock<IOptions<ApplicationOptions>>();
             _applicationOptionsMock.Setup(x => x.Value).Returns(new ApplicationOptions{PageSize = 5});
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
 
             // action
             var result = await _sut.Get(null, false, null, 2) as JsonResult;
@@ -106,7 +108,7 @@ namespace HomepageCore.UI.Test.Controllers
         public async Task Get_WithPageGreaterThanRange_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             var posts = GetTestPosts(6);
             _postRepositoryMock = new Mock<IPostRepository>();
@@ -114,7 +116,7 @@ namespace HomepageCore.UI.Test.Controllers
             _applicationOptionsMock = new Mock<IOptions<ApplicationOptions>>();
             _applicationOptionsMock.Setup(x => x.Value).Returns(new ApplicationOptions{PageSize = 5});
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
 
             // action
             var result = await _sut.Get(null, false, null, 3) as JsonResult;
@@ -129,7 +131,7 @@ namespace HomepageCore.UI.Test.Controllers
         public async Task Get_WithCategoryFilterReturnsFilteredPosts_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             var posts = GetTestPosts(5, true);
             _postRepositoryMock = new Mock<IPostRepository>();
@@ -137,7 +139,7 @@ namespace HomepageCore.UI.Test.Controllers
             _applicationOptionsMock = new Mock<IOptions<ApplicationOptions>>();
             _applicationOptionsMock.Setup(x => x.Value).Returns(new ApplicationOptions{PageSize = 5});
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
             var post = posts.First();
 
             // action
@@ -155,7 +157,7 @@ namespace HomepageCore.UI.Test.Controllers
         public async Task Get_WithIdReturnsPost_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             var posts = GetTestPosts(5);
             IEnumerable<Post> post = new List<Post>{posts.Last()};
@@ -164,7 +166,7 @@ namespace HomepageCore.UI.Test.Controllers
             _applicationOptionsMock = new Mock<IOptions<ApplicationOptions>>();
             _applicationOptionsMock.Setup(x => x.Value).Returns(new ApplicationOptions{PageSize = 5});
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
 
             // action
             var result = await _sut.Get(post.First().Id) as JsonResult;
@@ -179,16 +181,14 @@ namespace HomepageCore.UI.Test.Controllers
         public async Task Get_WithInvalidPostId_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
-            var loggerMock = new Mock<ILogger>();
-            _loggerMock.Setup(x => x.CreateLogger(It.IsAny<string>())).Returns(loggerMock.Object);
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
             _postRepositoryMock = new Mock<IPostRepository>();
             _postRepositoryMock.Setup(x => x.GetWithCategory(It.IsAny<Expression<Func<Post, bool>>>())).Returns(Task.FromResult<IEnumerable<Post>>(null));
             _applicationOptionsMock = new Mock<IOptions<ApplicationOptions>>();
             _applicationOptionsMock.Setup(x => x.Value).Returns(new ApplicationOptions{PageSize = 5});
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
 
             // action
             var result = await _sut.Get(Guid.NewGuid()) as NotFoundResult;
@@ -201,7 +201,7 @@ namespace HomepageCore.UI.Test.Controllers
         public async Task Post_CreateNewPost_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
 
             _postRepositoryMock = new Mock<IPostRepository>();
@@ -217,7 +217,7 @@ namespace HomepageCore.UI.Test.Controllers
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
             _applicationUnitOfWorkMock.Setup(x => x.Categories).Returns(_categoryRepositoryMock.Object);
 
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
             var model = new EditablePostModel
             {
                 Title = "test1",
@@ -240,7 +240,7 @@ namespace HomepageCore.UI.Test.Controllers
         public async Task Post_UpdatePost_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
 
             var posts = GetTestPosts(1);
@@ -257,7 +257,7 @@ namespace HomepageCore.UI.Test.Controllers
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
             _applicationUnitOfWorkMock.Setup(x => x.Categories).Returns(_categoryRepositoryMock.Object);
 
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
             var model = new EditablePostModel
             {
                 Id = posts.First().Id,
@@ -282,7 +282,7 @@ namespace HomepageCore.UI.Test.Controllers
         public async Task Post_UpdateInvalidPost_Fails()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
 
             _postRepositoryMock = new Mock<IPostRepository>();
@@ -292,7 +292,7 @@ namespace HomepageCore.UI.Test.Controllers
             _applicationOptionsMock = new Mock<IOptions<ApplicationOptions>>();
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
 
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
             var category = new Category{ Id = Guid.NewGuid(), Name = "cat" };
             var model = new EditablePostModel
             {
@@ -315,7 +315,7 @@ namespace HomepageCore.UI.Test.Controllers
         public async Task Post_PostBlurbCharacterRestricted_Succeeds()
         {
             // setup
-            _loggerMock = new Mock<ILoggerFactory>();
+            _loggerMock = new Mock<ILogger<PostController>>();
             _applicationUnitOfWorkMock = new Mock<IApplicationUnitOfWork>();
 
             _postRepositoryMock = new Mock<IPostRepository>();
@@ -331,7 +331,7 @@ namespace HomepageCore.UI.Test.Controllers
             _applicationUnitOfWorkMock.Setup(x => x.Posts).Returns(_postRepositoryMock.Object);
             _applicationUnitOfWorkMock.Setup(x => x.Categories).Returns(_categoryRepositoryMock.Object);
 
-            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, Mapper.Instance, _loggerMock.Object);
+            _sut = new PostController(_applicationUnitOfWorkMock.Object, _applicationOptionsMock.Object, _mapper, _loggerMock.Object);
             var model = new EditablePostModel
             {
                 Title = "test1",
