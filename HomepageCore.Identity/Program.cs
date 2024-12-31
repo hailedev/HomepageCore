@@ -2,6 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using AutoMapper;
+using AutoMapper.Configuration;
+using HarmonyLib;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
-using System.Linq;
+using System.Reflection;
 
 namespace HomepageCore.Identity
 {
@@ -19,14 +22,13 @@ namespace HomepageCore.Identity
     {
         public static void Main(string[] args)
         {
+            PatchAutomapper();
             var host = BuildWebHost(args);
 
             using (var scope = host.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 scope.ServiceProvider.GetService<PersistedGrantDbContext>().Database.Migrate();
-
-                var context = scope.ServiceProvider.GetService<ConfigurationDbContext>();
-                context.Database.Migrate();
+                scope.ServiceProvider.GetService<ConfigurationDbContext>().Database.Migrate();
             }
 
             host.Run();
@@ -53,5 +55,20 @@ namespace HomepageCore.Identity
                     })
                     .Build();
         }
+
+        public static void PatchAutomapper()
+        {
+            var harmony = new Harmony("homepagecore.identity");
+
+            var originalMethod = typeof(MapperConfiguration).GetMethod("Build", BindingFlags.Static | BindingFlags.NonPublic);
+            var postFix = typeof(Program).GetMethod(nameof(BuildPostfix), BindingFlags.Static | BindingFlags.Public);
+
+            if (originalMethod != null && postFix != null)
+            {
+                harmony.Patch(originalMethod, postfix: new HarmonyMethod(postFix));
+            }
+        }
+
+        public static void BuildPostfix(ref MapperConfigurationExpression __result) => __result.ShouldMapMethod = cfg => false;
     }
 }

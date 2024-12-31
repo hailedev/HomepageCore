@@ -4,6 +4,8 @@
 
 using HomepageCore.Identity.Data;
 using HomepageCore.Identity.Models;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -12,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
+using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 
@@ -43,20 +45,13 @@ namespace HomepageCore.Identity
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllersWithViews();
+            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddMvc();
-
-            services.Configure<IISOptions>(iis =>
-            {
-                iis.AuthenticationDisplayName = "Windows";
-                iis.AutomaticAuthentication = false;
-            });
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             var connectionString = Configuration.GetConnectionString("IdServerDbConnection");
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
@@ -68,24 +63,23 @@ namespace HomepageCore.Identity
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
             })
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = optionsBuilder =>
-                        optionsBuilder.UseSqlite(connectionString,
-                            sql => sql.MigrationsAssembly(migrationsAssembly));
-                })
-                // this adds the operational data from DB (codes, tokens, consents)
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = optionsBuilder =>
-                        optionsBuilder.UseSqlite(connectionString,
-                            sql => sql.MigrationsAssembly(migrationsAssembly));
+            .AddConfigurationStore(options =>
+            {
+                options.ConfigureDbContext = optionsBuilder =>
+                    optionsBuilder.UseSqlite(connectionString,
+                        sql => sql.MigrationsAssembly(migrationsAssembly));
+            })
+            // this adds the operational data from DB (codes, tokens, consents)
+            .AddOperationalStore(options =>
+            {
+                options.ConfigureDbContext = optionsBuilder =>
+                    optionsBuilder.UseSqlite(connectionString,
+                        sql => sql.MigrationsAssembly(migrationsAssembly));
 
-                    // this enables automatic token cleanup. this is optional.
-                    //options.EnableTokenCleanup = true;
-                    //options.TokenCleanupInterval = 30;
-                })
-                .AddAspNetIdentity<ApplicationUser>();
+                // this enables automatic token cleanup. this is optional.
+                //options.EnableTokenCleanup = true;
+                //options.TokenCleanupInterval = 30;
+            });
 
             if (Environment.IsDevelopment())
             {
@@ -129,6 +123,25 @@ namespace HomepageCore.Identity
                 {
                     app.UseExceptionHandler("/Home/Error");
                 }
+
+                var configurationDbContext = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                if (!configurationDbContext.Clients.Any())
+                {
+                    foreach (var client in Config.GetClients())
+                    {
+                        configurationDbContext.Clients.Add(client.ToEntity());
+                    }
+                    configurationDbContext.SaveChanges();
+                }
+
+                if (!configurationDbContext.IdentityResources.Any())
+                {
+                    foreach (var resource in Config.GetIdentityResources())
+                    {
+                        configurationDbContext.IdentityResources.Add(resource.ToEntity());
+                    }
+                    configurationDbContext.SaveChanges();
+                }
             }
 
             if (!env.IsDevelopment())
@@ -143,6 +156,7 @@ namespace HomepageCore.Identity
             }
 
             app.UseStaticFiles();
+            app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());

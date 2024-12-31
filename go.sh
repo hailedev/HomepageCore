@@ -90,9 +90,11 @@ then
         if [ "${3,,}" = "dev" ]
         then
             docker build --build-arg configuration=Debug -t hailedev/homepagecore:dev -f ./HomepageCore.UI/Dockerfile .
+            docker build --build-arg configuration=Debug -t hailedev/homepagecore.identity:dev -f ./HomepageCore.Identity/Dockerfile .
         elif [ "${3,,}" = "prod" ]
         then
             docker build --build-arg configuration=Release -t hailedev/homepagecore:latest -f ./HomepageCore.UI/Dockerfile .
+            docker build --build-arg configuration=Release -t hailedev/homepagecore.identity:latest -f ./HomepageCore.Identity/Dockerfile .
         else
             imageMenu
         fi

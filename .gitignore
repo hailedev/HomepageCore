@@ -278,3 +278,7 @@ HomepageCore.Identity/AspIdUsers.db
 HomepageCore.Identity/IdServerConfig_prod.db
 
 **.secret
+
+**.db-shm
+**.db-wal
+**.jwk

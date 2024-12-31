@@ -18,11 +18,31 @@ namespace HomepageCore.Identity
             };
         }
 
+        public static IEnumerable<ApiScope> GetApiScopes()
+        {
+            return new List<ApiScope>
+            {
+                // backward compat
+                new ApiScope("api"),
+                
+                // more formal
+                new ApiScope("api.scope1"),
+                new ApiScope("api.scope2"),
+                
+                // scope without a resource
+                new ApiScope("scope2"),
+                
+                // policyserver
+                new ApiScope("policyserver.runtime"),
+                new ApiScope("policyserver.management")
+            };
+        }
+
         public static IEnumerable<ApiResource> GetApis()
         {
             return new ApiResource[]
             {
-                new ApiResource("api1", "My API #1")
+                //new ApiResource("api1", "My API #1")
             };
         }
 
