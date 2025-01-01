@@ -14,7 +14,7 @@ namespace HomepageCore.Identity
             return new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+                new IdentityResources.Profile()
             };
         }
 
@@ -23,7 +23,7 @@ namespace HomepageCore.Identity
             return new List<ApiScope>
             {
                 // backward compat
-                new ApiScope("api"),
+                new ApiScope("api1"),
                 
                 // more formal
                 new ApiScope("api.scope1"),
@@ -42,7 +42,10 @@ namespace HomepageCore.Identity
         {
             return new ApiResource[]
             {
-                //new ApiResource("api1", "My API #1")
+                new ApiResource("api1", "My API #1")
+                {
+                    Scopes = { "api1" }
+                }
             };
         }
 

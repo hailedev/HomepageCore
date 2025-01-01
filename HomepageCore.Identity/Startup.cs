@@ -125,11 +125,21 @@ namespace HomepageCore.Identity
                 }
 
                 var configurationDbContext = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-                if (!configurationDbContext.Clients.Any())
+
+                if (!configurationDbContext.ApiScopes.Any())
                 {
-                    foreach (var client in Config.GetClients())
+                    foreach (var resource in Config.GetApiScopes())
                     {
-                        configurationDbContext.Clients.Add(client.ToEntity());
+                        configurationDbContext.ApiScopes.Add(resource.ToEntity());
+                    }
+                    configurationDbContext.SaveChanges();
+                }
+
+                if (!configurationDbContext.ApiResources.Any())
+                {
+                    foreach (var api in Config.GetApis())
+                    {
+                        configurationDbContext.ApiResources.Add(api.ToEntity());
                     }
                     configurationDbContext.SaveChanges();
                 }
@@ -139,6 +149,15 @@ namespace HomepageCore.Identity
                     foreach (var resource in Config.GetIdentityResources())
                     {
                         configurationDbContext.IdentityResources.Add(resource.ToEntity());
+                    }
+                    configurationDbContext.SaveChanges();
+                }
+
+                if (!configurationDbContext.Clients.Any())
+                {
+                    foreach (var client in Config.GetClients())
+                    {
+                        configurationDbContext.Clients.Add(client.ToEntity());
                     }
                     configurationDbContext.SaveChanges();
                 }

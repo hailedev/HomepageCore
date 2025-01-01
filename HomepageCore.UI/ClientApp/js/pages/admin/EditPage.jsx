@@ -28,7 +28,7 @@ class EditPage extends Component {
         }
         if (this.props.match.params.id) {
             PostActionCreators.getPost(this.props.match.params.id, true).then((response) => {
-                const contentState = convertFromRaw(JSON.parse(response.raw));
+                const contentState = response.raw ? convertFromRaw(JSON.parse(response.raw)) : ContentState.createFromText(response.content);
                 const editorState = EditorState.createWithContent(contentState);
                 this.setState({ id: response.id, title: response.title, blurb: response.blurb, tags: response.tags, editorState, category: response.categoryId }); // eslint-disable-line
             });
