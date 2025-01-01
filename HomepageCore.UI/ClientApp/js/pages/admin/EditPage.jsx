@@ -220,7 +220,7 @@ class EditPage extends Component {
                 key={type.label}
                 active={type.style === blockType}
                 label={type.label}
-                onToggle={this.toggleBlockType}
+                onToggle={s => this.toggleBlockType(s)}
                 style={type.style}
             />);
         }
@@ -232,7 +232,7 @@ class EditPage extends Component {
                 key={type.label}
                 active={currentStyle.has(type.style)}
                 label={type.label}
-                onToggle={this.toggleInlineStyle}
+                onToggle={s => this.toggleInlineStyle(s)}
                 style={type.style}
             />);
         }

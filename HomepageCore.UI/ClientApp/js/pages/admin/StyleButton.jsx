@@ -11,7 +11,7 @@ export default class StyleButton extends Component {
             className += ' RichEditor-activeButton';
         }
         return (
-            <span className={className} onMouseDown={this.onToggle} role="presentation">
+            <span className={className} onMouseDown={e => this.onToggle(e)} role="presentation">
                 {this.props.label}
             </span>
         );
