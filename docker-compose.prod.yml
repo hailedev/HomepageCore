@@ -55,6 +55,7 @@ services:
       - OPENIDCONNECT__CLIENTID_FILE=/run/secrets/web_openidconnect_clientid
       - OPENIDCONNECT__CLIENTSECRET_FILE=/run/secrets/web_openidconnect_clientsecret
       - OPENIDCONNECT__AUTHORITY_FILE=/run/secrets/web_openidconnect_authority
+      - OPENIDCONNECT__VALIDISSUER_FILE=/run/secrets/web_openidconnect_validissuer
       - OPENIDCONNECT__REDIRECTURI_FILE=/run/secrets/web_openidconnect_redirecturi
       - EMAIL__SERVER_FILE=/run/secrets/web_email_server
       - EMAIL__ACCOUNT_FILE=/run/secrets/web_email_account
@@ -66,6 +67,7 @@ services:
       - web_openidconnect_clientid
       - web_openidconnect_clientsecret
       - web_openidconnect_authority
+      - web_openidconnect_validissuer
       - web_openidconnect_redirecturi
       - web_email_server
       - web_email_account
@@ -88,6 +90,8 @@ secrets:
     file: ./secrets/web_openidconnect_clientsecret.secret
   web_openidconnect_authority:
     file: ./secrets/web_openidconnect_authority.secret
+  web_openidconnect_validissuer:
+    file: ./secrets/web_openidconnect_validissuer.secret
   web_openidconnect_redirecturi:
     file: ./secrets/web_openidconnect_redirecturi.secret
   web_email_server:

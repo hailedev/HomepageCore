@@ -8,8 +8,6 @@ using HomepageCore.UI.Models;
 using HomepageCore.UI.Services.Interfaces;
 using HomepageCore.UI.ViewModels;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,6 +18,7 @@ namespace HomepageCore.Controllers
 {
     [Authorize]
     [ApiExplorerSettings(IgnoreApi=true)]
+    [Route("Images")]
     public class ImagesController : Controller
     {
         private readonly ILogger _logger;
@@ -33,6 +32,7 @@ namespace HomepageCore.Controllers
             _applicationOptions = optionsAccessor.Value;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var client = _serviceClientFactory();
@@ -94,7 +94,7 @@ namespace HomepageCore.Controllers
         public async Task<ActionResult> Logout()
         {
             // Sign out of identity server
-            var idToken = await HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
+            var idToken = await HttpContext.GetTokenAsync("OpenIdConnect", OpenIdConnectParameterNames.IdToken);
             return Redirect($"{_applicationOptions.OpenIdConnect.Authority}/connect/endsession?id_token_hint={idToken}");
         }
     }

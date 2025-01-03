@@ -49,9 +49,19 @@ then
     if [ "${2,,}" = "dev" ]
     then
         docker compose down
+        if [ "${3,,}" = "-d" ]
+        then
+            docker image rm hailedev/homepagecore
+            docker image rm hailedev/homepagecore.identity
+        fi
     elif [ "${2,,}" = "prod" ]
     then
         docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+        if [ "${3,,}" = "-d" ]
+        then
+            docker image rm hailedev/homepagecore
+            docker image rm hailedev/homepagecore.identity
+        fi
     else
         echo "stop <dev|prod>       Stop the <dev|prod> containers"
     fi

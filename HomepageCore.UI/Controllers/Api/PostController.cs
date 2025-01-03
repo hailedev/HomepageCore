@@ -15,11 +15,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSwag.Annotations;
-using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace HomepageCore.Controllers.Api
 {
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)] // JWT authentication
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] // JWT authentication
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
     public class PostController : Controller

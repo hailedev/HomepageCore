@@ -22,8 +22,6 @@ using HomepageCore.UI.Configuration;
 using HomepageCore.Services.Interfaces;
 using HomepageCore.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using IdentityServer4.AccessTokenValidation;
 using HomepageCore.UI.Services.Interfaces;
 using HomepageCore.UI.Services;
 using Microsoft.Extensions.Options;
@@ -33,6 +31,7 @@ using HomepageCore.UI.Models;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using NLog;
 using NLog.Config;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace HomepageCore.UI
 {
@@ -89,7 +88,12 @@ namespace HomepageCore.UI
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie()
+            .AddJwtBearer(options => 
+            {
+                options.Authority = Configuration["OpenIdConnect:Authority"];
+                options.Audience = "api1";
+                options.RequireHttpsMetadata = false;
+            })
             .AddOpenIdConnect(options => {
                 options.Authority = Configuration["OpenIdConnect:Authority"];
                 options.ClientId = Configuration["OpenIdConnect:ClientId"];
@@ -102,14 +106,40 @@ namespace HomepageCore.UI
                 options.ClientSecret = Configuration["OpenIdConnect:ClientSecret"];
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.GetClaimsFromUserInfoEndpoint = true;
-            })
-            .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options => { // JWT authentication
+            });*/
+            /*.AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options => { // JWT authentication
                 options.Authority = Configuration["OpenIdConnect:Authority"];
                 options.ApiName = "api1";
                 options.RequireHttpsMetadata = false;
             });*/
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            /*services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();*/
+            /*services.AddAuthentication(options => {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                })
+                .AddBearerToken()
+                .AddCookie()
+                .AddOpenIdConnect(options => {
+                    options.Authority = Configuration["OpenIdConnect:Authority"];
+                    options.ClientId = Configuration["OpenIdConnect:ClientId"];
+                    options.ResponseType = "code id_token";
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.Scope.Add("api1");
+                    options.SaveTokens = true;
+                    options.RequireHttpsMetadata = false;
+                    options.ClientSecret = Configuration["OpenIdConnect:ClientSecret"];
+                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                })
+                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options => { // JWT authentication
+                    options.Authority = Configuration["OpenIdConnect:Authority"];
+                    options.ApiName = "api1";
+                    options.RequireHttpsMetadata = false;
+                });
+            services.AddAuthorization();*/
+            /*services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .Services
                     .AddAuthentication(options => {
@@ -134,7 +164,15 @@ namespace HomepageCore.UI
                         options.Authority = Configuration["OpenIdConnect:Authority"];
                         options.ApiName = "api1";
                         options.RequireHttpsMetadata = false;
-                    });
+                    });*/
+
+            services.AddAuthentication()
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {
+                    options.Authority = Configuration["OpenIdConnect:Authority"];
+                    options.Audience = "api1";
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters.ValidIssuer = Configuration["OpenIdConnect:ValidIssuer"];
+                });
 
             // Add compression
             services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
@@ -208,8 +246,6 @@ namespace HomepageCore.UI
                 app.UseForwardedHeaders(forwardingOptions);
             }
 
-            //app.UseAuthentication();
-
             app.UseFileServer();
 
             app.UseOpenApi();
@@ -217,6 +253,7 @@ namespace HomepageCore.UI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endPoints => 
