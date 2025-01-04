@@ -6,6 +6,7 @@ using HomepageCore.UI.Configuration;
 using HomepageCore.UI.Models;
 using HomepageCore.UI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -24,7 +25,7 @@ namespace HomepageCore.UI.Services
             _contextAccessor = contextAccessor;
 
             var restClientOptions = new RestClientOptions { BaseUrl = new Uri(optionsAccessor.Value.OpenIdConnect.RedirectUri) };
-            var token = _contextAccessor.HttpContext.GetTokenAsync("OpenIdConnect", OpenIdConnectParameterNames.AccessToken).Result;
+            var token = _contextAccessor.HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.AccessToken).Result;
             if(token != null) 
             {
                 restClientOptions.Authenticator = new JwtAuthenticator(token);

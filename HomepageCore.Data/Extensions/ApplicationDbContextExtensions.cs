@@ -11,7 +11,7 @@ namespace HomepageCore.Data.Extensions
     {
         public static void EnsureSeedData(this ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            userManager.CreateAsync(new ApplicationUser { FirstName = "Hai", LastName = "Le", UserName = "hai.le@hotmail.com.au", Email = "hai.le@hotmail.com.au" }, "123Qwerty!kdflkCie").Wait();
+            //userManager.CreateAsync(new ApplicationUser { FirstName = "Hai", LastName = "Le", UserName = "hai.le@hotmail.com.au", Email = "hai.le@hotmail.com.au" }, "123Qwerty!kdflkCie").Wait();
 
             if (!context.Categories.Any(x => x.Id == Guid.Parse("c3943998-774b-4ac4-9ccd-8e740e20ab2c")))
             {

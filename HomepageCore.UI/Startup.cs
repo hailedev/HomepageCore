@@ -32,6 +32,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using NLog;
 using NLog.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace HomepageCore.UI
 {
@@ -84,46 +85,14 @@ namespace HomepageCore.UI
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<Func<IServiceClient>>(provider => new Func<IServiceClient>(() => new ServiceClient(provider.GetService<IHttpContextAccessor>(), provider.GetService<IOptions<ApplicationOptions>>())));
 
-            /*services.AddAuthentication(options => {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options => 
-            {
-                options.Authority = Configuration["OpenIdConnect:Authority"];
-                options.Audience = "api1";
-                options.RequireHttpsMetadata = false;
-            })
-            .AddOpenIdConnect(options => {
-                options.Authority = Configuration["OpenIdConnect:Authority"];
-                options.ClientId = Configuration["OpenIdConnect:ClientId"];
-                options.ResponseType = "code id_token";
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
-                options.Scope.Add("api1");
-                options.SaveTokens = true;
-                options.RequireHttpsMetadata = false;
-                options.ClientSecret = Configuration["OpenIdConnect:ClientSecret"];
-                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.GetClaimsFromUserInfoEndpoint = true;
-            });*/
-            /*.AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options => { // JWT authentication
-                options.Authority = Configuration["OpenIdConnect:Authority"];
-                options.ApiName = "api1";
-                options.RequireHttpsMetadata = false;
-            });*/
-            /*services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();*/
-            /*services.AddAuthentication(options => {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            services.AddAuthentication()
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => {
+                    options.ForwardChallenge = OpenIdConnectDefaults.AuthenticationScheme;
                 })
-                .AddBearerToken()
-                .AddCookie()
-                .AddOpenIdConnect(options => {
+                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => {
                     options.Authority = Configuration["OpenIdConnect:Authority"];
                     options.ClientId = Configuration["OpenIdConnect:ClientId"];
-                    options.ResponseType = "code id_token";
+                    options.ResponseType = "code";
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("api1");
@@ -132,41 +101,8 @@ namespace HomepageCore.UI
                     options.ClientSecret = Configuration["OpenIdConnect:ClientSecret"];
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.GetClaimsFromUserInfoEndpoint = true;
+                    options.UsePkce = true;
                 })
-                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options => { // JWT authentication
-                    options.Authority = Configuration["OpenIdConnect:Authority"];
-                    options.ApiName = "api1";
-                    options.RequireHttpsMetadata = false;
-                });
-            services.AddAuthorization();*/
-            /*services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .Services
-                    .AddAuthentication(options => {
-                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                    })
-                    .AddCookie()
-                    .AddOpenIdConnect(options => {
-                        options.Authority = Configuration["OpenIdConnect:Authority"];
-                        options.ClientId = Configuration["OpenIdConnect:ClientId"];
-                        options.ResponseType = "code id_token";
-                        options.Scope.Add("openid");
-                        options.Scope.Add("profile");
-                        options.Scope.Add("api1");
-                        options.SaveTokens = true;
-                        options.RequireHttpsMetadata = false;
-                        options.ClientSecret = Configuration["OpenIdConnect:ClientSecret"];
-                        options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                        options.GetClaimsFromUserInfoEndpoint = true;
-                    })
-                    .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, options => { // JWT authentication
-                        options.Authority = Configuration["OpenIdConnect:Authority"];
-                        options.ApiName = "api1";
-                        options.RequireHttpsMetadata = false;
-                    });*/
-
-            services.AddAuthentication()
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {
                     options.Authority = Configuration["OpenIdConnect:Authority"];
                     options.Audience = "api1";
