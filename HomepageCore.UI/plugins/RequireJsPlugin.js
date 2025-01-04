@@ -11,25 +11,20 @@ RequireJsPlugin.prototype.apply = function(compiler){
     options.logLevel = LOG_LEVEL_WARN;
     options.error = false;
 
-    compiler.plugin("emit", function(compilation, callback) {
-        console.log("Running requirejs");
-        requirejs.optimize(options,
-            function(files){
-                fs.readFile(options.out, function(err, data){
-                    compilation.assets[path.relative(compiler.options.output.path, options.out)] = { source: function() { return new Buffer(data); }, size: function() { return Buffer.byteLength(data); } };
-                    callback();
-                });
-                /*fs.stat(options.out, function(err, stat){
-                    compilation.assets[path.relative(compiler.options.output.path, options.out)] = { source: function() { return options.baseUrl; }, size: function() { return stat.size; } };
-                    callback();
-                });*/
-            },
-            function(err){
-                compilation.errors.push("RequireJS: " + err);
-                callback();
-            }
-        );
-    });
+    compiler.hooks.afterCompile.tap("RequireJsPlugin", (assets) => {
+            console.log("Running requirejs");
+            requirejs.optimize(options,
+                function(files){
+                    fs.readFile(options.out, function(err, data){
+                        console.log(assets);
+                        assets[path.relative(compiler.options.output.path, options.out)] = { source: function() { return new Buffer(data); }, size: function() { return Buffer.byteLength(data); } };
+                    });
+                },
+                function(err){
+                    compilation.errors.push("RequireJS: " + err);
+                }
+            );
+        });
 };
 
 module.exports = RequireJsPlugin;

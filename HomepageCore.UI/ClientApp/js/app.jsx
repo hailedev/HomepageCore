@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import browser from 'detect-browser';
+import { detect } from 'detect-browser';
 import { BrowserRouter, Route } from 'react-router-dom';
 import DefaultUserManager from 'DefaultUserManager';
 import Main from './pages/Main';
 
+const browser = detect();
 window.onerror = function onerror(message, url, lineNo, colNo, error) {
     const container = document.createElement('div');
 

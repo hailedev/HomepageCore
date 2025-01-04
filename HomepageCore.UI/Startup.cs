@@ -152,11 +152,11 @@ namespace HomepageCore.UI
                 {
                     if (!bool.TryParse(System.Environment.GetEnvironmentVariable("CONTAINER"), out var result) && !result)
                     {
-                        app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
+                        /*app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
                             HotModuleReplacement = true,
                             ReactHotModuleReplacement = true,
                             ConfigFile = Configuration["WebpackConfig"]
-                        });
+                        });*/
                     }
 
                     app.UseDeveloperExceptionPage();

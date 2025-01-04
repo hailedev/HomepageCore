@@ -1,6 +1,6 @@
 var webpack = require("webpack");
 var path = require("path");
-var merge = require("webpack-merge");
+var { merge } = require("webpack-merge");
 var common = require("./webpack.js");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var RequireJsPlugin = require("./plugins/RequireJsPlugin");
@@ -14,9 +14,10 @@ var bootstrapPath = sourcePath + "/module-bootstrap.js";
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
-    output: {
+    mode: 'development',
+    /*output: {
         publicPath: process.env.CONTAINER ? "/" : "/_/"
-    },
+    },*/
     plugins: [
         new HtmlWebpackPlugin({ 
             template: "./templates/index.html",

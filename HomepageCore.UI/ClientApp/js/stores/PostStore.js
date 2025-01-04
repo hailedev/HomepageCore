@@ -6,6 +6,7 @@ export default new class PostStore extends ReduceStore {
     constructor() {
         super(DefaultDispatcher);
     }
+
     getInitialState() {
         return {};
     }

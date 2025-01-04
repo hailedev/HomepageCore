@@ -4,33 +4,33 @@ import DefaultUserManager from '../services/DefaultUserManager';
 
 export default new class UserActionCreators {
     setUserInfo() {
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             DefaultUserManager.getUser()
-                .then((user) => {
+                .then(user => {
                     DefaultDispatcher.dispatch({
                         type: Actions.FETCH_USER,
                         payload: { user }
                     });
                     resolve(user);
                 })
-                .catch((err) => {
+                .catch(err => {
                     reject(err);
                 });
-        }));
+        });
     }
 
     signOutUser() {
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             DefaultUserManager.signoutRedirect()
-                .then((resp) => {
+                .then(resp => {
                     DefaultDispatcher.dispatch({
                         type: Actions.SIGNOUT_USER
                     });
                     resolve(resp);
                 })
-                .catch((err) => {
+                .catch(err => {
                     reject(err);
                 });
-        }));
+        });
     }
 }();

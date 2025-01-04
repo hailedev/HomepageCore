@@ -6,9 +6,11 @@ export default new class PostSummaryStore extends ReduceStore {
     constructor() {
         super(DefaultDispatcher);
     }
+
     getInitialState() {
         return [];
     }
+
     reduce(state, action) {
         switch (action.type) {
             case Actions.FETCH_POSTSUMMARIES:

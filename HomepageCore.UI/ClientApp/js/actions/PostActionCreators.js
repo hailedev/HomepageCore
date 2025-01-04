@@ -6,7 +6,7 @@ export default new class PostActionCreators {
     getPost(id, editable) {
         return new Promise(((resolve, reject) => {
             PostApi.getPost(id, editable)
-                .then((response) => {
+                .then(response => {
                     if (!editable) {
                         DefaultDispatcher.dispatch({
                             type: Actions.FETCH_POST,
@@ -15,41 +15,41 @@ export default new class PostActionCreators {
                     }
                     resolve(response);
                 })
-                .catch((error) => {
+                .catch(error => {
                     reject(error);
                 });
         }));
     }
 
     addPost(post) {
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             PostApi.addPost(post)
-                .then((response) => {
+                .then(response => {
                     DefaultDispatcher.dispatch({
                         type: Actions.ADD_POST,
                         payload: { response }
                     });
                     resolve(response);
                 })
-                .catch((error) => {
+                .catch(error => {
                     reject(error);
                 });
-        }));
+        });
     }
 
     deletePost(id) {
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             PostApi.deletePost(id)
-                .then((response) => {
+                .then(response => {
                     DefaultDispatcher.dispatch({
                         type: Actions.DELETE_POST,
                         payload: { response }
                     });
                     resolve(response);
                 })
-                .catch((error) => {
+                .catch(error => {
                     reject(error);
                 });
-        }));
+        });
     }
 }();

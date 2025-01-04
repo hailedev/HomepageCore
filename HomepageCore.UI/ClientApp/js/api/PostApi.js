@@ -28,15 +28,12 @@ export default new class PostApi {
 
     addPost(post) {
         return new Promise((resolve, reject) => {
-            ApiDispatcher.dispatch(
-                '/api/post/',
-                {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-                    body: JSON.stringify(post)
-                }, resolve, reject
-            );
+            ApiDispatcher.dispatch('/api/post/', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+                body: JSON.stringify(post)
+            }, resolve, reject);
         });
     }
 

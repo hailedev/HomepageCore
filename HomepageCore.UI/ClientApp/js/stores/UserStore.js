@@ -6,9 +6,11 @@ export default new class UserStore extends ReduceStore {
     constructor() {
         super(DefaultDispatcher);
     }
+
     getInitialState() {
         return null;
     }
+
     reduce(state, action) {
         switch (action.type) {
             case Actions.FETCH_USER:

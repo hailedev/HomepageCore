@@ -4,7 +4,7 @@ export default new class ApiDispatcher {
     dispatch(uri, options, resolve, reject) {
         let defaultOptions = options;
         DefaultUserManager.getUser()
-            .then((token) => {
+            .then(token => {
                 if (token) {
                     const newOptions = options || {};
                     newOptions.headers = options.headers || {};
@@ -14,14 +14,14 @@ export default new class ApiDispatcher {
             })
             .finally(() => {
                 fetch(uri, defaultOptions).then(response => response.json())
-                    .then((json) => {
+                    .then(json => {
                         if (json.errors) {
                             reject(json.errors);
                         } else {
                             resolve(json);
                         }
                     })
-                    .catch((error) => {
+                    .catch(error => {
                         let message = 'Unknown error';
                         if (error.statusText) {
                             message = error.statusText;

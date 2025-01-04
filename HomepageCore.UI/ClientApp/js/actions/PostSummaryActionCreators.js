@@ -4,18 +4,18 @@ import PostApi from '../api/PostApi';
 
 export default new class PostActionCreators {
     getPostSummaries(range, update) {
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             PostApi.getPostSummaries(range)
-                .then((response) => {
+                .then(response => {
                     DefaultDispatcher.dispatch({
                         type: update ? Actions.FETCH_POSTADDITIONALSUMMARIES : Actions.FETCH_POSTSUMMARIES,
                         payload: { response }
                     });
                     resolve(response);
                 })
-                .catch((error) => {
+                .catch(error => {
                     reject(error);
                 });
-        }));
+        });
     }
 }();
