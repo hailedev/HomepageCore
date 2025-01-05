@@ -5,10 +5,6 @@
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="eTU5rOs2DGE-pHvz-rOhHybSYEd69vuoD0oXf2SaU3k" />
     <meta name="twitter:card" content="summary" />
-    @if(!string.IsNullOrEmpty(Model.Title)) { <meta property="og:title" content="@Model.Title"/> }
-    @if(!string.IsNullOrEmpty(Model.Image)) { <meta property="og:image" content="@Model.Image"/> }
-    @if(!string.IsNullOrEmpty(Model.Description)) { <meta property="og:description" content="@Model.Description"/> }
-    @if(!string.IsNullOrEmpty(Model.Url)) { <meta property="og:url" content="@Model.Url" /> }
     <link href="https://fonts.googleapis.com/css?family=Lobster|Roboto" rel="stylesheet"/>
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
@@ -31,17 +27,17 @@
     <title></title>
 </head>
 <body>
-@if(Model.Prerender) {
+<% if(htmlWebpackPlugin.options.prerender) { %>
     <div id="root" asp-prerender-module="wwwroot/js/prerender-bootstrapper"></div>
-<% for (var script in htmlWebpackPlugin.files.js) {  if (htmlWebpackPlugin.files.js[script].includes('/prerender-app.js')) { %>
-    <script src="<%= htmlWebpackPlugin.files.js[script] %>"></script>
-<% } } %>
+    <% for (var script in htmlWebpackPlugin.files.js) {  if (htmlWebpackPlugin.files.js[script].includes('/prerender-app.js')) { %>
+        <script src="<%= htmlWebpackPlugin.files.js[script] %>"></script>
+    <% } } %>
     <script type="text/javascript">window['prerender-app'].renderToNode(location.pathname + location.search + location.hash)</script>
-} else {
-    <div id="root"></div>
-<% for (var script in htmlWebpackPlugin.files.js) {  if (htmlWebpackPlugin.files.js[script].includes('/app.js')) {  %>
-    <script src="<%= htmlWebpackPlugin.files.js[script] %>?v=<%= htmlWebpackPlugin.options.version %>"></script>
-<% } } %>
-}
+    <% } else { %>
+        <div id="root"></div>
+    <% for (var script in htmlWebpackPlugin.files.js) {  if (htmlWebpackPlugin.files.js[script].includes('/app.js')) {  %>
+        <script src="<%= htmlWebpackPlugin.files.js[script] %>?v=<%= htmlWebpackPlugin.options.version %>"></script>
+    <% } } %>
+<% } %>
 </body>
 </html>

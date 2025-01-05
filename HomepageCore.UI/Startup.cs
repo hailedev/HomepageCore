@@ -192,10 +192,11 @@ namespace HomepageCore.UI
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endPoints => 
+            app.UseEndpoints(endPoints => endPoints.MapControllers());
+
+            app.UseSpa(builder => 
             {
-                endPoints.MapControllers();
-                endPoints.MapFallbackToController("Index", "Home"); // Eqivalent to routes.MapSpaFallbackRoute("spa-fallback",new { Controller = "Home", action = "Index"})
+                builder.Options.DefaultPage = "/index.html";
             });
         }
     }

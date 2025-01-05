@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import DocumentTitle from 'react-document-title';
+import DocumentMeta from 'react-document-meta';
 import { SocialIcon } from 'react-social-icons';
 
 export default class ProjectPage extends Component { // eslint-disable-line
     render() {
+        const meta = {
+            title: 'Hai Le | Projects'
+        }
         return (
-            <DocumentTitle title="Hai Le | Projects">
+            <DocumentMeta {...meta}>
                 <div className="container projects">
                     <div className="row">
                         <div id="devsketch" className="col-md-offset-1 col-md-5" style={{ height: '250px', padding: '0', overflow: 'hidden' }}>
@@ -37,7 +40,7 @@ export default class ProjectPage extends Component { // eslint-disable-line
                         </div>
                     </div>
                 </div>
-            </DocumentTitle>
+            </DocumentMeta>
         );
     }
 }

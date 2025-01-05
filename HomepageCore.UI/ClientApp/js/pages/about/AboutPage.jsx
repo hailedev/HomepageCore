@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import DocumentTitle from 'react-document-title';
+import DocumentMeta from 'react-document-meta';
 import { Link } from 'react-router-dom';
 
 export default class AboutPage extends Component { // eslint-disable-line
     render() {
+        const meta = {
+            title: 'Hai Le | About'
+        }
         return (
-            <DocumentTitle title="Hai Le | About">
+            <DocumentMeta {...meta}>
                 <div className="container about">
                     <div className="row">
                         <div className="col-md-6 image">
@@ -28,7 +31,7 @@ export default class AboutPage extends Component { // eslint-disable-line
                         </div>
                     </div>
                 </div>
-            </DocumentTitle>
+            </DocumentMeta>
         );
     }
 }

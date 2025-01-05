@@ -1,10 +1,13 @@
 import React from 'react';
-import DocumentTitle from 'react-document-title';
+import DocumentMeta from 'react-document-meta';
 import { Link } from 'react-router-dom';
 
 export default function () {
+    const meta = {
+        title: 'Hai Le | Hire Me'
+    }
     return (
-        <DocumentTitle title="Hai Le | Hire Me">
+        <DocumentMeta {...meta}>
             <div className="container hire-me">
                 <div className="row">
                     <div className="col-md-offset-2 col-md-8">Where I&apos;m currently working:<span style={{ marginLeft: '30px' }}><a href="https://worldvision.com.au">World Vision Australia</a></span></div>
@@ -26,6 +29,6 @@ export default function () {
                     </div>
                 </div>
             </div>
-        </DocumentTitle>
+        </DocumentMeta>
     );
 }

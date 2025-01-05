@@ -22,9 +22,10 @@ module.exports = merge(common, {
         }),
         new HtmlWebpackPlugin({ 
             template: "./templates/index.html",
-            filename: path.join(__dirname, "./Views/Home/Index.cshtml"),
+            filename: path.join(__dirname, "./wwwroot/index.html"),
             inject: false,
             enableGoogleAnalytics: true,
+            prerender: false,
             version: process.env.version
         }),
         new RequireJsPlugin({

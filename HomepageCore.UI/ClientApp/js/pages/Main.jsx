@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DocumentTitle from 'react-document-title';
+import DocumentMeta from 'react-document-meta';
 import { Link, Switch, Route } from 'react-router-dom';
 import { slide as Menu } from 'react-burger-menu';
 import { Container } from 'flux/utils';
@@ -77,8 +77,11 @@ class Main extends Component {
                     </div>
                 </div>
             </Link>);
+        const meta = {
+            title: 'Hai Le'
+        }
         return (
-            <DocumentTitle title="Hai Le">
+            <DocumentMeta {...meta}>
                 <div>
                     { this.state.user ? adminNav : null }
                     <div className="navigation-container">
@@ -152,7 +155,7 @@ class Main extends Component {
                         <div style={{ opacity: '0.8', color: 'white' }}>Beware the copyright monster!</div>
                     </div>
                 </div>
-            </DocumentTitle>
+            </DocumentMeta>
         );
     }
 }

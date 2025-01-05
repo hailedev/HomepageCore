@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DocumentTitle from 'react-document-title';
+import DocumentMeta from 'react-document-meta';
 import ContactActionCreators from 'ContactActionCreators';
 import WaitIcon from '../home/WaitIcon';
 
@@ -45,8 +45,11 @@ export default class FeedbackPage extends Component {
 
     render() {
         const label = !this.state.sending ? 'Submit' : <WaitIcon size="20px" />;
+        const meta = {
+            title: 'Hai Le | Contact'
+        }
         return (
-            <DocumentTitle title="Hai Le | Contact">
+            <DocumentMeta {...meta}>
                 <div className="container feedback">
                     <div className="row">
                         <div style={{ marginBottom: '40px', textAlign: 'center' }}>Got something you would like to discuss? Do get in touch if you have any questions or even just to say hi!</div>
@@ -79,7 +82,7 @@ export default class FeedbackPage extends Component {
                         </div>
                     </div>
                 </div>
-            </DocumentTitle>
+            </DocumentMeta>
         );
     }
 }

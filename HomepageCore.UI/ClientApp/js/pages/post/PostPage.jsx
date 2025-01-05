@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DocumentTitle from 'react-document-title';
+import DocumentMeta from 'react-document-meta';
 import PostStore from 'PostStore';
 import PostActionCreators from 'PostActionCreators';
 import { ShareButtons, generateShareIcon } from 'react-share';
@@ -57,14 +57,29 @@ class PostPage extends Component {
     render() {
         let title = 'Hai Le';
         let emailUrl = 'mailto:?';
+        const meta = {
+            'og:title': title
+        }
         if (this.state.post) {
             title = title.concat(' | ').concat(this.state.post.title);
+            meta['og:title'] = title;
             emailUrl = emailUrl.concat('subject=').concat(encodeURI(this.state.post.title)).concat('&body=').concat(encodeURI(window.location.href))
                 .concat(encodeURI('?CMP=share_btn_link'));
+            if (this.state.post.metaImage) {
+                meta['og:image'] = this.state.post.metaImage;
+            }
+            if (this.state.post.metaDescription) {
+                meta['og:description'] = this.state.post.metaDescription;
+            }
+        }
+
+        const header = {
+            title,
+            meta
         }
 
         return (
-            <DocumentTitle title={title}>
+            <DocumentMeta {...header}>
                 <div className="container">
                     <Progress percent={this.state.percent} color="red" />
                     {
@@ -121,7 +136,7 @@ class PostPage extends Component {
                             ) : null
                     }
                 </div>
-            </DocumentTitle>
+            </DocumentMeta>
         );
     }
 }

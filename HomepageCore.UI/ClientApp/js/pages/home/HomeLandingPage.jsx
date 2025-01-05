@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DocumentTitle from 'react-document-title';
+import DocumentMeta from 'react-document-meta';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PostSummaryActionCreators from 'PostSummaryActionCreators';
 import PostSummaryStore from 'PostSummaryStore';
@@ -132,8 +132,11 @@ class HomeLandingPage extends Component {
                     <WaitIcon size="40px" />
                 </div>
             );
+        const meta = {
+            title: 'Hai Le | Home'
+        }
         return (
-            <DocumentTitle title="Hai Le | Home">
+            <DocumentMeta {...meta}>
                 <div>
                     <div style={{ paddingTop: '100px' }}>
                         <div id="banner">
@@ -178,7 +181,7 @@ class HomeLandingPage extends Component {
                         <img className="preload" src="/images/avatar5.png" alt="" />
                     </div>
                 </div>
-            </DocumentTitle>
+            </DocumentMeta>
         );
     }
 }

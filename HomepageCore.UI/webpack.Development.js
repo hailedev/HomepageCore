@@ -15,15 +15,13 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
     mode: 'development',
-    /*output: {
-        publicPath: process.env.CONTAINER ? "/" : "/_/"
-    },*/
     plugins: [
         new HtmlWebpackPlugin({ 
             template: "./templates/index.html",
-            filename: path.join(__dirname, "./Views/Home/Index.cshtml"),
+            filename: path.join(__dirname, "./wwwroot/index.html"),
             inject: false,
             enableGoogleAnalytics: false,
+            prerender: false,
             version: 0
         }),
         new RequireJsPlugin({
