@@ -95,9 +95,9 @@ class HomeLandingPage extends Component {
         const posts = [];
 
         if (this.state.categories !== null) {
-            categories.push(<li key={this.state.categories.length} onClick={this.onCategoryClick.bind(this, Categories.ALL)} role="presentation">All</li>);
+            categories.push(<li key={Categories.ALL} onClick={this.onCategoryClick.bind(this, Categories.ALL)} role="presentation">All</li>);
             for (let i = 0; i < this.state.categories.length; i += 1) {
-                categories.push(<li key={i} onClick={this.onCategoryClick.bind(this, this.state.categories[i].id)} role="presentation">{this.state.categories[i].name}</li>);
+                categories.push(<li key={this.state.categories[i].id} onClick={this.onCategoryClick.bind(this, this.state.categories[i].id)} role="presentation">{this.state.categories[i].name}</li>);
             }
         }
         for (let i = 0; i < this.state.posts.length; i += 1) {

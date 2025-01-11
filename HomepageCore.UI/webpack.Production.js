@@ -4,7 +4,7 @@ var common = require("./webpack.js");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var RequireJsPlugin = require("./plugins/RequireJsPlugin");
 var webpack = require("webpack");
-var UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+var TerserPlugin = require("terser-webpack-plugin");
 
 var outputPath = path.resolve(__dirname, "./wwwroot/");
 var resumeOutputPath = outputPath + "/resume/";
@@ -16,10 +16,13 @@ module.exports = merge(common, {
     output: {
         filename: "js/[name].min.js"
     },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({ sourceMap: true })
+        ]
+    },
     plugins: [
-        new UglifyJSPlugin({
-            sourceMap: true
-        }),
         new HtmlWebpackPlugin({ 
             template: "./templates/index.html",
             filename: path.join(__dirname, "./wwwroot/index.html"),

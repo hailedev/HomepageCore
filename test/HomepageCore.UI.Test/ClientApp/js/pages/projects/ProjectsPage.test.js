@@ -1,8 +1,7 @@
-var ProjectPage = require("pages/projects/ProjectsPage").default;
-var React = require("react");
-var mount = require("enzyme").mount;
-var StaticRouter = require("react-router-dom").StaticRouter;
-var Route = require("react-router-dom").Route;
+import ProjectPage from "pages/projects/ProjectsPage";
+import React from "react";
+import { mount } from "enzyme";
+import { StaticRouter, Route } from "react-router-dom";
 
 describe("<ProjectPage />", function(){
     it("should render the main contaner", function(){

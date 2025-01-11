@@ -1,8 +1,7 @@
-var AboutPage = require("pages/about/AboutPage").default;
-var React = require("react");
-var mount = require("enzyme").mount;
-var StaticRouter = require("react-router-dom").StaticRouter;
-var Route = require("react-router-dom").Route;
+import AboutPage from "pages/about/AboutPage";
+import React from "react";
+import { mount } from "enzyme";
+import { StaticRouter, Route } from "react-router-dom";
 
 describe("<AboutPage />", function(){
     it("should render the main contaner", function(){

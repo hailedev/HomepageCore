@@ -1,9 +1,7 @@
-var React = require("react");
-var shallow = require("enzyme").shallow;
-var StaticRouter = require("react-router-dom").StaticRouter;
-var Route = require("react-router-dom").Route;
-var _ = require("lodash");
-var Actions = require("AppConstants").Actions;
+import React from "react";
+import { shallow } from "enzyme";
+import _ from "lodash";
+import { Actions } from "AppConstants";
 
 describe("<EditPage />", function(){
     var mockDefaultDispatcher, mockCategoryActionCreators, mockPostActionCreators, mockUserStore;    

@@ -1,9 +1,8 @@
-var React = require("react");
-var mount = require("enzyme").mount;
-var StaticRouter = require("react-router-dom").StaticRouter;
-var Route = require("react-router-dom").Route;
-var _ = require("lodash");
-var Actions = require("AppConstants").Actions;
+import React from "react";
+import { mount } from "enzyme";
+import { StaticRouter, Route } from "react-router-dom";
+import _ from "lodash";
+import { Actions } from "AppConstants";
 
 beforeEach(function(){
     jest.resetModules();

@@ -54,6 +54,7 @@
     "node-polyfill-webpack-plugin": "^4.1.0",
     "react-hot-loader": "^4.13.1",
     "requirejs": "^2.3.7",
+    "terser-webpack-plugin": "^5.3.11",
     "url-loader": "^4.1.1",
     "webpack": "^5.97.1",
     "webpack-hot-middleware": "^2.26.1",

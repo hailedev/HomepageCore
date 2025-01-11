@@ -1,5 +1,5 @@
-var React = require("react");
-var mount = require("enzyme").mount;
+import React from "react";
+import { mount } from "enzyme";
 
 describe("<FeedbackPage />", function(){
     beforeEach(function(){
