@@ -28,7 +28,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Hosting;
 using HomepageCore.UI.Models;
-using Microsoft.AspNetCore.SpaServices.Webpack;
 using NLog;
 using NLog.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -150,15 +149,6 @@ namespace HomepageCore.UI
 
                 if (env.IsDevelopment())
                 {
-                    if (!bool.TryParse(System.Environment.GetEnvironmentVariable("CONTAINER"), out var result) && !result)
-                    {
-                        /*app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
-                            HotModuleReplacement = true,
-                            ReactHotModuleReplacement = true,
-                            ConfigFile = Configuration["WebpackConfig"]
-                        });*/
-                    }
-
                     app.UseDeveloperExceptionPage();
                     if(!context.Posts.Any())
                     {
@@ -196,7 +186,12 @@ namespace HomepageCore.UI
 
             app.UseSpa(builder => 
             {
-                builder.Options.DefaultPage = "/index.html";
+                builder.Options.SourcePath = "/";
+
+                if (env.IsDevelopment() && !bool.TryParse(System.Environment.GetEnvironmentVariable("CONTAINER"), out var result) && !result)
+                {
+                    builder.UseProxyToSpaDevelopmentServer(Configuration["DevServer"]);
+                }
             });
         }
     }

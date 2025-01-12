@@ -13,8 +13,19 @@ var bootstrapPath = sourcePath + "/module-bootstrap.js";
 
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 
+const webpackDevServerPort = 8083;
+
 module.exports = merge(common, {
     mode: 'development',
+    devtool: 'inline-source-map',
+    devServer: {
+        compress: true,
+        historyApiFallback: true,
+        port: webpackDevServerPort
+    },
+    watchOptions: {
+        ignored: '**/node_modules',
+    },
     plugins: [
         new HtmlWebpackPlugin({ 
             template: "./templates/index.html",

@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --color",
     "build:prod": "webpack --config ./webpack.Production.js --color",
-    "dev": "webpack --config ./webpack.Development.js --color"
+    "dev": "webpack --config ./webpack.Development.js --color",
+    "build:hotdev": "webpack-dev-server --config ./webpack.Development.js --hot"
   },
   "author": "Hai Le",
   "license": "MIT",
@@ -57,6 +58,8 @@
     "terser-webpack-plugin": "^5.3.11",
     "url-loader": "^4.1.1",
     "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0",
     "webpack-hot-middleware": "^2.26.1",
     "webpack-merge": "^6.0.1"
   }

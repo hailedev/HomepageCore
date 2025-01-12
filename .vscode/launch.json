@@ -34,7 +34,9 @@
             },
             "sourceFileMap": {
                 "/Views": "${workspaceRoot}/Views"
-            }
+            },
+            "preLaunchTask": "webpack",
+            "postDebugTask": "kill webpack"
         },
         {
             "name": "Identity provider",
