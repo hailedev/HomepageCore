@@ -10,10 +10,19 @@ services:
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development 
+      - AUTHENTICATION__GOOGLE__CLIENTSECRET_FILE=/run/secrets/id_google_clientsecret
+      - AUTHENTICATION__GOOGLE__CLIENTID_FILE=/run/secrets/id_google_clientid
+      - AUTHENTICATION__FACEBOOK__CLIENTSECRET_FILE=/run/secrets/id_facebook_clientsecret
+      - AUTHENTICATION__FACEBOOK__CLIENTID_FILE=/run/secrets/id_facebook_clientid
       # Override the connection strings to point to the static database
       # This is so the database changes persist after removing the container
       - CONNECTIONSTRINGS__DEFAULTCONNECTION=Data Source=/data/db/AspIdUsers.db
       - CONNECTIONSTRINGS__IDSERVERDBCONNECTION=Data Source=/data/db/IdServerConfig.db
+    secrets:
+      - id_google_clientsecret
+      - id_google_clientid
+      - id_facebook_clientsecret
+      - id_facebook_clientid
     ports:
      - "5000:8080"
   web:
@@ -32,3 +41,13 @@ services:
       - CONNECTIONSTRINGS__DEFAULTCONNECTION=Data Source=/data/db/HomepageCore.db
     ports:
      - "5001:8080"
+
+secrets:
+  id_google_clientsecret:
+    file: ./secrets/id_google_clientsecret.secret
+  id_google_clientid:
+    file: ./secrets/id_google_clientid.secret
+  id_facebook_clientsecret:
+    file: ./secrets/id_facebook_clientsecret.secret
+  id_facebook_clientid:
+    file: ./secrets/id_facebook_clientid.secret
