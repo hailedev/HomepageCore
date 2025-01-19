@@ -51,6 +51,7 @@ services:
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - HOTRELOAD=false
       - CONNECTIONSTRINGS__DEFAULTCONNECTION_FILE=/run/secrets/web_connectionstrings_defaultconnection
       - OPENIDCONNECT__CLIENTID_FILE=/run/secrets/web_openidconnect_clientid
       - OPENIDCONNECT__CLIENTSECRET_FILE=/run/secrets/web_openidconnect_clientsecret

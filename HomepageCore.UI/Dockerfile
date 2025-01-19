@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 ARG configuration=Release
 ARG version=0
-ENV CONTAINER=true
 
 WORKDIR /build
 

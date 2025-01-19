@@ -188,7 +188,7 @@ namespace HomepageCore.UI
             {
                 builder.Options.SourcePath = "/";
 
-                if (env.IsDevelopment() && !bool.TryParse(System.Environment.GetEnvironmentVariable("CONTAINER"), out var result) && !result)
+                if (env.IsDevelopment() && bool.TryParse(Configuration["HotReload"], out bool result) && result)
                 {
                     builder.UseProxyToSpaDevelopmentServer(Configuration["DevServer"]);
                 }

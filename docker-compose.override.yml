@@ -26,6 +26,7 @@ services:
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
     environment: 
       - ASPNETCORE_ENVIRONMENT=Development 
+      - HOTRELOAD=false
       # Override the connection strings to point to the static database
       # This is so the database changes persist after removing the container
       - CONNECTIONSTRINGS__DEFAULTCONNECTION=Data Source=/data/db/HomepageCore.db

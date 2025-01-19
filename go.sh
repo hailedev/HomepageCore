@@ -73,11 +73,11 @@ elif [ "${1,,}" = "build" ] # build options
 then
     if [ "${2,,}" = "debug" ]
     then
-        webpack --config ./HomepageCore.UI/webpack.Development.js
+        (cd ./HomepageCore.UI; webpack --config ./webpack.Development.js)
         dotnet build -c Debug
     elif [ "${2,,}" = "release" ]
     then
-        webpack --config ./HomepageCore.UI/webpack.Production.js
+        (cd ./HomepageCore.UI; webpack --config ./webpack.Production.js)
         dotnet build -c Release
     else
         buildMenu
