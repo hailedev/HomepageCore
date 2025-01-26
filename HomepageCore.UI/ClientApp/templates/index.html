@@ -29,13 +29,13 @@
 <body>
 <% if(htmlWebpackPlugin.options.prerender) { %>
     <div id="root" asp-prerender-module="wwwroot/js/prerender-bootstrapper"></div>
-    <% for (var script in htmlWebpackPlugin.files.js) {  if (htmlWebpackPlugin.files.js[script].includes('/prerender-app.js')) { %>
+    <% for (var script in htmlWebpackPlugin.files.js) {  if (htmlWebpackPlugin.files.js[script].match(/prerender-app\.(min\.)?js/)) { %>
         <script src="<%= htmlWebpackPlugin.files.js[script] %>"></script>
     <% } } %>
     <script type="text/javascript">window['prerender-app'].renderToNode(location.pathname + location.search + location.hash)</script>
     <% } else { %>
         <div id="root"></div>
-    <% for (var script in htmlWebpackPlugin.files.js) {  if (htmlWebpackPlugin.files.js[script].includes('/app.js')) {  %>
+    <% for (var script in htmlWebpackPlugin.files.js) {  if (htmlWebpackPlugin.files.js[script].match(/\/app\.(min\.)?js/)) {  %>
         <script src="<%= htmlWebpackPlugin.files.js[script] %>?v=<%= htmlWebpackPlugin.options.version %>"></script>
     <% } } %>
 <% } %>

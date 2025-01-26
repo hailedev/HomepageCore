@@ -1,5 +1,5 @@
 var path = require("path");
-var merge = require("webpack-merge");
+var { merge } = require("webpack-merge");
 var common = require("./webpack.js");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 var RequireJsPlugin = require("./plugins/RequireJsPlugin");
@@ -12,6 +12,7 @@ var resumeOutputPath = outputPath + "/resume/";
 var HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
+    mode: 'production',
     devtool: "source-map",
     output: {
         filename: "js/[name].min.js"
@@ -19,7 +20,7 @@ module.exports = merge(common, {
     optimization: {
         minimize: true,
         minimizer: [
-            new TerserPlugin({ sourceMap: true })
+            new TerserPlugin()
         ]
     },
     plugins: [

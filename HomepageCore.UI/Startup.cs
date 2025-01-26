@@ -32,6 +32,7 @@ using NLog;
 using NLog.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Threading.Tasks;
 
 namespace HomepageCore.UI
 {
@@ -101,6 +102,10 @@ namespace HomepageCore.UI
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.GetClaimsFromUserInfoEndpoint = true;
                     options.UsePkce = true;
+                    options.Events.OnRedirectToIdentityProvider = async context => {
+                        context.ProtocolMessage.IssuerAddress = context.ProtocolMessage.IssuerAddress.Replace(Configuration["OpenIdConnect:Authority"], Configuration["OpenIdConnect:ValidIssuer"]);
+                        await Task.FromResult(0);
+                    };
                 })
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {
                     options.Authority = Configuration["OpenIdConnect:Authority"];
@@ -187,6 +192,7 @@ namespace HomepageCore.UI
             app.UseSpa(builder => 
             {
                 builder.Options.SourcePath = "/";
+                builder.Options.DefaultPage = "/index.html";
 
                 if (env.IsDevelopment() && bool.TryParse(Configuration["HotReload"], out bool result) && result)
                 {

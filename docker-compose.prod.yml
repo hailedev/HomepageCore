@@ -58,6 +58,7 @@ services:
       - OPENIDCONNECT__AUTHORITY_FILE=/run/secrets/web_openidconnect_authority
       - OPENIDCONNECT__VALIDISSUER_FILE=/run/secrets/web_openidconnect_validissuer
       - OPENIDCONNECT__REDIRECTURI_FILE=/run/secrets/web_openidconnect_redirecturi
+      - OPENIDCONNECT__BASEURI_FILE=/run/secrets/web_openidconnect_baseuri
       - EMAIL__SERVER_FILE=/run/secrets/web_email_server
       - EMAIL__ACCOUNT_FILE=/run/secrets/web_email_account
       - EMAIL__PASSWORD_FILE=/run/secrets/web_email_password
@@ -70,6 +71,7 @@ services:
       - web_openidconnect_authority
       - web_openidconnect_validissuer
       - web_openidconnect_redirecturi
+      - web_openidconnect_baseuri
       - web_email_server
       - web_email_account
       - web_email_password
@@ -95,6 +97,8 @@ secrets:
     file: ./secrets/web_openidconnect_validissuer.secret
   web_openidconnect_redirecturi:
     file: ./secrets/web_openidconnect_redirecturi.secret
+  web_openidconnect_baseuri:
+    file: ./secrets/web_openidconnect_baseuri.secret
   web_email_server:
     file: ./secrets/web_email_server.secret
   web_email_account:
