@@ -106,6 +106,24 @@ namespace HomepageCore.UI
                         context.ProtocolMessage.IssuerAddress = context.ProtocolMessage.IssuerAddress.Replace(Configuration["OpenIdConnect:Authority"], Configuration["OpenIdConnect:ValidIssuer"]);
                         await Task.FromResult(0);
                     };
+                    options.Events.OnUserInformationReceived = async context => {
+                        //context.ProtocolMessage.IssuerAddress = context.ProtocolMessage.IssuerAddress.Replace(Configuration["OpenIdConnect:Authority"], Configuration["OpenIdConnect:ValidIssuer"]);
+                        await Task.FromResult(0);
+                    };
+                    options.Events.OnRedirectToIdentityProvider = async context => {
+                        context.ProtocolMessage.IssuerAddress = context.ProtocolMessage.IssuerAddress.Replace(Configuration["OpenIdConnect:Authority"], Configuration["OpenIdConnect:ValidIssuer"]);
+                        await Task.FromResult(0);
+                    };
+                    options.Events.OnTokenResponseReceived = async context => {
+                        //context.ProtocolMessage.IssuerAddress = context.ProtocolMessage.IssuerAddress.Replace(Configuration["OpenIdConnect:Authority"], Configuration["OpenIdConnect:ValidIssuer"]);
+                        await Task.FromResult(0);
+                    };
+                    options.Events.OnRedirectToIdentityProviderForSignOut = async context => {
+                        //throw new Exception(context.ProtocolMessage.IdTokenHint);
+                        context.ProtocolMessage.IssuerAddress = context.ProtocolMessage.IssuerAddress.Replace(Configuration["OpenIdConnect:Authority"], Configuration["OpenIdConnect:ValidIssuer"]);
+                        context.ProtocolMessage.PostLogoutRedirectUri = Configuration["OpenIdConnect:PostLogoutRedirectUri"];
+                        await Task.FromResult(0);
+                    };
                 })
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => {
                     options.Authority = Configuration["OpenIdConnect:Authority"];

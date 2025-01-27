@@ -219,7 +219,8 @@ namespace IdentityServer4.Controllers.UI
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
             }
 
-            return View("LoggedOut", vm);
+            //return View("LoggedOut", vm);
+            return Redirect(vm.PostLogoutRedirectUri);
         }
 
         [HttpGet]
