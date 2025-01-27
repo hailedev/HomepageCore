@@ -79,6 +79,7 @@ namespace HomepageCore.Controllers
             }
         }
 
+        [HttpGet("Delete")]
         public async Task<ActionResult> Delete(Guid id)
         {
             try
@@ -93,11 +94,14 @@ namespace HomepageCore.Controllers
             }
         }
 
-        public async Task<ActionResult> Logout()
+        [HttpGet("Logout")]
+        public async Task Logout()
         {
             // Sign out of identity server
-            var idToken = await HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
-            return Redirect($"{_applicationOptions.OpenIdConnect.Authority}/connect/endsession?id_token_hint={idToken}");
+            //var idToken = await HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.IdToken);
+            //return Redirect($"{_applicationOptions.OpenIdConnect.Authority}/connect/endsession?id_token_hint={idToken}");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
     }
 }

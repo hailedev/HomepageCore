@@ -71,7 +71,7 @@ namespace HomepageCore.Identity
 
                     RedirectUris = { "http://localhost:5001/signin-oidc" },
                     FrontChannelLogoutUri = "http://localhost:5001/signout-oidc",
-                    PostLogoutRedirectUris = { "http://localhost:5001" },
+                    PostLogoutRedirectUris = { "http://localhost:5001/signout-callback-oidc" },
 
                     AllowOfflineAccess = true,
                     AllowedScopes = { "openid", "profile", "api1" },
