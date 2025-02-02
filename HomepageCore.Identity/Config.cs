@@ -69,9 +69,9 @@ namespace HomepageCore.Identity
                     AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
 
-                    RedirectUris = { "https://haile.info/signin-oidc" },
-                    FrontChannelLogoutUri = "https://haile.info/signout-oidc",
-                    PostLogoutRedirectUris = { "https://haile.info/signout-callback-oidc" },
+                    RedirectUris = { "http://localhost:5001/signin-oidc", "http://localhost:5001/signout-callback-oidc", "http://localhost:5001" },
+                    FrontChannelLogoutUri = "http://localhost:5001/signout-oidc",
+                    PostLogoutRedirectUris = { "http://localhost:5001/signout-callback-oidc" },
 
                     AllowOfflineAccess = true,
                     AllowedScopes = { "openid", "profile", "api1" },
@@ -84,24 +84,24 @@ namespace HomepageCore.Identity
                 {
                     ClientId = "spa",
                     ClientName = "React client",
-                    ClientUri = "https://haile.info",
+                    ClientUri = "http://localhost:5001",
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
                     RedirectUris =
                     {
-                        "https://haile.info",
-                        "https://haile.info/signin-callback",
-                        "https://haile.info/admin",
-                        "https://haile.info/callback.html",
-                        "https://haile.info/silent.html",
-                        "https://haile.info/popup.html",
+                        "http://localhost:5001",
+                        "http://localhost:5001/signin-callback",
+                        "http://localhost:5001/admin",
+                        "http://localhost:5001/callback.html",
+                        "http://localhost:5001/silent.html",
+                        "http://localhost:5001/popup.html",
                     },
-                    FrontChannelLogoutUri = "https://haile.info/signout-callback",
-                    PostLogoutRedirectUris = { "https://haile.info" },
+                    FrontChannelLogoutUri = "http://localhost:5001/signout-callback",
+                    PostLogoutRedirectUris = { "http://localhost:5001" },
 
-                    AllowedCorsOrigins = { "https://haile.info" },
+                    AllowedCorsOrigins = { "http://localhost:5001", "https://localhost:5001" },
                     AllowedScopes = { "openid", "profile", "api1" },
 
                     RequireConsent = false

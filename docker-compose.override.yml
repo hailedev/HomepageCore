@@ -8,7 +8,9 @@ services:
     volumes:
       - "/var/homepagecore/data:/data/db"
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
+    network_mode: host
     environment: 
+      - ASPNETCORE_URLS=http://*:5000
       - ASPNETCORE_ENVIRONMENT=Development 
       - AUTHENTICATION__GOOGLE__CLIENTSECRET_FILE=/run/secrets/id_google_clientsecret
       - AUTHENTICATION__GOOGLE__CLIENTID_FILE=/run/secrets/id_google_clientid
@@ -23,8 +25,6 @@ services:
       - id_google_clientid
       - id_facebook_clientsecret
       - id_facebook_clientid
-    ports:
-     - "5000:8080"
   web:
     build: 
       args:
@@ -33,14 +33,14 @@ services:
     volumes:
       - "/var/homepagecore/data:/data/db"
       - "/var/homepagecore/images:/var/www/wwwroot/images/blog"
+    network_mode: host
     environment: 
+      - ASPNETCORE_URLS=http://*:5001
       - ASPNETCORE_ENVIRONMENT=Development 
       - HOTRELOAD=false
       # Override the connection strings to point to the static database
       # This is so the database changes persist after removing the container
-      - CONNECTIONSTRINGS__DEFAULTCONNECTION=Data Source=/data/db/HomepageCore.db
-    ports:
-     - "5001:8080"
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION=Data Source=/data/db/HomepageCore_dev.db
 
 secrets:
   id_google_clientsecret:

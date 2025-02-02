@@ -24,7 +24,7 @@ namespace HomepageCore.UI.Services
         {
             _contextAccessor = contextAccessor;
 
-            var restClientOptions = new RestClientOptions { BaseUrl = new Uri(optionsAccessor.Value.OpenIdConnect.BaseUri) };
+            var restClientOptions = new RestClientOptions { BaseUrl = new Uri(optionsAccessor.Value.OpenIdConnect.RedirectUri) };
             var token = _contextAccessor.HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.AccessToken).Result;
             if(token != null) 
             {
