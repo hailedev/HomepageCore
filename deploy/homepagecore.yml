@@ -2,6 +2,11 @@ version: "3.3"
 services:
   nginx:
     image: nginx
+    networks:
+      default:
+        aliases:
+          - identity.haile.info
+          - haile.info
     volumes:
       - "certs:/root/certs/haile.info"
     deploy:
@@ -27,6 +32,7 @@ services:
     deploy:
       replicas: 1
     environment:
+      - HOTRELOAD=false
       - CONNECTIONSTRINGS__DEFAULTCONNECTION_FILE=/run/secrets/web_connectionstrings_defaultconnection
       - OPENIDCONNECT__CLIENTID_FILE=/run/secrets/web_openidconnect_clientid
       - OPENIDCONNECT__CLIENTSECRET_FILE=/run/secrets/web_openidconnect_clientsecret
