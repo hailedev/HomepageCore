@@ -3,7 +3,7 @@ services:
   nginx:
     image: nginx
     volumes:
-      - "certs:/root/certs/haile.info"
+      - "certs:/root/certs/hai.codes"
     deploy:
       replicas: 1
     ports: 

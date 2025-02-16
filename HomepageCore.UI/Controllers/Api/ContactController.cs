@@ -29,7 +29,7 @@ namespace HomepageCore.Controllers.Api
             try
             {
                 var message =  $"<p>Name: {model.Name}</p><p>Email: {model.Email}<p>Message: {model.Message}</p>";
-                _emailSender.SendEmailAsync(model.Email, "Message From haile.info", message, model.Name);
+                _emailSender.SendEmailAsync(model.Email, "Message From hai.codes", message, model.Name);
 
                 return Json(new { success = true });
             }

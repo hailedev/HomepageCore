@@ -5,10 +5,10 @@ services:
     networks:
       default:
         aliases:
-          - identity.haile.info
-          - haile.info
+          - identity.hai.codes
+          - hai.codes
     volumes:
-      - "certs:/root/certs/haile.info"
+      - "certs:/root/certs/hai.codes"
     deploy:
       replicas: 1
     ports: 

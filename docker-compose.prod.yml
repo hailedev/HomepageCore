@@ -5,10 +5,10 @@ services:
     networks:
       default:
         aliases:
-          - identity.haile.info
-          - haile.info
+          - identity.hai.codes
+          - hai.codes
     volumes:
-      - "/var/homepagecore/certs:/root/certs/haile.info"
+      - "/var/homepagecore/certs:/root/certs/hai.codes"
     ports: 
       - "443:443"
       - "80:80"
