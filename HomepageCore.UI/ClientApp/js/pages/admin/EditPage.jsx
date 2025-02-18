@@ -1,33 +1,24 @@
 import React, { Component } from 'react';
 import { Editor, EditorState, RichUtils, ContentState, AtomicBlockUtils, convertFromRaw, convertToRaw, Entity } from 'draft-js';
-import CategoryStore from 'CategoryStore';
-import UserStore from 'UserStore';
-import CategoryActionCreators from 'CategoryActionCreators';
+import { getCategories } from 'CategoryActionCreators';
+import { getPost } from 'PostActionCreators';
 import { stateToHTML } from 'draft-js-export-html';
-import PostActionCreators from 'PostActionCreators';
 import Model from 'react-modal';
-import { Container } from 'flux/utils';
+import { connect } from 'react-redux';
 import StyleButton from './StyleButton';
 
 class EditPage extends Component {
-    static getStores() {
-        return [CategoryStore, UserStore];
-    }
-
-    static calculateState() {
-        return { categories: CategoryStore.getState(), user: UserStore.getState() };
-    }
     constructor(props) {
         super(props);
         this.customRefs = {};
         this.state = { editorState: EditorState.createEmpty(), showURLInput: false, urlType: '', title: '', blurb: '', tags: '', link: '', category: 'c3943998-774b-4ac4-9ccd-8e740e20ab2c' };
     }
-    componentWillMount() {
-        if (!this.state.categories) {
-            CategoryActionCreators.getCategories();
+    UNSAFE_componentWillMount() {
+        if (!this.props.categories) {
+            this.props.getCategories();
         }
         if (this.props.match.params.id) {
-            PostActionCreators.getPost(this.props.match.params.id, true).then((response) => {
+            this.props.getPost(this.props.match.params.id, true).then((response) => {
                 const contentState = response.raw ? convertFromRaw(JSON.parse(response.raw)) : ContentState.createFromText(response.content);
                 const editorState = EditorState.createWithContent(contentState);
                 this.setState({ id: response.id, title: response.title, blurb: response.blurb, tags: response.tags, editorState, category: response.categoryId }); // eslint-disable-line
@@ -193,7 +184,7 @@ class EditPage extends Component {
     }
 
     render() {
-        if (!this.state.user) {
+        if (!this.props.user) {
             return <div />;
         }
 
@@ -237,9 +228,9 @@ class EditPage extends Component {
             />);
         }
         const categoryOptions = [];
-        if (this.state.categories !== null) {
-            for (let i = 0; i < this.state.categories.length; i += 1) {
-                const category = this.state.categories[i];
+        if (this.props.categories !== null) {
+            for (let i = 0; i < this.props.categories.length; i += 1) {
+                const category = this.props.categories[i];
                 categoryOptions.push(<option key={category.id} value={category.id}>{category.name}</option>);
             }
         }
@@ -330,4 +321,9 @@ class EditPage extends Component {
     }
 }
 
-export default Container.create(EditPage);
+function mapStateToProps(state) {
+    const { user, categories } = state;
+    return { user, categories }
+}
+
+export default connect(mapStateToProps, { getCategories, getPost })(EditPage);

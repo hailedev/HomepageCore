@@ -1,36 +1,27 @@
 import { Actions } from '../constants/AppConstants';
-import DefaultDispatcher from '../dispatchers/DefaultDispatcher';
 import DefaultUserManager from '../services/DefaultUserManager';
 
-export default new class UserActionCreators {
-    setUserInfo() {
-        return new Promise((resolve, reject) => {
-            DefaultUserManager.getUser()
-                .then(user => {
-                    DefaultDispatcher.dispatch({
-                        type: Actions.FETCH_USER,
-                        payload: { user }
-                    });
-                    resolve(user);
-                })
-                .catch(err => {
-                    reject(err);
-                });
-        });
-    }
+export function setUserInfo() {
+    return async function (dispatch) {
+        try {
+            const user = await DefaultUserManager.getUser();
+            dispatch({ type: Actions.FETCH_USER, payload: { user } });
+            return user;
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    };
+}
 
-    signOutUser() {
-        return new Promise((resolve, reject) => {
-            DefaultUserManager.signoutRedirect()
-                .then(resp => {
-                    DefaultDispatcher.dispatch({
-                        type: Actions.SIGNOUT_USER
-                    });
-                    resolve(resp);
-                })
-                .catch(err => {
-                    reject(err);
-                });
-        });
-    }
-}();
+export function signOutUser() {
+    return async function (dispatch) {
+        try {
+            await DefaultUserManager.signoutRedirect();
+            dispatch({ type: Actions.SIGNOUT_USER, payload: null });
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    };
+}

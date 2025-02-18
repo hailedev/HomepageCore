@@ -63,14 +63,17 @@ module.exports = {
         modules: [
             "node_modules",
             "./js/constants",
-            "./js/dispatchers",
-            "./js/stores",
+            "./js/reducers",
+            "./js/store",
             "./js/actions",
             "./js/api",
             "./js/common",
             "./js/services"
         ],
-        extensions: [".js", ".jsx"]
+        extensions: [".js", ".jsx"],
+        fallback: { 
+            'process/browser': require.resolve('process/browser')
+        }
     },
     module: {
         rules: [

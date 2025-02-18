@@ -1,55 +1,43 @@
-import DefaultDispatcher from 'DefaultDispatcher';
 import { Actions } from 'AppConstants';
 import PostApi from '../api/PostApi';
 
-export default new class PostActionCreators {
-    getPost(id, editable) {
-        return new Promise(((resolve, reject) => {
-            PostApi.getPost(id, editable)
-                .then(response => {
-                    if (!editable) {
-                        DefaultDispatcher.dispatch({
-                            type: Actions.FETCH_POST,
-                            payload: { response }
-                        });
-                    }
-                    resolve(response);
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        }));
-    }
+export function getPost(id, editable) {
+    return async function (dispatch) {
+        try {
+            const response = await PostApi.getPost(id, editable);
+            if (!editable) {
+                dispatch({ type: Actions.FETCH_POST, payload: { response } });
+            }
+            return response;
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    };
+}
 
-    addPost(post) {
-        return new Promise((resolve, reject) => {
-            PostApi.addPost(post)
-                .then(response => {
-                    DefaultDispatcher.dispatch({
-                        type: Actions.ADD_POST,
-                        payload: { response }
-                    });
-                    resolve(response);
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        });
-    }
+export function addPost(post) {
+    return async function (dispatch) {
+        try {
+            const response = await PostApi.addPost(post);
+            dispatch({ type: Actions.ADD_POST, payload: { response } });
+            return response;
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    };
+}
 
-    deletePost(id) {
-        return new Promise((resolve, reject) => {
-            PostApi.deletePost(id)
-                .then(response => {
-                    DefaultDispatcher.dispatch({
-                        type: Actions.DELETE_POST,
-                        payload: { response }
-                    });
-                    resolve(response);
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        });
-    }
-}();
+export function deletePost(id) {
+    return async function (dispatch) {
+        try {
+            const response = await PostApi.deletePost(id);
+            dispatch({ type: Actions.DELETE_POST, payload: { response } });
+            return response;
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    };
+}

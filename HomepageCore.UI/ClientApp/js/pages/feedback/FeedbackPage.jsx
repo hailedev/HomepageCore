@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import DocumentMeta from 'react-document-meta';
-import ContactActionCreators from 'ContactActionCreators';
+import { Helmet } from 'react-helmet';
+import ContactApi from '../../api/ContactApi';
 import WaitIcon from '../home/WaitIcon';
 
 export default class FeedbackPage extends Component {
@@ -26,7 +26,7 @@ export default class FeedbackPage extends Component {
             return;
         }
         const model = { name: this.customRefs.name.value, email: this.customRefs.email.value, message: this.customRefs.message.value };
-        ContactActionCreators.lodgeFeedback(model)
+        ContactApi.lodgeFeedback(model)
             .then(() => {
                 this.customRefs.name.value = '';
                 this.customRefs.email.value = '';
@@ -45,44 +45,42 @@ export default class FeedbackPage extends Component {
 
     render() {
         const label = !this.state.sending ? 'Submit' : <WaitIcon size="20px" />;
-        const meta = {
-            title: 'Hai Le | Contact'
-        }
         return (
-            <DocumentMeta {...meta}>
-                <div className="container feedback">
-                    <div className="row">
-                        <div style={{ marginBottom: '40px', textAlign: 'center' }}>Got something you would like to discuss? Do get in touch if you have any questions or even just to say hi!</div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-offset-2 col-md-1 label">Name</div>
-                        <div className="col-md-7">
-                            <input type="text" id="name" ref={function (input) { this.customRefs.name = input; }.bind(this)} />
-                            { this.state.errors.name ? <div className="error">{this.state.errors.name}</div> : null }
-                        </div>
-                    </div>
-                    <div className="row" style={{ marginTop: '20px' }}>
-                        <div className="col-md-offset-2 col-md-1 label">Email</div>
-                        <div className="col-md-7">
-                            <input type="email" id="email" ref={function (input) { this.customRefs.email = input; }.bind(this)} />
-                            { this.state.errors.email ? <div className="error">{this.state.errors.email}</div> : null }
-                        </div>
-                    </div>
-                    <div className="row" style={{ marginTop: '20px' }}>
-                        <div className="col-md-offset-2 col-md-1 label">Message</div>
-                        <div className="col-md-7">
-                            <textarea rows="8" id="message" ref={function (input) { this.customRefs.message = input; }.bind(this)} />
-                            { this.state.errors.dispatch ? <div className="error">{this.state.errors.dispatch}</div> : null }
-                            { this.state.sentMsg ? <div>{this.state.sentMsg}</div> : null }
-                        </div>
-                    </div>
-                    <div className="row" style={{ marginTop: '10px' }}>
-                        <div className="col-md-offset-8 col-md-2 col-xs-12">
-                            <div className="button" onClick={this.onSubmit.bind(this)} role="presentation">{label}</div>
-                        </div>
+            <div className="container feedback">
+                <Helmet>
+                    <title>Hai Le | Contact</title>
+                </Helmet>
+                <div className="row">
+                    <div style={{ marginBottom: '40px', textAlign: 'center' }}>Got something you would like to discuss? Do get in touch if you have any questions or even just to say hi!</div>
+                </div>
+                <div className="row">
+                    <div className="col-md-offset-2 col-md-1 label">Name</div>
+                    <div className="col-md-7">
+                        <input type="text" id="name" ref={function (input) { this.customRefs.name = input; }.bind(this)} />
+                        { this.state.errors.name ? <div className="error">{this.state.errors.name}</div> : null }
                     </div>
                 </div>
-            </DocumentMeta>
+                <div className="row" style={{ marginTop: '20px' }}>
+                    <div className="col-md-offset-2 col-md-1 label">Email</div>
+                    <div className="col-md-7">
+                        <input type="email" id="email" ref={function (input) { this.customRefs.email = input; }.bind(this)} />
+                        { this.state.errors.email ? <div className="error">{this.state.errors.email}</div> : null }
+                    </div>
+                </div>
+                <div className="row" style={{ marginTop: '20px' }}>
+                    <div className="col-md-offset-2 col-md-1 label">Message</div>
+                    <div className="col-md-7">
+                        <textarea rows="8" id="message" ref={function (input) { this.customRefs.message = input; }.bind(this)} />
+                        { this.state.errors.dispatch ? <div className="error">{this.state.errors.dispatch}</div> : null }
+                        { this.state.sentMsg ? <div>{this.state.sentMsg}</div> : null }
+                    </div>
+                </div>
+                <div className="row" style={{ marginTop: '10px' }}>
+                    <div className="col-md-offset-8 col-md-2 col-xs-12">
+                        <div className="button" onClick={this.onSubmit.bind(this)} role="presentation">{label}</div>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

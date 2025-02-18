@@ -1,27 +1,17 @@
 import React, { Component } from 'react';
-import UserStore from 'UserStore';
-import { Container } from 'flux/utils';
+import { connect } from 'react-redux';
 import DefaultUserManager from 'DefaultUserManager';
-import UserActionCreators from 'UserActionCreators';
-import PostSummaryActionCreators from 'PostSummaryActionCreators';
-import PostActionCreators from 'PostActionCreators';
-import PostSummaryStore from 'PostSummaryStore';
-import CategoryStore from 'CategoryStore';
-import CategoryActionCreators from 'CategoryActionCreators';
+import { setUserInfo } from 'UserActionCreators';
+import { getPostSummaries } from 'PostSummaryActionCreators';
+import { deletePost} from 'PostActionCreators';
+import { getCategories } from 'CategoryActionCreators';
 import { Link } from 'react-router-dom';
 
 class AdminPage extends Component {
-    static getStores() {
-        return [UserStore, PostSummaryStore, CategoryStore];
-    }
-
-    static calculateState() {
-        return { user: UserStore.getState(), posts: PostSummaryStore.getState(), categories: CategoryStore.getState() };
-    }
 
     componentDidMount() {
-        if (!this.state.user) {
-            UserActionCreators.setUserInfo()
+        if (!this.props.user) {
+            this.props.setUserInfo()
                 .then((token) => {
                     if (!token) {
                         DefaultUserManager.signinRedirect({ state: { url: `${REDIRECT_URI}/admin` } });
@@ -30,19 +20,19 @@ class AdminPage extends Component {
                 .catch(() => DefaultUserManager.signinRedirect({ state: { url: `${REDIRECT_URI}/admin` } }));
         }
 
-        if (!this.state.categories || this.state.categories.length === 0) {
-            CategoryActionCreators.getCategories();
+        if (!this.props.categories || this.props.categories.length === 0) {
+            this.props.getCategories();
         }
-        PostSummaryActionCreators.getPostSummaries();
+        this.props.getPostSummaries();
     }
 
     delete(id) {
-        PostActionCreators.deletePost(id)
-            .then(() => PostSummaryActionCreators.getPostSummaries());
+        this.props.deletePost(id)
+            .then(() => this.props.getPostSummaries());
     }
 
     render() {
-        if (!this.state.user) {
+        if (!this.props.user) {
             return <div />;
         }
 
@@ -59,9 +49,9 @@ class AdminPage extends Component {
         );
 
         const posts = [];
-        if (this.state.categories && this.state.categories.length > 0) {
-            this.state.posts.map((post) => {
-                const category = this.state.categories.find(cat => cat.id === post.categoryId);
+        if (this.props.categories && this.props.categories.length > 0) {
+            this.props.posts.map((post) => {
+                const category = this.props.categories.find(cat => cat.id === post.categoryId);
                 posts.push( // eslint-disable-line
                     <tr key={post.id}>
                         <td>{post.title}</td>
@@ -96,4 +86,9 @@ class AdminPage extends Component {
     }
 }
 
-export default Container.create(AdminPage);
+function mapStateToProps(state) {
+    const { user, postSummaries, categories } = state;
+    return { user, posts: postSummaries, categories }
+}
+
+export default connect(mapStateToProps, { setUserInfo, getPostSummaries, deletePost, getCategories })(AdminPage);

@@ -1,9 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { detect } from 'detect-browser';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DefaultUserManager from 'DefaultUserManager';
 import Main from './pages/Main';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const browser = detect();
 window.onerror = function onerror(message, url, lineNo, colNo, error) {
@@ -28,7 +30,16 @@ window.onerror = function onerror(message, url, lineNo, colNo, error) {
     document.body.appendChild(container);
 };
 
-let pageContent = <BrowserRouter><Route path="/" component={Main} /></BrowserRouter>;
+let pageContent = (
+    <Provider store={store}>
+        <BrowserRouter>
+            <Routes>
+                <Route path="*" element={<Main/>} />
+            </Routes>
+        </BrowserRouter>
+    </Provider>
+);
+
 if (window.location.pathname === '/signin-callback') {
     DefaultUserManager.signinRedirectCallback()
         .then((token) => {
@@ -57,4 +68,5 @@ if (browser && browser.name === 'ie' && !browser.version.startsWith('11')) {
         </div>
     );
 }
-ReactDOM.render(pageContent, document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(pageContent);
