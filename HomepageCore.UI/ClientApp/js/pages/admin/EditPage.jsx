@@ -1,164 +1,198 @@
-import React, { Component } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Editor, EditorState, RichUtils, ContentState, AtomicBlockUtils, convertFromRaw, convertToRaw, Entity } from 'draft-js';
+import { useParams } from 'react-router-dom';
 import { getCategories } from 'CategoryActionCreators';
 import { getPost } from 'PostActionCreators';
 import { stateToHTML } from 'draft-js-export-html';
 import Model from 'react-modal';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import StyleButton from './StyleButton';
 
-class EditPage extends Component {
-    constructor(props) {
-        super(props);
-        this.customRefs = {};
-        this.state = { editorState: EditorState.createEmpty(), showURLInput: false, urlType: '', title: '', blurb: '', tags: '', link: '', category: 'c3943998-774b-4ac4-9ccd-8e740e20ab2c' };
-    }
-    UNSAFE_componentWillMount() {
-        if (!this.props.categories) {
-            this.props.getCategories();
+export default () => {
+    const isMounted = useRef(false);
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
+    const categories = useSelector(state => state.categories);
+    const posts = useSelector(state => state.posts);
+    const params = useParams();
+
+    const [state, setState] = useState({
+        editorState: EditorState.createEmpty(),
+        showUrlInput: false,
+        urlType: '',
+        title: '',
+        blurb: '',
+        tags: '',
+        list: '',
+        category: 'c3943998-774b-4ac4-9ccd-8e740e20ab2c'
+    });
+
+    const _customRefs = {};
+    const _blockTypes = [
+        { label: 'H1', style: 'header-one' },
+        { label: 'H2', style: 'header-two' },
+        { label: 'H3', style: 'header-three' },
+        { label: 'H4', style: 'header-four' },
+        { label: 'H5', style: 'header-five' },
+        { label: 'H6', style: 'header-six' },
+        { label: 'Blockquote', style: 'blockquote' },
+        { label: 'UL', style: 'unordered-list-item' },
+        { label: 'OL', style: 'ordered-list-item' },
+        { label: 'Code Block', style: 'code-block' }
+    ];
+    const _inlineStyles = [
+        { label: 'Bold', style: 'BOLD' },
+        { label: 'Italic', style: 'ITALIC' },
+        { label: 'Underline', style: 'UNDERLINE' },
+        { label: 'Monospace', style: 'CODE' }
+    ];
+
+    if (!isMounted.current) {
+        if (!categories) {
+            dispatch(getCategories());
         }
-        if (this.props.match.params.id) {
-            this.props.getPost(this.props.match.params.id, true).then((response) => {
-                const contentState = response.raw ? convertFromRaw(JSON.parse(response.raw)) : ContentState.createFromText(response.content);
-                const editorState = EditorState.createWithContent(contentState);
-                this.setState({ id: response.id, title: response.title, blurb: response.blurb, tags: response.tags, editorState, category: response.categoryId }); // eslint-disable-line
-            });
+    
+        if (params.id) {
+            dispatch(getPost(params.id, true));
         }
-        this.blockTypes = [
-            { label: 'H1', style: 'header-one' },
-            { label: 'H2', style: 'header-two' },
-            { label: 'H3', style: 'header-three' },
-            { label: 'H4', style: 'header-four' },
-            { label: 'H5', style: 'header-five' },
-            { label: 'H6', style: 'header-six' },
-            { label: 'Blockquote', style: 'blockquote' },
-            { label: 'UL', style: 'unordered-list-item' },
-            { label: 'OL', style: 'ordered-list-item' },
-            { label: 'Code Block', style: 'code-block' }
-        ];
-        this.inlineStyles = [
-            { label: 'Bold', style: 'BOLD' },
-            { label: 'Italic', style: 'ITALIC' },
-            { label: 'Underline', style: 'UNDERLINE' },
-            { label: 'Monospace', style: 'CODE' }
-        ];
-    }
-    onTab(e) {
-        this.setState({ editorState: RichUtils.onTab(e, this.state.editorState, 4) });
+        isMounted.current = true;
     }
 
-    onChange(editorState) {
-        this.setState({ editorState });
+    useEffect(() => {
+        const post = posts[params.id];
+        if (post) {
+            const contentState = post.raw ? convertFromRaw(JSON.parse(post.raw)) : ContentState.createFromText(post.content);
+            const editorState = EditorState.createWithContent(contentState);
+            setState({ ...state, id: post.id, title: post.title, blurb: post.blurb, tags: post.tags, editorState, category: post.categoryId });
+        }
+    }, [posts]);
+
+    const onTab = (e) => {
+        setState({ ...state, editorState: RichUtils.onTab(e, state.editorState, 4) });
     }
 
-    onSubmit() {
+    const onChange = (editorState) => {
+        setState({ ...state, editorState });
+    }
+
+    const onSubmit = async () => {
         const options = {
             blockRenderers: {
-                atomic: function (block) {
-                    const data = this.state.editorState.getCurrentContent().getEntity(block.getEntityAt(0)).getData();
+                atomic: (block) => {
+                    const data = state.editorState.getCurrentContent().getEntity(block.getEntityAt(0)).getData();
                     return `<div><img style='border:10px solid white;background-color:white;display:block;margin:auto' src='${data.src}'/><div style='font-size:14px;padding-top:10px;text-align:center'>${data.caption}</div></div>`;
-                }.bind(this)
+                }
             }
         };
-        const html = stateToHTML(this.state.editorState.getCurrentContent(), options);
-        const post = { title: this.state.title, content: html, tags: this.state.tags, categoryId: this.state.category, id: this.state.id, raw: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())) };
-        if (this.state.blurb) {
-            post.blurb = this.state.blurb;
+        const html = stateToHTML(state.editorState.getCurrentContent(), options);
+        const post = { title: state.title, content: html, tags: state.tags, categoryId: state.category, id: state.id, raw: JSON.stringify(convertToRaw(state.editorState.getCurrentContent())) };
+        if (state.blurb) {
+            post.blurb = state.blurb;
         }
-        PostActionCreators.addPost(post).then(() => {
-            const editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''));
-            if (!this.props.match.params.id) {
-                this.setState({ editorState, title: '', blurb: '', tags: '', category: 'c3943998-774b-4ac4-9ccd-8e740e20ab2c' });
-            }
-        });
+        await PostActionCreators.addPost(post);
+        const editorState = EditorState.push(state.editorState, ContentState.createFromText(''));
+        if (!params.id) {
+            setState({ ...state, editorState, title: '', blurb: '', tags: '', category: 'c3943998-774b-4ac4-9ccd-8e740e20ab2c' });
+        }
     }
 
-    onURLChange(e) {
-        this.setState({ urlValue: e.target.value });
+    const onURLChange = (e) => {
+        setState({ ...state, urlValue: e.target.value });
     }
 
-    onCaptionChange(e) {
-        this.setState({ caption: e.target.value });
+    const onCaptionChange = (e) => {
+        setState({ ...state, caption: e.target.value });
     }
 
-    onTitleChange(e) {
-        this.setState({ title: e.target.value });
+    const onTitleChange = (e) => {
+        setState({ ...state, title: e.target.value });
     }
 
-    onBlurbChange(e) {
-        this.setState({ blurb: e.target.value });
-    }
-    onTagsChange(e) {
-        this.setState({ tags: e.target.value });
-    }
-    onCategoryChange(e) {
-        this.setState({ category: e.target.value });
-    }
-    onLinkChange(e) {
-        this.setState({ link: e.target.value });
-    }
-    onLogin() {
-        window.location.href = `${window.location.origin}/api/account/external-login?returnUrl=${encodeURIComponent(window.location.href)}`;
+    const onBlurbChange = (e) => {
+        setState({ ...state, blurb: e.target.value });
     }
 
-    getMedia(props) {
-        const entity = props.contentState.getEntity(props.block.getEntityAt(0));
+    const onTagsChange = (e) => {
+        setState({ ...state, tags: e.target.value });
+    }
+
+    const onCategoryChange = (e) => {
+        setState({ ...state, category: e.target.value });
+    }
+
+    const onLinkChange = (e) => {
+        setState({ ...state, link: e.target.value });
+    }
+
+    const getMedia = ({ contentState, block }) => {
+        const entity = contentState.getEntity(block.getEntityAt(0));
         return <img src={entity.getData().src} alt="" />;
     }
 
-    getBlockStyle(block) {
+    const getBlockStyle = (block) => {
         switch (block.getType()) {
             case 'blockquote': return 'RichEditor-blockquote';
             default: return null;
         }
     }
-    addImage() {
-        this.promptForMedia('image');
+
+    const addImage = () => {
+        promptForMedia('image');
     }
-    promptForMedia(type) {
-        this.setState({
+
+    const promptForMedia = (type) => {
+        setState({
+            ...state,
             showURLInput: true,
             urlValue: '',
             caption: '',
             urlType: type
         });
     }
-    focus() {
-        this.customRefs.editor.focus();
+
+    const focus = () => {
+        _customRefs.editor.focus();
     }
-    toggleLink() {
-        const entityKey = Entity.create('LINK', 'MUTABLE', { url: this.state.link });
-        this.setState({ editorState: RichUtils.toggleLink(this.state.editorState, this.state.editorState.getSelection(), entityKey) });
+
+    const toggleLink = () => {
+        const entityKey = Entity.create('LINK', 'MUTABLE', { url: state.link });
+        setState({ ...state, editorState: RichUtils.toggleLink(state.editorState, state.editorState.getSelection(), entityKey) });
     }
-    toggleInlineStyle(style) {
-        this.setState({ editorState: RichUtils.toggleInlineStyle(this.state.editorState, style) });
+
+    const toggleInlineStyle = (style) => {
+        setState({ ...state, editorState: RichUtils.toggleInlineStyle(state.editorState, style) });
     }
-    toggleBlockType(type) {
-        this.setState({ editorState: RichUtils.toggleBlockType(this.state.editorState, type) });
+
+    const toggleBlockType = (type) => {
+        setState({ ...state, editorState: RichUtils.toggleBlockType(state.editorState, type) });
     }
-    handleKeyCommand(command) {
-        const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
+
+    const handleKeyCommand = (command) => {
+        const newState = RichUtils.handleKeyCommand(state.editorState, command);
         if (newState) {
-            this.setState({ editorState: newState });
+            setState({ ...state, editorState: newState });
             return true;
         }
         return false;
     }
-    closeModal() {
-        this.setState({ showURLInput: false });
+
+    const closeModal = () => {
+        setState({ ...state, showURLInput: false });
     }
-    mediaBlockRenderer(block) {
+
+    const mediaBlockRenderer = (block) => {
         if (block.getType() === 'atomic') {
             return {
-                component: this.getMedia,
+                component: getMedia,
                 editable: false
             };
         }
         return null;
     }
-    confirmMedia(e) {
+
+    const confirmMedia = (e) => {
         e.preventDefault();
-        const { editorState, urlValue, urlType, caption } = this.state;
+        const { editorState, urlValue, urlType, caption } = state;
         const contentState = editorState.getCurrentContent();
         const contentStateWithEntity = contentState.createEntity(
             urlType,
@@ -171,7 +205,8 @@ class EditPage extends Component {
             { currentContent: contentStateWithEntity }
         );
 
-        this.setState({
+        setState({
+            ...state,
             editorState: AtomicBlockUtils.insertAtomicBlock(
                 newEditorState,
                 entityKey,
@@ -183,147 +218,139 @@ class EditPage extends Component {
         });
     }
 
-    render() {
-        if (!this.props.user) {
-            return <div />;
-        }
-
-        let className = 'RichEditor-editor';
-        const contentState = this.state.editorState.getCurrentContent();
-        if (!contentState.hasText()) {
-            if (contentState.getBlockMap().first().getType() !== 'unstyled') {
-                className += ' RichEditor-hidePlaceholder';
-            }
-        }
-
-        const selection = this.state.editorState.getSelection();
-        const blockType = this.state.editorState.getCurrentContent()
-            .getBlockForKey(selection.getStartKey())
-            .getType();
-
-        const blockStyleControls = [];
-        const inlineStyleControls = [];
-        let type;
-
-        for (let i = 0; i < this.blockTypes.length; i += 1) {
-            type = this.blockTypes[i];
-            blockStyleControls.push(<StyleButton
-                key={type.label}
-                active={type.style === blockType}
-                label={type.label}
-                onToggle={s => this.toggleBlockType(s)}
-                style={type.style}
-            />);
-        }
-
-        const currentStyle = this.state.editorState.getCurrentInlineStyle();
-        for (let i = 0; i < this.inlineStyles.length; i += 1) {
-            type = this.inlineStyles[i];
-            inlineStyleControls.push(<StyleButton
-                key={type.label}
-                active={currentStyle.has(type.style)}
-                label={type.label}
-                onToggle={s => this.toggleInlineStyle(s)}
-                style={type.style}
-            />);
-        }
-        const categoryOptions = [];
-        if (this.props.categories !== null) {
-            for (let i = 0; i < this.props.categories.length; i += 1) {
-                const category = this.props.categories[i];
-                categoryOptions.push(<option key={category.id} value={category.id}>{category.name}</option>);
-            }
-        }
-        return (
-            <div className="container admin">
-                <div className="row">
-                    <div className="col-md-2">Title</div>
-                    <div className="col-md-10"><input type="text" value={this.state.title} onChange={this.onTitleChange.bind(this)} /></div>
-                </div>
-                <div className="row">
-                    <div className="col-md-2">Blurb</div>
-                    <div className="col-md-10"><input type="text" value={this.state.blurb} onChange={this.onBlurbChange.bind(this)} /></div>
-                </div>
-                <div className="row">
-                    <div className="col-md-2">Tags</div>
-                    <div className="col-md-10"><input type="text" value={this.state.tags} onChange={this.onTagsChange.bind(this)} /></div>
-                </div>
-                <div className="row">
-                    <div className="col-md-2">Category</div>
-                    <div className="col-md-10">
-                        <select name="category" value={this.state.category} onChange={this.onCategoryChange.bind(this)}>
-                            {categoryOptions}
-                        </select>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-12 RichEditor-root">
-                        <div className="RichEditor-controls">
-                            {blockStyleControls}
-                        </div>
-                        <div className="RichEditor-controls">
-                            {inlineStyleControls}
-                        </div>
-                        <div className="RichEditor-controls">
-                            <button onMouseDown={this.toggleLink.bind(this)}>Add Link</button>
-                            <input type="text" style={{ margin: '0 10px' }} value={this.state.link} onChange={this.onLinkChange.bind(this)} />
-                        </div>
-                        <div className="RichEditor-controls">
-                            <button onMouseDown={this.addImage.bind(this)}>
-                                Add Image
-                            </button>
-                        </div>
-                        <div className={className} onClick={this.focus.bind(this)} role="presentation">
-                            <Editor
-                                blockRendererFn={this.mediaBlockRenderer.bind(this)}
-                                blockStyleFn={this.getBlockStyle.bind(this)}
-                                editorState={this.state.editorState}
-                                handleKeyCommand={this.handleKeyCommand.bind(this)}
-                                onChange={this.onChange.bind(this)}
-                                onTab={this.onTab.bind(this)}
-                                ref={function (input) { this.customRefs.editor = input; }.bind(this)}
-                                spellCheck
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="row" style={{ marginTop: '10px' }}>
-                    <div className="col-md-offset-10 col-md-2">
-                        <div className="button" style={{ marginLeft: '50px' }} onClick={this.onSubmit.bind(this)} role="presentation">Submit</div>
-                    </div>
-                </div>
-                <Model
-                    isOpen={this.state.showURLInput}
-                    contentLabel="Modal"
-                    onRequestClose={this.closeModal.bind(this)}
-                    style={{ overlay: { backgroundColor: 'inherit' }, content: { position: 'relative', left: 'auto', right: 'auto', bottom: 'auto', top: 'auto', margin: '150px auto', width: '500px', height: '210px' } }}
-                >
-                    <div>
-                        <div>URL</div>
-                        <input
-                            onChange={this.onURLChange.bind(this)}
-                            ref={function (input) { this.customRefs.url = input; }.bind(this)}
-                            type="text"
-                            value={this.state.urlValue}
-                        />
-                        <div>Caption</div>
-                        <input
-                            onChange={this.onCaptionChange.bind(this)}
-                            ref={function (input) { this.customRefs.caption = input; }.bind(this)}
-                            type="text"
-                            value={this.state.caption}
-                        />
-                        <div className="button" onClick={this.confirmMedia.bind(this)} role="presentation">Confirm</div>
-                    </div>
-                </Model>
-            </div>
-        );
+    if (!user) {
+        return <div />;
     }
-}
 
-function mapStateToProps(state) {
-    const { user, categories } = state;
-    return { user, categories }
-}
+    let className = 'RichEditor-editor';
+    const contentState = state.editorState.getCurrentContent();
+    if (!contentState.hasText()) {
+        if (contentState.getBlockMap().first().getType() !== 'unstyled') {
+            className += ' RichEditor-hidePlaceholder';
+        }
+    }
 
-export default connect(mapStateToProps, { getCategories, getPost })(EditPage);
+    const selection = state.editorState.getSelection();
+    const blockType = state.editorState.getCurrentContent()
+        .getBlockForKey(selection.getStartKey())
+        .getType();
+
+    const blockStyleControls = [];
+    const inlineStyleControls = [];
+    let type;
+
+    for (let i = 0; i < _blockTypes.length; i += 1) {
+        type = _blockTypes[i];
+        blockStyleControls.push(<StyleButton
+            key={type.label}
+            active={type.style === blockType}
+            label={type.label}
+            onToggle={s => toggleBlockType(s)}
+            style={type.style}
+        />);
+    }
+
+    const currentStyle = state.editorState.getCurrentInlineStyle();
+    for (let i = 0; i < _inlineStyles.length; i += 1) {
+        type = _inlineStyles[i];
+        inlineStyleControls.push(<StyleButton
+            key={type.label}
+            active={currentStyle.has(type.style)}
+            label={type.label}
+            onToggle={s => toggleInlineStyle(s)}
+            style={type.style}
+        />);
+    }
+    const categoryOptions = [];
+    if (categories !== null) {
+        for (let i = 0; i < categories.length; i += 1) {
+            const category = categories[i];
+            categoryOptions.push(<option key={category.id} value={category.id}>{category.name}</option>);
+        }
+    }
+
+    return (
+        <div className="container admin">
+            <div className="row">
+                <div className="col-md-2">Title</div>
+                <div className="col-md-10"><input type="text" value={state.title} onChange={onTitleChange} /></div>
+            </div>
+            <div className="row">
+                <div className="col-md-2">Blurb</div>
+                <div className="col-md-10"><input type="text" value={state.blurb} onChange={onBlurbChange} /></div>
+            </div>
+            <div className="row">
+                <div className="col-md-2">Tags</div>
+                <div className="col-md-10"><input type="text" value={state.tags} onChange={onTagsChange} /></div>
+            </div>
+            <div className="row">
+                <div className="col-md-2">Category</div>
+                <div className="col-md-10">
+                    <select name="category" value={state.category} onChange={onCategoryChange}>
+                        {categoryOptions}
+                    </select>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-12 RichEditor-root">
+                    <div className="RichEditor-controls">
+                        {blockStyleControls}
+                    </div>
+                    <div className="RichEditor-controls">
+                        {inlineStyleControls}
+                    </div>
+                    <div className="RichEditor-controls">
+                        <button onMouseDown={() => toggleLink}>Add Link</button>
+                        <input type="text" style={{ margin: '0 10px' }} value={state.link} onChange={onLinkChange} />
+                    </div>
+                    <div className="RichEditor-controls">
+                        <button onMouseDown={addImage}>
+                            Add Image
+                        </button>
+                    </div>
+                    <div className={className} onClick={focus} role="presentation">
+                        <Editor
+                            blockRendererFn={mediaBlockRenderer}
+                            blockStyleFn={getBlockStyle}
+                            editorState={state.editorState}
+                            handleKeyCommand={handleKeyCommand}
+                            onChange={onChange}
+                            onTab={onTab}
+                            ref={function (input) { _customRefs.editor = input; }}
+                            spellCheck
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className="row" style={{ marginTop: '10px' }}>
+                <div className="col-md-offset-10 col-md-2">
+                    <div className="button" style={{ marginLeft: '50px' }} onClick={onSubmit} role="presentation">Submit</div>
+                </div>
+            </div>
+            <Model
+                isOpen={state.showUrlInput}
+                contentLabel="Modal"
+                onRequestClose={closeModal}
+                style={{ overlay: { backgroundColor: 'inherit' }, content: { position: 'relative', left: 'auto', right: 'auto', bottom: 'auto', top: 'auto', margin: '150px auto', width: '500px', height: '210px' } }}
+            >
+                <div>
+                    <div>URL</div>
+                    <input
+                        onChange={onURLChange}
+                        ref={function (input) { _customRefs.url = input; }}
+                        type="text"
+                        value={state.urlValue}
+                    />
+                    <div>Caption</div>
+                    <input
+                        onChange={onCaptionChange}
+                        ref={function (input) { _customRefs.caption = input; }}
+                        type="text"
+                        value={state.caption}
+                    />
+                    <div className="button" onClick={confirmMedia} role="presentation">Confirm</div>
+                </div>
+            </Model>
+        </div>
+    );
+}

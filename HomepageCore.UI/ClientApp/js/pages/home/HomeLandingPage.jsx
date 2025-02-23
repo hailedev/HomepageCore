@@ -1,71 +1,81 @@
-import React, { Component } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { getPostSummaries } from 'PostSummaryActionCreators';
 import { getCategories } from 'CategoryActionCreators';
 import { Categories } from 'AppConstants';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import WaitIcon from './WaitIcon';
 
-class HomeLandingPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { currentProfile: 0, filter: Categories.ALL, page: 1, loading: false, enableShowMore: true };
-    }
+export default () => {
+    const isMounted = useRef(false);
+    const dispatch = useDispatch();
 
-    UNSAFE_componentWillMount() {
-        this.props.getPostSummaries({ page: 1 }).then(() => {
-            this.loadDisqus();
-        });
-        if (!this.props.categories.length) {
-            this.props.getCategories();
+    const posts = useSelector(state => state.postSummaries);
+    const categories = useSelector(state => state.categories);
+
+    const [currentProfile, setCurrentProfile] = useState(0);
+    const [filter, setFilter] = useState(Categories.ALL);
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [enableShowMore, setEnableShowMore] = useState(true);
+
+    const _images = [
+        <img key={1} src="/images/avatar.png" alt="" />,
+        <img key={2} style={{ marginTop: '-60px' }} src="/images/avatar2.png" alt="" />,
+        <img key={3} src="/images/avatar3.png" alt="" />,
+        <img key={4} style={{ marginLeft: '-29px', marginTop: '-29px' }} src="/images/avatar4.png" alt="" />,
+        <img key={5} src="/images/avatar5.png" alt="" />,
+        <img key={6} src="/images/avatar.png" alt="" />
+    ];
+
+    const _messages = [
+        "Hey there!  My name's Hai, welcome to my blog",
+        "I'm a .Net and web developer from Melbourne, Australia",
+        'I love all things computer science and tech related',
+        'I also like travelling and going on wild adventures',
+        'and enjoy gaming in my down time',
+        "That's all I got, take a look around and let me know what you think!"
+    ];
+
+    if (!isMounted.current) {
+        dispatch(getPostSummaries({ page: 1 })).then(loadDisqus);
+        if (!categories.length) {
+            dispatch(getCategories());
         }
-        this.images = [
-            <img key={1} src="/images/avatar.png" alt="" />,
-            <img key={2} style={{ marginTop: '-60px' }} src="/images/avatar2.png" alt="" />,
-            <img key={3} src="/images/avatar3.png" alt="" />,
-            <img key={4} style={{ marginLeft: '-29px', marginTop: '-29px' }} src="/images/avatar4.png" alt="" />,
-            <img key={5} src="/images/avatar5.png" alt="" />,
-            <img key={6} src="/images/avatar.png" alt="" />
-        ];
-        this.messages = [
-            "Hey there!  My name's Hai, welcome to my blog",
-            "I'm a .Net and web developer from Melbourne, Australia",
-            'I love all things computer science and tech related',
-            'I also like travelling and going on wild adventures',
-            'and enjoy gaming in my down time',
-            "That's all I got, take a look around and let me know what you think!"
-        ];
+        isMounted.current = true;
     }
 
-    onArrowClick() {
-        let current = this.state.currentProfile;
+    const onArrowClick = () => {
+        let current = currentProfile;
         current = ++current > 5 ? 0 : current; // eslint-disable-line
-        this.setState({ currentProfile: current });
+        setCurrentProfile(current);
     }
-    onCategoryClick(category) {
-        this.setState({ filter: category, enableShowMore: true });
-        this.props.getPostSummaries({ page: 1, filter: category }).then(() => {
-            this.loadDisqus();
-        });
+
+    const onCategoryClick = (category) => {
+        setFilter(category);
+        setEnableShowMore(true);
+        dispatch(getPostSummaries({ page: 1, filter: category })).then(loadDisqus);
     }
-    onShowMore() {
-        const page = this.state.page + 1;
-        this.setState({ loading: true, page });
-        const options = { page };
-        if (this.state.filter !== Categories.ALL) {
-            options.filter = this.state.filter;
+
+    const onShowMore = () => {
+        const _page = page + 1;
+        setLoading(true);
+        setPage(_page);
+        const options = { _page };
+        if (filter !== Categories.ALL) {
+            options.filter = filter;
         }
-        PostSummaryActionCreators.getPostSummaries(options, true).then((response) => {
-            const newState = { loading: false };
+        dispatch(getPostSummaries(options, true)).then((response) => {
+            setLoading(false);
             if (response.length < PAGE_SIZE) {
-                newState.enableShowMore = false;
+                setEnableShowMore(false);
             }
-            this.setState(newState);
         });
     }
-    loadDisqus() {
+
+    const loadDisqus = () => {
         const node = document.getElementById('dsq-count-scr');
         if (node) {
             node.parentNode.removeChild(node);
@@ -80,104 +90,95 @@ class HomeLandingPage extends Component {
         document.body.appendChild(script);
     }
 
-    render() {
-        const categories = [];
-        const posts = [];
+    const _categories = [];
+    const _posts = [];
 
-        if (this.props.categories !== null) {
-            categories.push(<li key={Categories.ALL} onClick={this.onCategoryClick.bind(this, Categories.ALL)} role="presentation">All</li>);
-            for (let i = 0; i < this.props.categories.length; i += 1) {
-                categories.push(<li key={this.props.categories[i].id} onClick={this.onCategoryClick.bind(this, this.props.categories[i].id)} role="presentation">{this.props.categories[i].name}</li>);
-            }
+    if (categories !== null) {
+        _categories.push(<li key={Categories.ALL} onClick={() => onCategoryClick(Categories.ALL)} role="presentation">All</li>);
+        for (let i = 0; i < categories.length; i += 1) {
+            _categories.push(<li key={categories[i].id} onClick={() => onCategoryClick(categories[i].id)} role="presentation">{categories[i].name}</li>);
         }
-        for (let i = 0; i < this.props.posts.length; i += 1) {
-            posts.push(<div key={i} className="post-entry">
-                <div style={{ display: 'flex' }}>
-                    <div className="date">
-                        <div className="date-content">{this.props.posts[i].day}<span className="month">{this.props.posts[i].month}</span></div>
-                    </div>
-                    <div className="post-title">
-                        <div className="title">{this.props.posts[i].title}</div>
-                        <Link to={'post/'.concat(this.props.posts[i].id).concat('#disqus_thread')} style={{ display: 'inline-block', marginTop: '5px' }}><span className="disqus-comment-count" data-disqus-identifier={this.props.posts[i].id}>0 Comments</span></Link>
-                    </div>
+    }
+    for (let i = 0; i < posts.length; i += 1) {
+        _posts.push(<div key={i} className="post-entry">
+            <div style={{ display: 'flex' }}>
+                <div className="date">
+                    <div className="date-content">{posts[i].day}<span className="month">{posts[i].month}</span></div>
                 </div>
-                <div className="blurb">{this.props.posts[i].blurb}...<br /><Link to={'post/'.concat(this.props.posts[i].id)}>Read more &gt;&gt;</Link></div>
-            </div>); // eslint-disable-line
-        }
-        const showMore = !this.state.loading ?
-            (
-                <div className="show-more" onClick={this.onShowMore.bind(this)} role="presentation">
-                    <div>Show More</div>
-                    <div style={{ height: '30px', paddingLeft: '10px' }}>
-                        <svg fill="#334b69" height="30" viewBox="0 0 24 24" width="30">
-                            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
-                            <path d="M0 0h24v24H0z" fill="none" />
-                        </svg>
-                    </div>
-                </div>
-            )
-            :
-            (
-                <div style={{ textAlign: 'center', height: '51px' }}>
-                    <WaitIcon size="40px" />
-                </div>
-            );
-
-        return (
-            <div>
-                <Helmet>
-                    <title>Hai Le | Home</title>
-                </Helmet>
-                <div style={{ paddingTop: '100px' }}>
-                    <div id="banner">
-                        <div id="avatar-home">
-                            {this.images[this.state.currentProfile]}
-                        </div>
-                        <div id="speech-container">
-                            <div id="ticker-container">
-                                <TransitionGroup>
-                                    <CSSTransition classNames="messages" timeout={300} key={this.state.currentProfile}>
-                                        <span className="ticker-item">{this.messages[this.state.currentProfile]}</span>
-                                    </CSSTransition>
-                                </TransitionGroup>
-                            </div>
-                            <div id="arrow" onClick={this.onArrowClick.bind(this)} role="presentation" />
-                        </div>
-                    </div>
-                </div>
-                <div className="container homepage">
-                    <div id="summaries" className="row">
-                        <div className="col-md-8 col-xs-12">
-                            {posts.length > 0 ? posts : <WaitIcon style={{ display: 'block', margin: 'auto' }} size="40px" />}
-                        </div>
-                        <div className="col-md-offset-1 col-md-3 category-container">
-                            <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: '38px', color: '#7682a8' }}>Categories</div>
-                            {categories.length > 0 ? <ul className="category-list">{categories}</ul> : <WaitIcon style={{ margin: '20px 60px 0' }} size="40px" />}
-                        </div>
-                    </div>
-                    {
-                        posts.length > 0 ? (
-                            <div className="row">
-                                <div className="col-md-8 col-xs-12" style={{ height: '100px' }}>
-                                    { this.state.enableShowMore ? showMore : null }
-                                </div>
-                            </div>
-                        ) : null
-                    }
-                    <img className="preload" src="/images/avatar.png" alt="" />
-                    <img className="preload" src="/images/avatar2.png" alt="" />
-                    <img className="preload" src="/images/avatar3.png" alt="" />
-                    <img className="preload" src="/images/avatar4.png" alt="" />
-                    <img className="preload" src="/images/avatar5.png" alt="" />
+                <div className="post-title">
+                    <div className="title">{posts[i].title}</div>
+                    <Link to={'/post/'.concat(posts[i].id).concat('#disqus_thread')} style={{ display: 'inline-block', marginTop: '5px' }}><span className="disqus-comment-count" data-disqus-identifier={posts[i].id}>0 Comments</span></Link>
                 </div>
             </div>
-        );
+            <div className="blurb">{posts[i].blurb}...<br /><Link to={'/post/'.concat(posts[i].id)}>Read more &gt;&gt;</Link></div>
+        </div>); // eslint-disable-line
     }
-}
+    const showMore = !loading ?
+        (
+            <div className="show-more" onClick={onShowMore} role="presentation">
+                <div>Show More</div>
+                <div style={{ height: '30px', paddingLeft: '10px' }}>
+                    <svg fill="#334b69" height="30" viewBox="0 0 24 24" width="30">
+                        <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
+                        <path d="M0 0h24v24H0z" fill="none" />
+                    </svg>
+                </div>
+            </div>
+        )
+        :
+        (
+            <div style={{ textAlign: 'center', height: '51px' }}>
+                <WaitIcon size="40px" />
+            </div>
+        );
 
-function mapStateToProps(state) {
-    const { postSummaries, categories } = state;
-    return { posts: postSummaries, categories }
+    return (
+        <div>
+            <Helmet>
+                <title>Hai Le | Home</title>
+            </Helmet>
+            <div style={{ paddingTop: '100px' }}>
+                <div id="banner">
+                    <div id="avatar-home">
+                        {_images[currentProfile]}
+                    </div>
+                    <div id="speech-container">
+                        <div id="ticker-container">
+                            <TransitionGroup>
+                                <CSSTransition classNames="messages" timeout={300} key={currentProfile}>
+                                    <span className="ticker-item">{_messages[currentProfile]}</span>
+                                </CSSTransition>
+                            </TransitionGroup>
+                        </div>
+                        <div id="arrow" onClick={onArrowClick} role="presentation" />
+                    </div>
+                </div>
+            </div>
+            <div className="container homepage">
+                <div id="summaries" className="row">
+                    <div className="col-md-8 col-xs-12">
+                        {_posts.length > 0 ? _posts : <WaitIcon style={{ display: 'block', margin: 'auto' }} size="40px" />}
+                    </div>
+                    <div className="col-md-offset-1 col-md-3 category-container">
+                        <div style={{ fontFamily: 'Oswald, sans-serif', fontSize: '38px', color: '#7682a8' }}>Categories</div>
+                        {_categories.length > 0 ? <ul className="category-list">{_categories}</ul> : <WaitIcon style={{ margin: '20px 60px 0' }} size="40px" />}
+                    </div>
+                </div>
+                {
+                    _posts.length > 0 ? (
+                        <div className="row">
+                            <div className="col-md-8 col-xs-12" style={{ height: '100px' }}>
+                                { enableShowMore ? showMore : null }
+                            </div>
+                        </div>
+                    ) : null
+                }
+                <img className="preload" src="/images/avatar.png" alt="" />
+                <img className="preload" src="/images/avatar2.png" alt="" />
+                <img className="preload" src="/images/avatar3.png" alt="" />
+                <img className="preload" src="/images/avatar4.png" alt="" />
+                <img className="preload" src="/images/avatar5.png" alt="" />
+            </div>
+        </div>
+    );
 }
-
-export default connect(mapStateToProps, { getPostSummaries, getCategories })(HomeLandingPage);

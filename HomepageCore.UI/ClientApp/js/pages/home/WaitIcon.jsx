@@ -1,9 +1,8 @@
 import React from 'react';
 
-export default function (props) {
-    const size = props.size || '40px';
-    return (
-        <svg width={size} height={size} style={props.style} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="uil-spin">
+export default ({ size = '40px', style }) =>
+    (
+        <svg width={size} height={size} style={style} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="uil-spin">
             <rect x="0" y="0" width="100" height="100" fill="none" className="bk" />
             <g transform="translate(50 50)">
                 <g transform="rotate(0) translate(34 0)">
@@ -57,4 +56,3 @@ export default function (props) {
             </g>
         </svg>
     );
-}
