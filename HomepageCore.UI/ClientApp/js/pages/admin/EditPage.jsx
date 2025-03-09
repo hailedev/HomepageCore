@@ -14,7 +14,7 @@ export default () => {
     const user = useSelector(state => state.user);
     const categories = useSelector(state => state.categories);
     const posts = useSelector(state => state.posts);
-    const params = useParams();
+    const { id } = useParams();
 
     const [state, setState] = useState({
         editorState: EditorState.createEmpty(),
@@ -48,18 +48,18 @@ export default () => {
     ];
 
     if (!isMounted.current) {
-        if (!categories) {
+        if (!categories.length) {
             dispatch(getCategories());
         }
     
-        if (params.id) {
-            dispatch(getPost(params.id, true));
+        if (id) {
+            dispatch(getPost(id, true));
         }
         isMounted.current = true;
     }
 
     useEffect(() => {
-        const post = posts[params.id];
+        const post = posts[id];
         if (post) {
             const contentState = post.raw ? convertFromRaw(JSON.parse(post.raw)) : ContentState.createFromText(post.content);
             const editorState = EditorState.createWithContent(contentState);
@@ -91,7 +91,7 @@ export default () => {
         }
         await dispatch(addPost(post));
         const editorState = EditorState.push(state.editorState, ContentState.createFromText(''));
-        if (!params.id) {
+        if (!id) {
             setState({ ...state, editorState, title: '', blurb: '', tags: '', category: 'c3943998-774b-4ac4-9ccd-8e740e20ab2c' });
         }
     }
@@ -143,7 +143,7 @@ export default () => {
     const promptForMedia = (type) => {
         setState({
             ...state,
-            showURLInput: true,
+            showUrlInput: true,
             urlValue: '',
             caption: '',
             urlType: type
@@ -212,7 +212,7 @@ export default () => {
                 entityKey,
                 ' '
             ),
-            showURLInput: false,
+            showUrlInput: false,
             urlValue: '',
             caption: ''
         });
