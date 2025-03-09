@@ -1,35 +1,37 @@
 beforeEach(function(){
     jest.resetModules();
-    jest.mock("api/CategoryApi");
+    jest.mock("CategoryApi");
     expect.hasAssertions();
 });
 
 describe("CategoryActionCreators", function() {
     describe("when calling getCategories", function() {
         it("should call categories API", function() {
-            var mockCategoryApi = require("api/CategoryApi").default;
+            const mockCategoryApi = require("CategoryApi").default;
             mockCategoryApi.getCategories.mockImplementation(function(){
                 return new Promise(function(resolve, reject){
                     resolve({});
                 });
             });
-            var testcontext = require("actions/CategoryActionCreators").default;
 
-            return testcontext.getCategories().then(function(json) {
+            const { getCategories } = require("CategoryActionCreators");
+            const mockCallback = jest.fn(x => {});
+            return getCategories()(mockCallback).then(function(json) {
                 expect(mockCategoryApi.getCategories.mock.calls.length).toBeGreaterThan(0);
             });
         });
         it("should dispatch action on success", function(){
-            var mockCategoryApi = require("api/CategoryApi").default;
+            const mockCategoryApi = require("CategoryApi").default;
             mockCategoryApi.getCategories.mockImplementation(function(){
                 return new Promise(function(resolve, reject){
                     resolve({});
                 });
             });
-            var testcontext = require("actions/CategoryActionCreators").default;
 
-            return testcontext.getCategories().then(function(json) {
-                expect(mockDispatcher.dispatch.mock.calls.length).toBeGreaterThan(0);
+            const { getCategories } = require("CategoryActionCreators");
+            const mockCallback = jest.fn(x => {});
+            return getCategories()(mockCallback).then(function(json) {
+                expect(mockCallback.mock.calls.length).toBeGreaterThan(0);
             });
         });
     });

@@ -8,7 +8,7 @@ beforeEach(function(){
 describe("PostReducer", function() {
     describe("when state is not provider", function(){
         it("initializes with no items", function(){
-            expect(testcontext()).toHaveLength(0);
+            expect(testcontext()).toEqual({});
         });
     });
     describe("when an action is dispatched", function(){

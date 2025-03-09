@@ -5,6 +5,7 @@ module.exports = {
         "<rootDir>../../HomepageCore.UI/ClientApp/js/stores",
         "<rootDir>../../HomepageCore.UI/ClientApp/js/actions",
         "<rootDir>../../HomepageCore.UI/ClientApp/js/services",
+        "<rootDir>../../HomepageCore.UI/ClientApp/js/api",
         "<rootDir>/ClientApp/js",
         "<rootDir>/node_modules"
     ],
