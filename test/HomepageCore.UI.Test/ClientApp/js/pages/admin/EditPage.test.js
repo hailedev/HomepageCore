@@ -7,13 +7,11 @@ describe("<EditPage />", function(){
     var mockDefaultDispatcher, mockCategoryActionCreators, mockPostActionCreators, mockUserStore;    
     beforeEach(function(){
         jest.resetModules();
-        jest.mock("DefaultDispatcher");
         jest.mock("CategoryActionCreators");
         jest.mock("PostActionCreators");
         jest.mock("UserStore");
     
         // setup mocks
-        mockDefaultDispatcher = require("DefaultDispatcher").default;
         mockCategoryActionCreators = require("CategoryActionCreators").default;
         mockPostActionCreators = require("PostActionCreators").default;
         mockUserStore = require("UserStore").default;

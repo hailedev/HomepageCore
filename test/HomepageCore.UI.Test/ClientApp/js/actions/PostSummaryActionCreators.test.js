@@ -1,7 +1,6 @@
 beforeEach(function(){
     jest.resetModules();
     jest.mock("api/PostApi");
-    jest.mock("DefaultDispatcher");
     expect.hasAssertions();
 });
 
@@ -24,7 +23,6 @@ describe("PostSummaryActionCreators", function() {
         });
         it("should dispatch fetch post additional summaries action when update is true", function(){
             var actions = require("AppConstants").Actions;
-            var mockDispatcher = require("DefaultDispatcher").default;
             var mockPostApi = require("api/PostApi").default;
             mockPostApi.getPostSummaries.mockImplementation(function(post){
                 return new Promise(function(resolve, reject){

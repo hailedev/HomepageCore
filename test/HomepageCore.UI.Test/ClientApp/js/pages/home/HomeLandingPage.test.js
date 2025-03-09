@@ -6,7 +6,6 @@ import { Actions } from "AppConstants";
 
 beforeEach(function(){
     jest.resetModules();
-    jest.mock("DefaultDispatcher");
     jest.mock("CategoryActionCreators");
     jest.mock("PostSummaryActionCreators");
     jest.mock("env");
@@ -14,7 +13,6 @@ beforeEach(function(){
 
 describe("<HomeLandingPage />", function(){
     it("should render all elements", function(){
-        var mockDefaultDispatcher = require("DefaultDispatcher").default;
         var mockCategoryActionCreators = require("CategoryActionCreators").default;
         var mockPostSummaryActionCreators = require("PostSummaryActionCreators").default;
 

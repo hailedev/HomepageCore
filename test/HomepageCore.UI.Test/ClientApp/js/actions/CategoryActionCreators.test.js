@@ -1,7 +1,6 @@
 beforeEach(function(){
     jest.resetModules();
     jest.mock("api/CategoryApi");
-    jest.mock("DefaultDispatcher");
     expect.hasAssertions();
 });
 
@@ -21,7 +20,6 @@ describe("CategoryActionCreators", function() {
             });
         });
         it("should dispatch action on success", function(){
-            var mockDispatcher = require("DefaultDispatcher").default;
             var mockCategoryApi = require("api/CategoryApi").default;
             mockCategoryApi.getCategories.mockImplementation(function(){
                 return new Promise(function(resolve, reject){

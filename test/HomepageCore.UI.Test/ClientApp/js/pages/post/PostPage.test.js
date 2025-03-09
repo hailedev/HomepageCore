@@ -6,13 +6,11 @@ import { Actions } from "AppConstants";
 
 beforeEach(function(){
     jest.resetModules();
-    jest.mock("DefaultDispatcher");
     jest.mock("PostActionCreators");
 });
 
 describe("<PostPage />", function(){
     it("should render all elements", function(){
-        var mockDefaultDispatcher = require("DefaultDispatcher").default;
         var mockPostActionCreators = require("PostActionCreators").default;
 
         // setup dispatcher

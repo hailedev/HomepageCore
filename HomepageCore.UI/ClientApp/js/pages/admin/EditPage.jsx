@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Editor, EditorState, RichUtils, ContentState, AtomicBlockUtils, convertFromRaw, convertToRaw, Entity } from 'draft-js';
 import { useParams } from 'react-router-dom';
 import { getCategories } from 'CategoryActionCreators';
-import { getPost } from 'PostActionCreators';
+import { getPost, addPost } from 'PostActionCreators';
 import { stateToHTML } from 'draft-js-export-html';
 import Model from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -89,7 +89,7 @@ export default () => {
         if (state.blurb) {
             post.blurb = state.blurb;
         }
-        await PostActionCreators.addPost(post);
+        await dispatch(addPost(post));
         const editorState = EditorState.push(state.editorState, ContentState.createFromText(''));
         if (!params.id) {
             setState({ ...state, editorState, title: '', blurb: '', tags: '', category: 'c3943998-774b-4ac4-9ccd-8e740e20ab2c' });

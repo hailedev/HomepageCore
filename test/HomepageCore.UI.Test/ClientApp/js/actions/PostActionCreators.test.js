@@ -1,7 +1,6 @@
 beforeEach(function(){
     jest.resetModules();
     jest.mock("api/PostApi");
-    jest.mock("DefaultDispatcher");
     expect.hasAssertions();
 });
 
@@ -23,7 +22,6 @@ describe("PostActionCreators", function() {
             });
         });
         it("should not dispatch action when editable", function(){
-            var mockDispatcher = require("DefaultDispatcher").default;
             var mockPostApi = require("api/PostApi").default;
             mockPostApi.getPost.mockImplementation(function(){
                 return new Promise(function(resolve, reject){
@@ -66,7 +64,6 @@ describe("PostActionCreators", function() {
             });
         });
         it("should dispatch action", function(){
-            var mockDispatcher = require("DefaultDispatcher").default;
             var mockPostApi = require("api/PostApi").default;
             mockPostApi.addPost.mockImplementation(function(post){
                 return new Promise(function(resolve, reject){

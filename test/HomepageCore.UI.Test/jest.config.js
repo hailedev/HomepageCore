@@ -1,12 +1,12 @@
 module.exports = {
     modulePaths: [
         "<rootDir>../../HomepageCore.UI/ClientApp/js",
-        "<rootDir>../../HomepageCore.UI/ClientApp/js/dispatchers",
         "<rootDir>../../HomepageCore.UI/ClientApp/js/constants",
         "<rootDir>../../HomepageCore.UI/ClientApp/js/stores",
         "<rootDir>../../HomepageCore.UI/ClientApp/js/actions",
         "<rootDir>../../HomepageCore.UI/ClientApp/js/services",
-        "<rootDir>/ClientApp/js"
+        "<rootDir>/ClientApp/js",
+        "<rootDir>/node_modules"
     ],
     moduleFileExtensions: ["js", "jsx"],
     setupFilesAfterEnv: [

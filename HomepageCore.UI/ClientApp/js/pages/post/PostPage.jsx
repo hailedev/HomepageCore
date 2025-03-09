@@ -22,7 +22,7 @@ export default () => {
     useEffect(() => {
         if (id && !posts[id]) {
             let interval = null;
-            dispatch(getPost(params.id, true)).then(() => {
+            dispatch(getPost(id, true)).then(() => {
                 setPercent(100);
                 clearInterval(interval);
             });
@@ -35,7 +35,7 @@ export default () => {
         }
     },[]);
     useEffect(() => {
-        const post = posts[params.id];
+        const post = posts[id];
         if (post) {
             setPost(post);
         }

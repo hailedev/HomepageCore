@@ -1,11 +1,11 @@
 import raf from "raf";
-import "babel-polyfill";
+//import "babel-polyfill";
 import "mock-local-storage";
-import Enzyme from "enzyme";
-import EnzymeAdapter from "enzyme-adapter-react-16";
+//import Enzyme from "enzyme";
+//import EnzymeAdapter from "enzyme-adapter-react-16";
 
 // Setup enzyme's react adapter
-Enzyme.configure({ adapter: new EnzymeAdapter() });
+//Enzyme.configure({ adapter: new EnzymeAdapter() });
 
 raf.polyfill();
 
