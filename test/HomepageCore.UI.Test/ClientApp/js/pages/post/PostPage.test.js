@@ -27,7 +27,7 @@ describe("<PostPage />", function(){
         });
 
         var PostPage = require("pages/post/PostPage").default;
-        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/post/1"} context={{}}><Routes><Route path="/post/:id" element={<PostPage/>}/></Routes></StaticRouter></Provider>));
+        const { container } = await act(async () => render(<Provider store={store}><StaticRouter location={"/post/1"} context={{}}><Routes><Route path="/post/:id" element={<PostPage/>}/></Routes></StaticRouter></Provider>));
 
         // renders the main container
         expect(container.getElementsByClassName("post").length).toBe(1);

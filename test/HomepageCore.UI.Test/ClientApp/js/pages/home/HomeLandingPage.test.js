@@ -42,7 +42,7 @@ describe("<HomeLandingPage />", function(){
         });
 
         var HomeLandingPage = require("pages/home/HomeLandingPage").default;
-        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="/" element={<HomeLandingPage/>}/></Routes></StaticRouter></Provider>));
+        const { container } = await act(async () => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="/" element={<HomeLandingPage/>}/></Routes></StaticRouter></Provider>));
 
         // renders the main container
         expect(container.getElementsByClassName("homepage").length).toBe(1);

@@ -7,7 +7,7 @@ import store from "store";
 
 describe("<ResumePage />", function(){
     it("should render the main contaner", async function(){
-        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<ResumePage/>}/></Routes></StaticRouter></Provider>));
+        const { container } = await act(async () => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<ResumePage/>}/></Routes></StaticRouter></Provider>));
         expect(container.getElementsByClassName("hire-me").length).toBe(1);
     });
 });

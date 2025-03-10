@@ -18,41 +18,41 @@ describe("<Main />", function(){
     it("should render content container", async function(){
         const Main = require("pages/Main").default;
 
-        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
+        const { container } = await act(async () => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
     
         expect(container.getElementsByClassName("content").length).toBe(1);
     });
     it("should render landing page by default", async function(){
         const Main = require("pages/Main").default;
 
-        const { getByTestId } = await act(() => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
+        const { getByTestId } = await act(async () => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
 
         expect(getByTestId("HomeLandingPage")).toBeInTheDocument();
     });
     it("should render post page", async function(){
         const Main = require("pages/Main").default;
 
-        const { getByTestId } = await act(() => render(<Provider store={store}><StaticRouter location={"/post/1"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
+        const { getByTestId } = await act(async () => render(<Provider store={store}><StaticRouter location={"/post/1"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
 
         expect(getByTestId("PostPage")).toBeInTheDocument();
     });
     it("should render about page", async function(){
         const Main = require("pages/Main").default;
 
-        const { getByTestId } = await act(() => render(<Provider store={store}><StaticRouter location={"/about"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
+        const { getByTestId } = await act(async () => render(<Provider store={store}><StaticRouter location={"/about"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
 
         expect(getByTestId("AboutPage")).toBeInTheDocument();
     });
     it("should render projects page", async function(){
         const Main = require("pages/Main").default;
 
-        const { getByTestId } = await act(() => render(<Provider store={store}><StaticRouter location={"/projects"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
+        const { getByTestId } = await act(async () => render(<Provider store={store}><StaticRouter location={"/projects"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
 
         expect(getByTestId("ProjectsPage")).toBeInTheDocument();
     });
     it("should render menus", async function(){
         const Main = require("pages/Main").default;
-        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
+        const { container } = await act(async () => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
 
         // desktop menu
         expect(container.getElementsByClassName("navigation-section").length).toBe(2);
@@ -66,7 +66,7 @@ describe("<Main />", function(){
     });
     it("should render footer", async function(){
         const Main = require("pages/Main").default;
-        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
+        const { container } = await act(async () => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<Main/>}/></Routes></StaticRouter></Provider>));
 
         expect(container.getElementsByClassName("footer").length).toBe(1);
     });

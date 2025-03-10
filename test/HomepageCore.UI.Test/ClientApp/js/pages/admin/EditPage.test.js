@@ -47,7 +47,7 @@ describe("<EditPage />", function(){
     let store = configureStore({ reducer, middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }) });
     it("should render the main contaner", async function(){
         var EditPage = require("pages/admin/EditPage").default;
-        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/edit/1"} context={{}}><Routes><Route path="/edit/:id" element={<EditPage/>}/></Routes></StaticRouter></Provider>));
+        const { container } = await act(async () => render(<Provider store={store}><StaticRouter location={"/edit/1"} context={{}}><Routes><Route path="/edit/:id" element={<EditPage/>}/></Routes></StaticRouter></Provider>));
     
         expect(container.getElementsByClassName("admin").length).toBe(1);
     });
@@ -56,7 +56,7 @@ describe("<EditPage />", function(){
         expect.hasAssertions();
 
         var EditPage = require("pages/admin/EditPage").default;
-        await act(() => render(<Provider store={store}><StaticRouter location={"/edit/1"} context={{}}><Routes><Route path="/edit/:id" element={<EditPage/>}/></Routes></StaticRouter></Provider>));
+        await act(async () => render(<Provider store={store}><StaticRouter location={"/edit/1"} context={{}}><Routes><Route path="/edit/:id" element={<EditPage/>}/></Routes></StaticRouter></Provider>));
         expect(mockPostApi.getPost.mock.calls.length).toBe(1);
     });
     it("should show empty div when not logged in", async function(){
@@ -71,7 +71,7 @@ describe("<EditPage />", function(){
         store = configureStore({ reducer, middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }) });
 
         var EditPage = require("pages/admin/EditPage").default;
-        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/edit/1"} context={{}}><Routes><Route path="/edit/:id" element={<EditPage/>}/></Routes></StaticRouter></Provider>));
+        const { container } = await act(async () => render(<Provider store={store}><StaticRouter location={"/edit/1"} context={{}}><Routes><Route path="/edit/:id" element={<EditPage/>}/></Routes></StaticRouter></Provider>));
         expect(container.getElementsByClassName("admin").length).toBe(0);
     });
 });
