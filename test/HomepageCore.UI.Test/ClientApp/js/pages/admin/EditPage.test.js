@@ -1,79 +1,77 @@
 import React from "react";
-import { shallow } from "enzyme";
-import _ from "lodash";
-import { Actions } from "AppConstants";
+import { StaticRouter, Route, Routes } from "react-router-dom";
+import { render, act } from '@testing-library/react'
+import { Provider } from "react-redux";
+import { combineReducers } from 'redux';
+import categories from 'reducers/CategoryReducer';
+import posts from 'reducers/PostReducer';
+import postSummaries from 'reducers/PostSummaryReducer';
+import { configureStore } from '@reduxjs/toolkit';
 
 describe("<EditPage />", function(){
-    var mockDefaultDispatcher, mockCategoryActionCreators, mockPostActionCreators, mockUserStore;    
-    beforeEach(function(){
-        jest.resetModules();
-        jest.mock("CategoryActionCreators");
-        jest.mock("PostActionCreators");
-        jest.mock("UserStore");
+    jest.mock("api/CategoryApi");
+    jest.mock("api/PostApi");
+
+    var mockCategoryApi = require("api/CategoryApi").default;
+    var mockPostApi = require("api/PostApi").default;
+
+    mockPostApi.getPost.mockImplementation(function() {
+        return new Promise(function(resolve, reject) {
+            resolve([
+                {
+                    id:"1",
+                    title:"test1",
+                    blurb:"the quick brown fox",
+                    categoryId:"cat1",
+                    day: 1,
+                    month: "Jan",
+                    raw:'{"entityMap":{},"blocks":[{"key":"d39lt","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]}'
+                }
+            ]);
+        });
+    });
+
+    mockCategoryApi.getCategories.mockImplementation(function() {
+        return new Promise(function(resolve, reject) {
+            resolve([{id:"1", title:"test1"}, {id:"2", title:"test2"}]);
+        });
+    });
+
+    let reducer = combineReducers({
+        categories,
+        posts,
+        postSummaries,
+        user: () => ({ name: "foo" })
+    });
+
+    let store = configureStore({ reducer, middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }) });
+    it("should render the main contaner", async function(){
+        var EditPage = require("pages/admin/EditPage").default;
+        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/edit/1"} context={{}}><Routes><Route path="/edit/:id" element={<EditPage/>}/></Routes></StaticRouter></Provider>));
     
-        // setup mocks
-        mockCategoryActionCreators = require("CategoryActionCreators").default;
-        mockPostActionCreators = require("PostActionCreators").default;
-        mockUserStore = require("UserStore").default;
-
-        var callbacks = [];
-        mockDefaultDispatcher.register.mockImplementation(function(cb){
-            callbacks.push(cb);
-        });
-
-        mockUserStore.getDispatcher.mockImplementation(function(){
-            return mockDefaultDispatcher;
-        });
-
-        mockUserStore.getState.mockImplementation(function(){
-            return { name: 'test' };
-        });
-
-        mockCategoryActionCreators.getCategories.mockImplementation(function(){
-            return new Promise(function(resolve, reject){
-                mockDefaultDispatcher.isDispatching.mockImplementation(function(){
-                    return true;
-                });
-                _(callbacks).each(function(cb){
-                    cb({
-                        type: Actions.FETCH_CATEGORIES,
-                        payload: { response: [{id:"1", title:"test1"}, {id:"2", title:"test2"}] }
-                    });
-                });
-                mockDefaultDispatcher.isDispatching.mockImplementation(function(){
-                    return false;
-                });
-                resolve();
-            });
-        });
+        expect(container.getElementsByClassName("admin").length).toBe(1);
     });
-    it("should render the main contaner", function(){
-        var EditPage = require("pages/admin/EditPage").default;
-        //var wrapper = require("enzyme").mount(<StaticRouter location={"/"} context={{}}><Route path="/" component={EditPage}/></StaticRouter>);
-        var wrapper = shallow(<EditPage match={{params:{}}} />); // issue rendering draft js in enzyme.. using shallow renderer instead
-        expect(wrapper.find(".admin").length).toBe(1);
-    });
-    it("should load post content", function(){
+    it("should load post content", async function(){
+        jest.clearAllMocks();
         expect.hasAssertions();
-        var done = new Promise(function(resolve, reject){
-            resolve({id:"1", title:"test", raw:'{"entityMap":{},"blocks":[{"key":"d39lt","text":"","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}]}'});
-        });
-        mockPostActionCreators.getPost.mockImplementation(function(){
-            return done;
-        });
 
         var EditPage = require("pages/admin/EditPage").default;
-        var wrapper = shallow(<EditPage match={{params:{id:"1"}}} />);
-        return done.then(function(){
-            expect(mockPostActionCreators.getPost.mock.calls.length).toBe(1);
-        });
+        await act(() => render(<Provider store={store}><StaticRouter location={"/edit/1"} context={{}}><Routes><Route path="/edit/:id" element={<EditPage/>}/></Routes></StaticRouter></Provider>));
+        expect(mockPostApi.getPost.mock.calls.length).toBe(1);
     });
-    it("should show empty div when not logged in", function(){
-        mockUserStore.getState.mockImplementation(function(){
-            return null;
+    it("should show empty div when not logged in", async function(){
+        jest.clearAllMocks();
+        reducer = combineReducers({
+            categories,
+            posts,
+            postSummaries,
+            user: () => null
         });
+    
+        store = configureStore({ reducer, middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }) });
+
         var EditPage = require("pages/admin/EditPage").default;
-        var wrapper = shallow(<EditPage match={{params:{}}} />);
-        expect(wrapper.find(".admin").length).toBe(0);
+        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/edit/1"} context={{}}><Routes><Route path="/edit/:id" element={<EditPage/>}/></Routes></StaticRouter></Provider>));
+        expect(container.getElementsByClassName("admin").length).toBe(0);
     });
 });

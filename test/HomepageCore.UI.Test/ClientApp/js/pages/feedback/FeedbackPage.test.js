@@ -1,5 +1,5 @@
 import React from "react";
-import { render, act } from '@testing-library/react'
+import { render, act, fireEvent } from '@testing-library/react'
 import { Provider } from "react-redux";
 import store from "store";
 
@@ -16,46 +16,62 @@ describe("<FeedbackPage />", function(){
         expect(container.querySelector("#email")).toBeDefined();
         expect(container.querySelector("#message")).toBeDefined();
     });
-    /*it("should validate name", function(){
-        var mockActionCreator = require("ContactActionCreators").default;
-        var FeedbackPage = require("pages/feedback/FeedbackPage").default;
-        var wrapper = mount(<FeedbackPage/>);
-        wrapper.find("#email").get(0).ref({value:"test@test.com"});
-
-        wrapper.find(".button").simulate("click");
-        expect(wrapper.find(".error").length).toBe(1);
-        expect(wrapper.find(".error").first().text()).toBe("Please enter your name");
-        expect(mockActionCreator.lodgeFeedback.mock.calls.length).toBe(0);
-    });
-    it("should validate email", function(){
-        var mockActionCreator = require("ContactActionCreators").default;
-        mockActionCreator.lodgeFeedback.mockImplementation(function(){
-            return new Promise(function(resolve, reject){
+    it("should validate name", async function(){
+        jest.mock("api/ContactApi");
+        var mockContactApi = require("api/ContactApi").default;
+        mockContactApi.lodgeFeedback.mockImplementation(function() {
+            return new Promise(function(resolve, reject) {
                 resolve();
             });
         });
+
         var FeedbackPage = require("pages/feedback/FeedbackPage").default;
-        var wrapper = mount(<FeedbackPage/>);
+        const { container } = await act(() => render(<Provider store={store}><FeedbackPage/></Provider>));
 
-        wrapper.find("#name").get(0).ref({value:"blah blah"});
-        wrapper.find(".button").simulate("click");
-        expect(wrapper.find(".error").length).toBe(1);
-        expect(wrapper.find(".error").first().text()).toBe("The email is invalid");
-        expect(mockActionCreator.lodgeFeedback.mock.calls.length).toBe(0);
+        const textbox = container.querySelector("#email");
+        textbox.value = "test@test.com";
 
-        wrapper.find("#name").get(0).ref({value:"blah blah"});
-        var mockEmailInput = {value:"test", focus:function(){}};
-        wrapper.find("#email").get(0).ref(mockEmailInput);
-        wrapper.find(".button").simulate("click");
-        expect(wrapper.find(".error").length).toBe(1);
-        expect(wrapper.find(".error").first().text()).toBe("The email is invalid");
-        expect(mockActionCreator.lodgeFeedback.mock.calls.length).toBe(0);
+        const button = container.getElementsByClassName("button")[0];
 
-        wrapper.find("#name").get(0).ref({value:"blah blah"});
-        wrapper.find("#message").get(0).ref({value:"blah blah"});
-        mockEmailInput.value = "test@test.com";
-        wrapper.find("#email").get(0).ref(mockEmailInput);
-        wrapper.find(".button").simulate("click");
-        expect(wrapper.find(".error").length).toBe(0);
-    });*/
+        fireEvent.click(button);
+        expect(container.getElementsByClassName("error").length).toBe(1);
+        expect(container.getElementsByClassName("error")[0].innerHTML).toBe("Please enter your name");
+        expect(mockContactApi.lodgeFeedback.mock.calls.length).toBe(0);
+    });
+    it("should validate email", async function(){
+        jest.mock("api/ContactApi");
+        var mockContactApi = require("api/ContactApi").default;
+        mockContactApi.lodgeFeedback.mockImplementation(function() {
+            return new Promise(function(resolve, reject) {
+                resolve();
+            });
+        });
+
+        var FeedbackPage = require("pages/feedback/FeedbackPage").default;
+        const { container } = await act(() => render(<Provider store={store}><FeedbackPage/></Provider>));
+
+        const button = container.getElementsByClassName("button")[0];
+        const textbox = container.querySelector("#name");
+        textbox.value = "blah blah";
+
+        fireEvent.click(button);
+        expect(container.getElementsByClassName("error").length).toBe(1);
+        expect(container.getElementsByClassName("error")[0].innerHTML).toBe("The email is invalid");
+        expect(mockContactApi.lodgeFeedback.mock.calls.length).toBe(0);
+
+        const emailTextbox = container.querySelector("#email");
+        emailTextbox.value = "test";
+        fireEvent.click(button);
+
+        expect(container.getElementsByClassName("error").length).toBe(1);
+        expect(container.getElementsByClassName("error")[0].innerHTML).toBe("The email is invalid");
+        expect(mockContactApi.lodgeFeedback.mock.calls.length).toBe(0);
+
+        const msgTextbox = container.querySelector("#message");
+        msgTextbox.value = "blah blah";
+        emailTextbox.value = "test@test.com";
+        fireEvent.click(button);
+
+        expect(container.getElementsByClassName("error").length).toBe(0);
+    });
 });
