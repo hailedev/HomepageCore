@@ -23,7 +23,7 @@ export default () => {
         title: '',
         blurb: '',
         tags: '',
-        list: '',
+        link: '',
         category: 'c3943998-774b-4ac4-9ccd-8e740e20ab2c'
     });
 
@@ -59,11 +59,13 @@ export default () => {
     }
 
     useEffect(() => {
-        const post = posts[id];
-        if (post) {
-            const contentState = post.raw ? convertFromRaw(JSON.parse(post.raw)) : ContentState.createFromText(post.content);
-            const editorState = EditorState.createWithContent(contentState);
-            setState({ ...state, id: post.id, title: post.title, blurb: post.blurb, tags: post.tags, editorState, category: post.categoryId });
+        if (id) {
+            const post = posts[id];
+            if (post) {
+                const contentState = post.raw ? convertFromRaw(JSON.parse(post.raw)) : ContentState.createFromText(post.content);
+                const editorState = EditorState.createWithContent(contentState);
+                setState({ ...state, id: post.id, title: post.title, blurb: post.blurb, tags: post.tags, editorState, category: post.categoryId });
+            }
         }
     }, [posts]);
 
@@ -154,7 +156,8 @@ export default () => {
         _customRefs.editor.focus();
     }
 
-    const toggleLink = () => {
+    const toggleLink = (e) => {
+        e.preventDefault();
         const entityKey = Entity.create('LINK', 'MUTABLE', { url: state.link });
         setState({ ...state, editorState: RichUtils.toggleLink(state.editorState, state.editorState.getSelection(), entityKey) });
     }
@@ -300,7 +303,7 @@ export default () => {
                         {inlineStyleControls}
                     </div>
                     <div className="RichEditor-controls">
-                        <button onMouseDown={() => toggleLink}>Add Link</button>
+                        <button onMouseDown={toggleLink}>Add Link</button>
                         <input type="text" style={{ margin: '0 10px' }} value={state.link} onChange={onLinkChange} />
                     </div>
                     <div className="RichEditor-controls">

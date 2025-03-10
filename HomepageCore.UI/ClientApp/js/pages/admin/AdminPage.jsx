@@ -57,7 +57,7 @@ export default () => {
 
     return (
         <div className="container admin">
-            <div className="col-sm-2 row"><Link to="edit"><div className="button" style={{ marginLeft: '20px' }}>Add post</div></Link></div>
+            <div className="col-sm-2 row"><Link to="/edit"><div className="button" style={{ marginLeft: '20px' }}>Add post</div></Link></div>
             <div className="row" />
             <table className="table table-striped">
                 <thead>
