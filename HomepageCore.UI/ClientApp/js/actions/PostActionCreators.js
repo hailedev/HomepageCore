@@ -5,10 +5,7 @@ export function getPost(id, editable) {
     return async function (dispatch) {
         try {
             const response = await PostApi.getPost(id, editable);
-            /*if (!editable) {
-                dispatch({ type: Actions.FETCH_POST, payload: { response } });
-            }*/
-                dispatch({ type: Actions.FETCH_POST, payload: { response } });
+            dispatch({ type: Actions.FETCH_POST, payload: { response } });
             return response;
         } catch (e) {
             console.log(e);
