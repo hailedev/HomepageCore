@@ -19,5 +19,9 @@ module.exports = {
         "PAGE_SIZE": 5
     },
     transformIgnorePatterns: ["/node_modules/(?!react-social-icons)"],
-    testEnvironment: "jsdom"
+    testEnvironment: "jsdom",
+    moduleNameMapper : {
+        "^react$": "<rootDir>/node_modules/react/index.js",
+        "^react-router-dom$": "<rootDir>/node_modules/react-router-dom/dist/index.js"
+    }
 }

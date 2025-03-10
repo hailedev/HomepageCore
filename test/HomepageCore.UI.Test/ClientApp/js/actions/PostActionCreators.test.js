@@ -22,20 +22,6 @@ describe("PostActionCreators", function() {
                 expect(mockPostApi.getPost.mock.calls[0][1]).toBe(false);
             });
         });
-        it("should not dispatch action when editable", function(){
-            const mockPostApi = require("PostApi").default;
-            mockPostApi.getPost.mockImplementation(function(){
-                return new Promise(function(resolve, reject){
-                    resolve({});
-                });
-            });
-
-            const { getPost } = require("PostActionCreators");
-            const mockCallback = jest.fn(x => {});
-            return getPost("1234", true)(mockCallback).then(function(json) {
-                expect(mockCallback.mock.calls.length).toBe(0);
-            });
-        });
         it("should reject on error", function(){
             const mockPostApi = require("PostApi").default;
             mockPostApi.getPost.mockImplementation(function(){

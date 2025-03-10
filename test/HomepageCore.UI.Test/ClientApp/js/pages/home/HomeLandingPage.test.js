@@ -1,88 +1,50 @@
 import React from "react";
-import { mount } from "enzyme";
-import { StaticRouter, Route } from "react-router-dom";
-import _ from "lodash";
-import { Actions } from "AppConstants";
-
-beforeEach(function(){
-    jest.resetModules();
-    jest.mock("CategoryActionCreators");
-    jest.mock("PostSummaryActionCreators");
-    jest.mock("env");
-});
+import { StaticRouter, Route, Routes } from "react-router-dom";
+import { render, act } from '@testing-library/react'
+import { Provider } from "react-redux";
+import store from "store";
 
 describe("<HomeLandingPage />", function(){
-    it("should render all elements", function(){
-        var mockCategoryActionCreators = require("CategoryActionCreators").default;
-        var mockPostSummaryActionCreators = require("PostSummaryActionCreators").default;
+    it("should render all elements", async function(){
+        jest.mock("api/CategoryApi");
+        jest.mock("api/PostApi");
 
-        // setup dispatcher
-        var callbacks = [];
-        mockDefaultDispatcher.register.mockImplementation(function(callback){
-            callbacks.push(callback);
-        });
+        var mockCategoryApi = require("api/CategoryApi").default;
+        var mockPostApi = require("api/PostApi").default;
 
-        // setup post action creator
-        mockPostSummaryActionCreators.getPostSummaries.mockImplementation(function(){
-            return new Promise(function(resolve, reject){
-                mockDefaultDispatcher.isDispatching.mockImplementation(function(){
-                    return true;
-                });
-                _(callbacks).each(function(cb){
-                    cb({
-                        type: Actions.FETCH_POSTSUMMARIES,
-                        payload: { 
-                            response: [
-                                {
-                                    id:"1",
-                                    title:"test1",
-                                    blurb:"the quick brown fox",
-                                    categoryId:"cat1",
-                                    day: 1,
-                                    month: "Jan"
-                                },
-                                {
-                                    id:"2",
-                                    title:"test2",
-                                    blurb:"the quick brown fox",
-                                    categoryId:"cat2",
-                                    day: 1,
-                                    month: "Feb"
-                                }
-                            ] 
-                        }
-                    });
-                });
-                mockDefaultDispatcher.isDispatching.mockImplementation(function(){
-                    return false;
-                });
-                resolve();
+        mockPostApi.getPostSummaries.mockImplementation(function() {
+            return new Promise(function(resolve, reject) {
+                resolve([
+                    {
+                        id:"1",
+                        title:"test1",
+                        blurb:"the quick brown fox",
+                        categoryId:"cat1",
+                        day: 1,
+                        month: "Jan"
+                    },
+                    {
+                        id:"2",
+                        title:"test2",
+                        blurb:"the quick brown fox",
+                        categoryId:"cat2",
+                        day: 1,
+                        month: "Feb"
+                    }
+                ]);
             });
         });
 
-        // setup category action creator
-        mockCategoryActionCreators.getCategories.mockImplementation(function(){
-            return new Promise(function(resolve, reject){
-                mockDefaultDispatcher.isDispatching.mockImplementation(function(){
-                    return true;
-                });
-                _(callbacks).each(function(cb){
-                    cb({
-                        type: Actions.FETCH_CATEGORIES,
-                        payload: { response: [{id:"1", title:"test1"}, {id:"2", title:"test2"}] }
-                    });
-                });
-                mockDefaultDispatcher.isDispatching.mockImplementation(function(){
-                    return false;
-                });
-                resolve();
+        mockCategoryApi.getCategories.mockImplementation(function() {
+            return new Promise(function(resolve, reject) {
+                resolve([{id:"1", title:"test1"}, {id:"2", title:"test2"}]);
             });
         });
 
         var HomeLandingPage = require("pages/home/HomeLandingPage").default;
-        var wrapper = mount(<StaticRouter location={"/"} context={{}}><Route path="/" component={HomeLandingPage}/></StaticRouter>);
+        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="/" element={<HomeLandingPage/>}/></Routes></StaticRouter></Provider>));
 
         // renders the main container
-        expect(wrapper.find(".homepage").length).toBe(1);
+        expect(container.getElementsByClassName("homepage").length).toBe(1);
     });
 });

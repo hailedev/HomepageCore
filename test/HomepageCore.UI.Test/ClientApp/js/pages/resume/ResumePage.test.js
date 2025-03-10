@@ -1,11 +1,13 @@
 import ResumePage from "pages/resume/ResumePage";
 import React from "react";
-import { mount } from "enzyme";
-import { StaticRouter, Route } from "react-router-dom";
+import { StaticRouter, Route, Routes } from "react-router-dom";
+import { render, act } from '@testing-library/react'
+import { Provider } from "react-redux";
+import store from "store";
 
 describe("<ResumePage />", function(){
-    it("should render the main contaner", function(){
-        var wrapper = mount(<StaticRouter location={"/"} context={{}}><Route path="/" component={ResumePage}/></StaticRouter>);
-        expect(wrapper.find(".hire-me").length).toBe(1);
+    it("should render the main contaner", async function(){
+        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/"} context={{}}><Routes><Route path="*" element={<ResumePage/>}/></Routes></StaticRouter></Provider>));
+        expect(container.getElementsByClassName("hire-me").length).toBe(1);
     });
 });

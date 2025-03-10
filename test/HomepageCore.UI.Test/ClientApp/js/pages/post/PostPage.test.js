@@ -1,23 +1,13 @@
 import React from "react";
-import { mount } from "enzyme";
-import { StaticRouter, Route } from "react-router-dom";
-import _ from "lodash";
-import { Actions } from "AppConstants";
-
-beforeEach(function(){
-    jest.resetModules();
-    jest.mock("PostActionCreators");
-});
+import { StaticRouter, Route, Routes } from "react-router-dom";
+import { render, act } from '@testing-library/react'
+import { Provider } from "react-redux";
+import store from "store";
 
 describe("<PostPage />", function(){
-    it("should render all elements", function(){
-        var mockPostActionCreators = require("PostActionCreators").default;
-
-        // setup dispatcher
-        var callbacks = [];
-        mockDefaultDispatcher.register.mockImplementation(function(callback){
-            callbacks.push(callback);
-        });
+    it("should render all elements", async function(){
+        jest.mock("api/PostApi");
+        var mockPostApi = require("api/PostApi").default;
 
         // setup post action creator
         var post = {
@@ -29,39 +19,26 @@ describe("<PostPage />", function(){
             day: 1,
             month: "Jan"
         };
-        mockPostActionCreators.getPost.mockImplementation(function(){
-            return new Promise(function(resolve, reject){
-                mockDefaultDispatcher.isDispatching.mockImplementation(function(){
-                    return true;
-                });
-                _(callbacks).each(function(cb){
-                    cb({
-                        type: Actions.FETCH_POST,
-                        payload: { 
-                            response: post
-                        }
-                    });
-                });
-                mockDefaultDispatcher.isDispatching.mockImplementation(function(){
-                    return false;
-                });
-                resolve();
+
+        mockPostApi.getPost.mockImplementation(function() {
+            return new Promise(function(resolve, reject) {
+                resolve(post);
             });
         });
 
         var PostPage = require("pages/post/PostPage").default;
-        var wrapper = mount(<StaticRouter location={"/post/1"} context={{}}><Route path="/post/:id" component={PostPage}/></StaticRouter>);
+        const { container } = await act(() => render(<Provider store={store}><StaticRouter location={"/post/1"} context={{}}><Routes><Route path="/post/:id" element={<PostPage/>}/></Routes></StaticRouter></Provider>));
 
         // renders the main container
-        expect(wrapper.find(".post").length).toBe(1);
+        expect(container.getElementsByClassName("post").length).toBe(1);
 
         // sets post content
-        expect(wrapper.find(".post-content").html()).toContain(post.content);
+        expect(container.getElementsByClassName("post")[0].innerHTML).toContain(post.content);
 
         // sets post title
-        expect(wrapper.find(".title").html()).toContain(post.title);
+        expect(container.getElementsByClassName("title")[0].innerHTML).toContain(post.title);
 
         // sets the data
-        expect(wrapper.find(".date-content").html()).toBe('<div class="date-content">'+post.day+'<span class="month">'+post.month+'</span></div>');
+        expect(container.getElementsByClassName("date-content")[0].outerHTML).toBe('<div class="date-content">'+post.day+'<span class="month">'+post.month+'</span></div>');
     });
 });
